@@ -42,4 +42,4 @@ jobs:
 
           sudo docker build -t cotree-image .
           sudo docker run -d --name cotree-app -p 8080:8080 cotree-image
-  
+        EOF
