@@ -36,10 +36,10 @@ jobs:
           cd ~/cotree-backend
           git pull origin main
 
-          docker stop cotree-app || true
-          docker rm cotree-app || true
-          docker rmi cotree-image || true
+          sudo docker stop cotree-app || true
+          sudo docker rm cotree-app || true
+          sudo docker rmi cotree-image || true
 
-          docker build -t cotree-image .
-          docker run -d --name cotree-app -p 8080:8080 cotree-image
+          sudo docker build -t cotree-image .
+          sudo docker run -d --name cotree-app -p 8080:8080 cotree-image
         EOF
