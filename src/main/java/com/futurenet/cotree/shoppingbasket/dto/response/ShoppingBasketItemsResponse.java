@@ -15,5 +15,6 @@ public class ShoppingBasketItemsResponse {
     private int price;
     private int discount;
     private String isGreen;
+    private String thumbnailImage;
     private String brandName;
 }

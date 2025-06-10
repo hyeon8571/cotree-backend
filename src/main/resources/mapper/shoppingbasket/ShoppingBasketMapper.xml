@@ -19,6 +19,7 @@
             i.price,
             i.discount,
             i.is_green,
+            i.thumbnail_image,
             b.name AS brand_name
         FROM
             shopping_basket sb
