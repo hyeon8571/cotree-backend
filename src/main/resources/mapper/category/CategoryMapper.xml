@@ -4,6 +4,6 @@
 
 
     <select id="getCategories" resultType="com.futurenet.cotree.item.dto.response.CategoryListReponse">
-        SELECT NAME AS NAMES FROM ITEM_CATEGORY
+        SELECT NAME FROM ITEM_CATEGORY
     </select>
 </mapper>
