@@ -3,7 +3,7 @@
 <mapper namespace="com.futurenet.cotree.item.repository.CategoryRepository">
 
 
-    <select id="getAllCategories" resultType="com.futurenet.cotree.item.repository.response.CategoryListReponse">
+    <select id="getCategories" resultType="com.futurenet.cotree.item.repository.response.CategoryListReponse">
         SELECT NAME AS NAMES FROM ITEM_CATEGORY
     </select>
 </mapper>

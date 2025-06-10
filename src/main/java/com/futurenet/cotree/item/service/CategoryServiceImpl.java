@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     @Override
     public List<CategoryListReponse> getCategories() {
-        return categoryRepository.getAllCategories();
+        return categoryRepository.getCategories();
     }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface CategoryRepository {
-    List<CategoryListReponse> getAllCategories();
+    List<CategoryListReponse> getCategories();
 }
