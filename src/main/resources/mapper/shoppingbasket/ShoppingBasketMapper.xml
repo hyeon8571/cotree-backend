@@ -9,4 +9,22 @@
         INSERT INTO shopping_basket (member_id)
         VALUES(#{memberId})
     </insert>
+
+    <select id="getAllShoppingBasketItemsByMemberId" parameterType="Long" resultType="com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse">
+        SELECT
+            bi.id AS basket_item_id,
+            bi.quantity,
+            i.id AS item_id,
+            i.name as item_name,
+            i.price,
+            i.discount,
+            i.is_green,
+            b.name AS brand_name
+        FROM
+            shopping_basket sb
+            JOIN basket_item bi ON sb.id = bi.shopping_basket_id
+            JOIN item i ON bi.item_id = i.id
+            LEFT JOIN brand b ON i.brand_id = b.id
+        WHERE sb.member_id = #{memberId}
+    </select>
 </mapper>
