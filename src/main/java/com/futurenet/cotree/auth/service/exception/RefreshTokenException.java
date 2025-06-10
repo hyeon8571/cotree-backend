@@ -1,4 +1,4 @@
-package com.futurenet.cotree.auth.exception;
+package com.futurenet.cotree.auth.service.exception;
 
 import com.futurenet.cotree.global.exception.RestApiException;
 

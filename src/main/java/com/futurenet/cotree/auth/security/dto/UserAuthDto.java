@@ -1,4 +1,4 @@
-package com.futurenet.cotree.auth.dto;
+package com.futurenet.cotree.auth.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,9 @@
-package com.futurenet.cotree.auth.oauth2.service;
+package com.futurenet.cotree.auth.security.oauth2.service;
 
-import com.futurenet.cotree.auth.dto.UserAuthDto;
-import com.futurenet.cotree.auth.dto.UserPrincipal;
-import com.futurenet.cotree.auth.oauth2.dto.response.KakaoResponse;
-import com.futurenet.cotree.auth.oauth2.dto.response.OAuth2Response;
+import com.futurenet.cotree.auth.security.dto.UserAuthDto;
+import com.futurenet.cotree.auth.security.dto.UserPrincipal;
+import com.futurenet.cotree.auth.security.oauth2.dto.response.KakaoResponse;
+import com.futurenet.cotree.auth.security.oauth2.dto.response.OAuth2Response;
 import com.futurenet.cotree.member.domain.Member;
 import com.futurenet.cotree.member.dto.request.OAuthSignupRequest;
 import com.futurenet.cotree.member.repository.MemberRepository;

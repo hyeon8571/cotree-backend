@@ -1,6 +1,5 @@
-package com.futurenet.cotree.auth.filter;
+package com.futurenet.cotree.auth.security.filter;
 
-import com.futurenet.cotree.auth.util.JwtUtil;
 import com.futurenet.cotree.auth.util.ResponseUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
