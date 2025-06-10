@@ -1,4 +1,4 @@
-package com.futurenet.cotree.auth.security.oauth2.handler;
+package com.futurenet.cotree.auth.oauth2.handler;
 
 import com.futurenet.cotree.auth.constant.JwtConstants;
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
