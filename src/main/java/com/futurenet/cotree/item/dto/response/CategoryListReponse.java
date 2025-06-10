@@ -1,4 +1,4 @@
-package com.futurenet.cotree.item.repository.response;
+package com.futurenet.cotree.item.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
