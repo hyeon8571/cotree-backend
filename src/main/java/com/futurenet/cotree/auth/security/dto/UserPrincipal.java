@@ -1,4 +1,4 @@
-package com.futurenet.cotree.auth.dto;
+package com.futurenet.cotree.auth.security.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

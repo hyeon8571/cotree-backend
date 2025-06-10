@@ -1,8 +1,6 @@
-package com.futurenet.cotree.auth.handler;
+package com.futurenet.cotree.auth.security.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.futurenet.cotree.auth.util.ResponseUtil;
-import com.futurenet.cotree.global.dto.response.ApiResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

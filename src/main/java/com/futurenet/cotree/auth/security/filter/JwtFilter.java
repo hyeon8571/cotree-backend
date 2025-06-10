@@ -1,7 +1,7 @@
-package com.futurenet.cotree.auth.filter;
+package com.futurenet.cotree.auth.security.filter;
 
-import com.futurenet.cotree.auth.dto.UserAuthDto;
-import com.futurenet.cotree.auth.dto.UserPrincipal;
+import com.futurenet.cotree.auth.security.dto.UserAuthDto;
+import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.auth.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
