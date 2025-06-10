@@ -1,7 +1,6 @@
 package com.futurenet.cotree.shoppingbasket.controller;
 
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
-import com.futurenet.cotree.shoppingbasket.domain.BasketItem;
 import com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse;
 import com.futurenet.cotree.shoppingbasket.service.ShoppingBasketService;
 import lombok.RequiredArgsConstructor;
