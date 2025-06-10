@@ -1,6 +1,6 @@
 package com.futurenet.cotree.member.dto.request;
 
-import com.futurenet.cotree.auth.security.oauth2.dto.response.OAuth2Response;
+import com.futurenet.cotree.auth.oauth2.dto.response.OAuth2Response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

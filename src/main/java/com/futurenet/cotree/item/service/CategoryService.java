@@ -1,6 +1,6 @@
 package com.futurenet.cotree.item.service;
 
-import com.futurenet.cotree.item.repository.response.CategoryListReponse;
+import com.futurenet.cotree.item.dto.response.CategoryListReponse;
 
 import java.util.List;
 

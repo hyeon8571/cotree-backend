@@ -1,6 +1,6 @@
 package com.futurenet.cotree.item.repository;
 
-import com.futurenet.cotree.item.repository.response.CategoryListReponse;
+import com.futurenet.cotree.item.dto.response.CategoryListReponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,11 +1,11 @@
-package com.futurenet.cotree.auth.config;
+package com.futurenet.cotree.auth.security.config;
 
 import com.futurenet.cotree.auth.security.filter.CustomLogoutFilter;
 import com.futurenet.cotree.auth.security.filter.JwtFilter;
 import com.futurenet.cotree.auth.security.handler.CustomAuthenticationEntryPoint;
-import com.futurenet.cotree.auth.security.oauth2.handler.CustomOAuth2FailureHandler;
-import com.futurenet.cotree.auth.security.oauth2.handler.CustomOAuth2SuccessHandler;
-import com.futurenet.cotree.auth.security.oauth2.service.CustomOAuth2UserService;
+import com.futurenet.cotree.auth.oauth2.handler.CustomOAuth2FailureHandler;
+import com.futurenet.cotree.auth.oauth2.handler.CustomOAuth2SuccessHandler;
+import com.futurenet.cotree.auth.oauth2.service.CustomOAuth2UserService;
 import com.futurenet.cotree.auth.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -83,7 +83,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
 
         http
                 .addFilterBefore(new CustomLogoutFilter(), LogoutFilter.class);

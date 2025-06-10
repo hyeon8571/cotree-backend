@@ -1,4 +1,4 @@
-package com.futurenet.cotree.auth.security.oauth2.dto.response;
+package com.futurenet.cotree.auth.oauth2.dto.response;
 
 public interface OAuth2Response {
     String getProvider();
