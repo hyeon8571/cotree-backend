@@ -18,15 +18,14 @@ import java.util.List;
 public class ShoppingBasketController {
     private final ShoppingBasketService shoppingBasketService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getBasketItems(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long memberId = userPrincipal.getId();
         List<ShoppingBasketItemsResponse> shoppingBasketItems = shoppingBasketService.getAllShoppingBasketItemsByMemberId(memberId);
-
-        return ResponseEntity.ok(shoppingBasketItems);
+        return ResponseEntity.ok(new ApiResponse<>("SB100", shoppingBasketItems));
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> saveBasketItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ShoppingBasketAddRequest shoppingBasketAddRequest) {
         Long memberId = userPrincipal.getId();
         Long itemId = shoppingBasketAddRequest.getItemId();

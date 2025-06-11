@@ -28,6 +28,7 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     }
 
     @Override
+    @Transactional
     public void saveBasketItem(Long memberId, Long itemId, Integer quantity) {
         if(itemId == null) throw new ShoppingBasketException(ShoppingBasketErrorCode.INVALID_ITEM_ID);
         if(quantity==null || quantity <= 0) throw new ShoppingBasketException(ShoppingBasketErrorCode.INVALID_QUANTITY);
