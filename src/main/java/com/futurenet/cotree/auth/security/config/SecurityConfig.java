@@ -2,7 +2,6 @@ package com.futurenet.cotree.auth.security.config;
 
 import com.futurenet.cotree.auth.security.filter.CustomLogoutFilter;
 import com.futurenet.cotree.auth.security.filter.JwtFilter;
-import com.futurenet.cotree.auth.security.handler.CustomAuthenticationEntryPoint;
 import com.futurenet.cotree.auth.oauth2.handler.CustomOAuth2FailureHandler;
 import com.futurenet.cotree.auth.oauth2.handler.CustomOAuth2SuccessHandler;
 import com.futurenet.cotree.auth.oauth2.service.CustomOAuth2UserService;
@@ -32,7 +31,6 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     private final JwtUtil jwtUtil;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
 
 
@@ -70,11 +68,6 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint)
-                );
-
-        http
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
@@ -82,7 +75,7 @@ public class SecurityConfig {
                         .failureHandler(customOAuth2FailureHandler));
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/shopping-basket/**").authenticated()
+                        .requestMatchers("/shopping-basket/**", "/orders/**").authenticated()
                         .requestMatchers("/").permitAll()
 
                         .anyRequest().permitAll());

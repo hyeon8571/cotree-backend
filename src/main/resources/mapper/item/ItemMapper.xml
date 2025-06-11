@@ -23,6 +23,12 @@
         JOIN BRAND B ON I.BRAND_ID = B.ID
         WHERE I.ID = #{id}
     </select>
+
+    <update id="decreaseStock">
+        UPDATE item
+        SET quantity = quantity - #{quantity}
+        WHERE id = #{itemId} AND quantity >= #{quantity}
+    </update>
     <select id="getEcoItems" resultType="com.futurenet.cotree.item.domain.Item">
         SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT,
                I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,

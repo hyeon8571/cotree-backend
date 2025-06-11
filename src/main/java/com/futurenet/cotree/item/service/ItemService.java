@@ -6,6 +6,7 @@ import com.futurenet.cotree.item.dto.response.ItemResponse;
 import java.util.List;
 
 public interface ItemService {
+    void decreaseStock(Long itemId, int quantity);
     List<ItemResponse> getItemsByCategory(Long categoryId, int page);
     ItemDetailResponse getItemDetail(Long id);
     List<ItemResponse> getEcoItems(int page);
