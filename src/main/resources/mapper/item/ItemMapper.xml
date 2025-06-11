@@ -29,4 +29,14 @@
         SET quantity = quantity - #{quantity}
         WHERE id = #{itemId} AND quantity >= #{quantity}
     </update>
+    <select id="getEcoItems" resultType="com.futurenet.cotree.item.domain.Item">
+        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT,
+               I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,
+               B.NAME AS brandName, I.QUANTITY
+        FROM ITEM I
+        JOIN BRAND B ON I.BRAND_ID = B.ID
+        WHERE IS_GREEN = 'Y'
+        ORDER BY I.ID DESC
+        OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
 </mapper>
