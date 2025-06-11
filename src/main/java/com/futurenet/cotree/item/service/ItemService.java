@@ -6,6 +6,6 @@ import com.futurenet.cotree.item.dto.response.ItemResponse;
 import java.util.List;
 
 public interface ItemService {
-    List<ItemResponse> getItemsByCategory(Long categoryId);
+    List<ItemResponse> getItemsByCategory(Long categoryId, int page);
     ItemDetailResponse getItemDetail(Long id);
 }
