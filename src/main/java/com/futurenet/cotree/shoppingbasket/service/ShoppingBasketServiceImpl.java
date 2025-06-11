@@ -55,4 +55,18 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
             throw new ShoppingBasketException(ShoppingBasketErrorCode.INSERT_FAILED);
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteBasketItem(Long memberId, Long basketItemId) {
+        if (basketItemId == null || basketItemId <= 0) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.INVALID_BASKET_ITEM_ID);
+        }
+
+        int deleted = shoppingBasketRepository.deleteBasketItem(memberId, basketItemId);
+
+        if (deleted != 1) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.BASKET_ITEM_NOT_FOUND);
+        }
+    }
 }

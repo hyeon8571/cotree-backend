@@ -33,4 +33,11 @@ public class ShoppingBasketController {
         shoppingBasketService.saveBasketItem(memberId, itemId, quantity);
         return ResponseEntity.ok(new ApiResponse<>("SB100", null));
     }
+
+    @DeleteMapping("/{basketItemId}")
+    public ResponseEntity<?> deleteBasketItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long basketItemId) {
+        Long memberId = userPrincipal.getId();
+        shoppingBasketService.deleteBasketItem(memberId, basketItemId);
+        return ResponseEntity.ok(new ApiResponse<>("SB100", null));
+    }
 }

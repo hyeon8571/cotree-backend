@@ -12,4 +12,6 @@ public interface ShoppingBasketRepository {
     List<ShoppingBasketItemsResponse> getAllShoppingBasketItemsByMemberId(Long memberId);
     Long getBasketItemId(@Param("memberId") Long memberId, @Param("itemId") Long itemId);
     int updateBasketItemQuantity(@Param("basketItemId") Long basketItemId, @Param("quantity") Integer quantity);
-    int saveBasketItem(@Param("memberId") Long memberId, @Param("itemId") Long itemId, @Param("quantity") Integer quantity);}
+    int saveBasketItem(@Param("memberId") Long memberId, @Param("itemId") Long itemId, @Param("quantity") Integer quantity);
+    int deleteBasketItem(@Param("memberId") Long memberId, @Param("basketItemId") Long basketItemId);
+}

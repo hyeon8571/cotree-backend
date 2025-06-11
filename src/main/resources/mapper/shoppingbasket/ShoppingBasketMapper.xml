@@ -50,4 +50,12 @@
         FROM shopping_basket
         WHERE member_id = #{memberId}
     </insert>
+
+    <delete id="deleteBasketItem" parameterType="map">
+        DELETE FROM basket_item
+        WHERE shopping_basket_id = (
+            SELECT id FROM shopping_basket WHERE member_id = #{memberId}
+        )
+        AND id = #{basketItemId}
+    </delete>
 </mapper>
