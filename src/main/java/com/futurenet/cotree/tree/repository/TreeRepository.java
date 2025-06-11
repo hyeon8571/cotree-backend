@@ -7,4 +7,7 @@ import org.apache.ibatis.annotations.Param;
 public interface TreeRepository {
     void saveTree(Long memberId);
     Integer getMyTree(@Param("memberId") Long memberId);
+    int getExp(@Param("memberId") Long memberId);
+    int updateExp(@Param("memberId") Long memberId, @Param("exp") int exp);
+
 }

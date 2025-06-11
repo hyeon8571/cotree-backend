@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.futurenet.cotree.greenpoint.repository.GreenPointRepository">
+
+    <select id="getPoint" parameterType="long">
+        SELECT NVL(SUM(amount), 0) AS point
+        FROM green_point
+        WHERE member_id = #{memberId}
+    </select>
+
+    <insert id="savePointUsageLog">
+        INSERT INTO
+            green_point (member_id, item_id, amount)
+        VALUES
+            (#{memberId}, NULL, #{amount})
+    </insert>
+</mapper>
