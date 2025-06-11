@@ -9,4 +9,45 @@
         INSERT INTO shopping_basket (member_id)
         VALUES(#{memberId})
     </insert>
+
+    <select id="getAllShoppingBasketItemsByMemberId" parameterType="Long" resultType="com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse">
+        SELECT
+            bi.id AS basket_item_id,
+            bi.quantity,
+            i.id AS item_id,
+            i.name as item_name,
+            i.price,
+            i.discount,
+            i.is_green,
+            i.thumbnail_image,
+            b.name AS brand_name
+        FROM
+            shopping_basket sb
+            JOIN basket_item bi ON sb.id = bi.shopping_basket_id
+            JOIN item i ON bi.item_id = i.id
+            LEFT JOIN brand b ON i.brand_id = b.id
+        WHERE sb.member_id = #{memberId}
+    </select>
+
+    <select id="getBasketItemId" resultType="Long">
+        SELECT id
+        FROM basket_item
+        WHERE shopping_basket_id = (
+            SELECT id FROM shopping_basket WHERE member_id = #{memberId}
+        )
+        AND item_id = #{itemId}
+    </select>
+
+    <update id="updateBasketItemQuantity" parameterType="map">
+        UPDATE basket_item
+        SET quantity = quantity + #{quantity}
+        WHERE id = #{basketItemId}
+    </update>
+
+    <insert id="saveBasketItem" parameterType="map">
+        INSERT INTO basket_item (shopping_basket_id, item_id, quantity)
+        SELECT id, #{itemId}, #{quantity}
+        FROM shopping_basket
+        WHERE member_id = #{memberId}
+    </insert>
 </mapper>
