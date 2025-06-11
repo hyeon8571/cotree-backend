@@ -1,6 +1,7 @@
 package com.futurenet.cotree.item.service;
 
-import com.futurenet.cotree.item.dto.ItemDto;
+import com.futurenet.cotree.item.domain.Item;
+import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public List<ItemResponse> getItemsByCategory(Long categoryId) {
-        List<ItemDto> itemList = itemRepository.findItemsByCategory(categoryId);
+        List<Item> itemList = itemRepository.findItemsByCategory(categoryId);
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public ItemDetailResponse getItemDetail(Long id) {
+        return ItemDetailResponse.from(itemRepository.findItemDetailById(id));
     }
 }

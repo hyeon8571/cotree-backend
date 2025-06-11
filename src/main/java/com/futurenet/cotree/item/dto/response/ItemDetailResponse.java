@@ -1,6 +1,6 @@
 package com.futurenet.cotree.item.dto.response;
 
-import com.futurenet.cotree.item.domain.Item;
+import com.futurenet.cotree.item.domain.ItemDetail;
 import com.futurenet.cotree.item.util.DiscountUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemResponse {
-
+public class ItemDetailResponse {
     private Long id;
     private String name;
     private int price;
@@ -22,23 +21,27 @@ public class ItemResponse {
     private String thumbnailImage;
     private String brandName;
     private String isGreen;
+    private int quantity;
+    private String description;
 
-    public static ItemResponse from(Item item) {
-        int price = item.getPrice();
-        int discount = item.getDiscount();
+    public static ItemDetailResponse from(ItemDetail itemDetail) {
+        int price = itemDetail.getPrice();
+        int discount = itemDetail.getDiscount();
         int salePrice = price - discount;
         int discountRate = DiscountUtils.calculateDiscountRate(price, discount);
 
-        return ItemResponse.builder()
-                .id(item.getId())
-                .name(item.getName())
+        return ItemDetailResponse.builder()
+                .id(itemDetail.getId())
+                .name(itemDetail.getName())
                 .price(price)
                 .salePrice(salePrice)
                 .discountRate(discountRate)
-                .origin(item.getOrigin())
-                .thumbnailImage(item.getThumbnailImage())
-                .brandName(item.getBrandName())
-                .isGreen(item.getIsGreen())
+                .origin(itemDetail.getOrigin())
+                .thumbnailImage(itemDetail.getThumbnailImage())
+                .brandName(itemDetail.getBrandName())
+                .isGreen(itemDetail.getIsGreen())
+                .quantity(itemDetail.getQuantity())
+                .description(itemDetail.getDescription())
                 .build();
     }
 }
