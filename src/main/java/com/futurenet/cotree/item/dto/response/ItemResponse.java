@@ -22,6 +22,7 @@ public class ItemResponse {
     private String thumbnailImage;
     private String brandName;
     private String isGreen;
+    private int quantity;
 
     public static ItemResponse from(Item item) {
         int price = item.getPrice();
@@ -39,6 +40,7 @@ public class ItemResponse {
                 .thumbnailImage(item.getThumbnailImage())
                 .brandName(item.getBrandName())
                 .isGreen(item.getIsGreen())
+                .quantity(item.getQuantity())
                 .build();
     }
 }

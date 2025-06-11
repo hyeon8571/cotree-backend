@@ -18,8 +18,8 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId) {
-        List<ItemResponse> result = itemService.getItemsByCategory(categoryId);
+    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId, @RequestParam int page) {
+        List<ItemResponse> result = itemService.getItemsByCategory(categoryId, page);
         return ResponseEntity.ok(new ApiResponse<>("IT100", result));
     }
 

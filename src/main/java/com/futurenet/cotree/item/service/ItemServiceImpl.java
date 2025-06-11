@@ -18,8 +18,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemResponse> getItemsByCategory(Long categoryId) {
-        List<Item> itemList = itemRepository.findItemsByCategory(categoryId);
+    public List<ItemResponse> getItemsByCategory(Long categoryId, int page) {
+        final int size = 20;
+        int start = (page - 1) * size;
+
+        List<Item> itemList = itemRepository.findItemsByCategory(categoryId, start, size);
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
