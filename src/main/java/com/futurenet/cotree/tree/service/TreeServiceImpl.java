@@ -6,7 +6,6 @@ import com.futurenet.cotree.tree.dto.request.GiveWaterRequest;
 import com.futurenet.cotree.tree.dto.response.GiveWaterResponse;
 import com.futurenet.cotree.tree.repository.TreeRepository;
 import com.futurenet.cotree.tree.service.exception.*;
-import com.sun.source.tree.Tree;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,7 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
-    public Integer getMyTree(Long memberId) {
+    public int getMyTree(Long memberId) {
         Integer exp = treeRepository.getMyTree(memberId);
         if (exp == null) throw new TreeNotFoundException();
         return exp;

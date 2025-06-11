@@ -20,7 +20,7 @@ public class TreeController {
     @GetMapping
     public ResponseEntity<?> getMyTree(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long memberId = userPrincipal.getId();
-        Integer exp = treeService.getMyTree(memberId);
+        int exp = treeService.getMyTree(memberId);
         return ResponseEntity.ok(new ApiResponse<>("TR100", new MyTreeResponse(exp)));
     }
 
