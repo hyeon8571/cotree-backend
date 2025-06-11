@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.futurenet.cotree.item.repository.ItemRepository">
 
-    <select id="findItemsByCategory" resultType="com.futurenet.cotree.item.dto.ItemDto">
+    <select id="findItemsByCategory" resultType="com.futurenet.cotree.item.domain.Item">
         SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT, I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage, B.NAME AS brandName
         FROM ITEM I
         JOIN BRAND B ON I.BRAND_ID = B.ID
@@ -11,5 +11,12 @@
                 I.CATEGORY_ID = #{categoryId}
             </if>
         </where>
+    </select>
+
+    <select id="findItemDetailById" resultType="com.futurenet.cotree.item.domain.ItemDetail">
+        SELECT I.ID, I.NAME, I.PRICE, I.DISCOUNT, I.QUANTITY, I.ORIGIN, I.THUMBNAIL_IMAGE as thumbnailImage, B.NAME AS brandName, I.IS_GREEN AS isGreen, I.DESCRIPTION
+        FROM ITEM I
+        JOIN BRAND B ON I.BRAND_ID = B.ID
+        WHERE I.ID = #{id}
     </select>
 </mapper>
