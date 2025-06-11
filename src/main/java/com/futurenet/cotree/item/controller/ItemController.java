@@ -1,0 +1,27 @@
+package com.futurenet.cotree.item.controller;
+
+import com.futurenet.cotree.global.dto.response.ApiResponse;
+import com.futurenet.cotree.item.dto.response.ItemResponse;
+import com.futurenet.cotree.item.service.ItemService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/items")
+public class ItemController {
+
+    private final ItemService itemService;
+
+    @GetMapping
+    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId) {
+        List<ItemResponse> result = itemService.getItemsByCategory(categoryId);
+        return ResponseEntity.ok(new ApiResponse<>("IT100", result));
+    }
+}
