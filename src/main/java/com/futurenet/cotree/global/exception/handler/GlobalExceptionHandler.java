@@ -22,7 +22,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<?> handleRestApiException(RestApiException e) {
-        log.error(e.getMessage(), e);
         ErrorCode ec = e.getErrorCode();
         return new ResponseEntity<>(new ApiResponse<>(ec.getCode(), null), ec.getHttpStatus());
     }

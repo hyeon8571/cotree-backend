@@ -12,4 +12,10 @@
             </if>
         </where>
     </select>
+
+    <update id="decreaseStock">
+        UPDATE item
+        SET quantity = quantity - #{quantity}
+        WHERE id = #{itemId} AND quantity >= #{quantity}
+    </update>
 </mapper>

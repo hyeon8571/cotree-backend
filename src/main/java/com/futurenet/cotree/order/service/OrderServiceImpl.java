@@ -19,7 +19,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void registerOrderRequest(OrderRegisterRequest orderRegisterRequest) {
+    public Long registerOrderRequest(OrderRegisterRequest orderRegisterRequest) {
 
         String orderNumber = createOrderNumber(orderRegisterRequest.getMemberId());
         orderRegisterRequest.setOrderNumber(orderNumber);
@@ -28,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
         if (result == 0) {
             throw new OrderException(OrderErrorCode.ORDER_REGISTER_FAIL);
         }
+
+        return orderRegisterRequest.getOrderId();
     }
 
     private String createOrderNumber(Long memberId) {

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ItemService {
     List<ItemResponse> getItemsByCategory(Long categoryId);
+    void decreaseStock(Long itemId, int quantity);
 }

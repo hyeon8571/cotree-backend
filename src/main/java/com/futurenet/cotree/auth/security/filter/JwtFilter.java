@@ -3,13 +3,14 @@ package com.futurenet.cotree.auth.security.filter;
 import com.futurenet.cotree.auth.security.dto.UserAuthDto;
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.auth.util.JwtUtil;
+import com.futurenet.cotree.auth.util.ResponseUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,32 +48,25 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String accessToken = authorization;
 
-        try {
-            if (jwtUtil.isExpired(accessToken)) {
-                request.setAttribute("errorCode", "AU001");
-                throw new AuthenticationServiceException("AU001");
-            }
-
-            String category = jwtUtil.getCategory(accessToken);
-
-            if (!category.equals("access")) {
-                request.setAttribute("errorCode", "AU002");
-                throw new AuthenticationServiceException("AU002");
-            }
-
-            Long memberId = jwtUtil.getMemberId(accessToken);
-            String role = jwtUtil.getRole(accessToken);
-
-            UserAuthDto userAuthDto = new UserAuthDto(memberId, role);
-            UserPrincipal userPrincipal = new UserPrincipal(userAuthDto);
-
-            Authentication authToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-            filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            request.setAttribute("errorCode", "AU002");
-            throw new AuthenticationServiceException("AU002");
+        if (jwtUtil.isExpired(accessToken)) {
+            ResponseUtil.setResponse(response, "AU001", HttpStatus.UNAUTHORIZED);
+            return;
         }
 
+        String category = jwtUtil.getCategory(accessToken);
+        if (!"access".equals(category)) {
+            ResponseUtil.setResponse(response, "AU002", HttpStatus.UNAUTHORIZED);
+            return;
+        }
+
+        Long memberId = jwtUtil.getMemberId(accessToken);
+        String role = jwtUtil.getRole(accessToken);
+
+        UserAuthDto userAuthDto = new UserAuthDto(memberId, role);
+        UserPrincipal userPrincipal = new UserPrincipal(userAuthDto);
+
+        Authentication authToken = new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+        filterChain.doFilter(request, response);
     }
 }

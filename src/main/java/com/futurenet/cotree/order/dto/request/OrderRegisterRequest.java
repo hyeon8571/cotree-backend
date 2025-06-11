@@ -10,6 +10,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class OrderRegisterRequest {
+    private Long orderId;
     private Long memberId;
     private String orderNumber;
     private String destination;

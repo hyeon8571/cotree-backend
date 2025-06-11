@@ -1,4 +1,4 @@
-package com.futurenet.cotree.order.service.exception;
+package com.futurenet.cotree.item.service.exception;
 
 import com.futurenet.cotree.global.exception.ErrorCode;
 import lombok.AllArgsConstructor;
@@ -7,10 +7,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum OrderErrorCode implements ErrorCode {
+public enum ItemErrorCode implements ErrorCode {
 
-    ORDER_REGISTER_FAIL("OR000", HttpStatus.BAD_REQUEST),
-    ORDER_ITEM_REGISTER_FAIL("OR001", HttpStatus.BAD_REQUEST);
+    ITEM_QUANTITY_LACK("IT000", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final HttpStatus httpStatus;

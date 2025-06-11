@@ -2,7 +2,8 @@ package com.futurenet.cotree.auth.service;
 
 import com.futurenet.cotree.auth.constant.JwtConstants;
 import com.futurenet.cotree.auth.dto.request.RefreshTokenSaveRequest;
-import com.futurenet.cotree.auth.service.exception.RefreshTokenException;
+import com.futurenet.cotree.auth.service.exception.AuthErrorCode;
+import com.futurenet.cotree.auth.service.exception.AuthException;
 import com.futurenet.cotree.auth.repository.RefreshTokenRepository;
 import com.futurenet.cotree.auth.util.JwtUtil;
 import com.futurenet.cotree.auth.util.RequestUtil;
@@ -26,14 +27,14 @@ public class JwtServiceImpl implements JwtService {
         String refreshToken = RequestUtil.getRefreshToken(request);
 
         if (refreshToken == null || jwtUtil.isExpired(refreshToken)) {
-            throw new RefreshTokenException();
+            throw new AuthException(AuthErrorCode.REFRESH_ERROR);
         }
 
         Long memberId = jwtUtil.getMemberId(refreshToken);
         String savedRefreshToken = refreshTokenRepository.getRefreshTokenByMemberId(memberId);
 
         if (savedRefreshToken == null || !savedRefreshToken.equals(refreshToken)) {
-            throw new RefreshTokenException();
+            throw new AuthException(AuthErrorCode.REFRESH_ERROR);
         }
 
         String role = jwtUtil.getRole(refreshToken);

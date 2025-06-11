@@ -9,4 +9,5 @@ import java.util.List;
 @Mapper
 public interface ItemRepository {
     List<ItemDto> findItemsByCategory(@Param("categoryId") Long categoryId);
+    int decreaseStock(@Param("itemId") Long ItemId, @Param("quantity") int quantity);
 }

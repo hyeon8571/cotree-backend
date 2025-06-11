@@ -4,8 +4,11 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.futurenet.cotree.order.repository.OrderRepository">
-    <insert id="saveOrder" parameterType="com.futurenet.cotree.order.dto.request.OrderRegisterRequest">
-        INSERT INTO member (email, provider, nickname, profile_image)
-        VALUES(#{request.email}, #{request.provider}, #{request.nickname}, #{request.profileImage})
+    <insert id="saveOrder" parameterType="com.futurenet.cotree.order.dto.request.OrderRegisterRequest"
+            useGeneratedKeys="true"
+            keyProperty="orderId"
+            keyColumn="id">
+        INSERT INTO orders (member_id, order_number, destination, receiver_name, receiver_tel, request)
+        VALUES(#{request.memberId}, #{request.orderNumber}, #{request.destination}, #{request.receiverName}, #{request.receiverTel}, #{request.request})
     </insert>
 </mapper>
