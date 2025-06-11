@@ -28,4 +28,10 @@ public class ItemController {
         ItemDetailResponse result = itemService.getItemDetail(itemId);
         return ResponseEntity.ok(new ApiResponse<>("IT101", result));
     }
+
+    @GetMapping("/eco")
+    public ResponseEntity<?> getEcoItems(@RequestParam int page){
+        List<ItemResponse> result = itemService.getEcoItems(page);
+        return ResponseEntity.ok(new ApiResponse<>("IT102", result));
+    }
 }
