@@ -1,14 +1,12 @@
 package com.futurenet.cotree.item.controller;
 
 import com.futurenet.cotree.global.dto.response.ApiResponse;
+import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +18,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId) {
-        List<ItemResponse> result = itemService.getItemsByCategory(categoryId);
+    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId, @RequestParam int page) {
+        List<ItemResponse> result = itemService.getItemsByCategory(categoryId, page);
         return ResponseEntity.ok(new ApiResponse<>("IT100", result));
+    }
+
+    @GetMapping("/{itemId}")
+    public ResponseEntity<?> getItemDetail (@PathVariable Long itemId) {
+        ItemDetailResponse result = itemService.getItemDetail(itemId);
+        return ResponseEntity.ok(new ApiResponse<>("IT101", result));
     }
 }

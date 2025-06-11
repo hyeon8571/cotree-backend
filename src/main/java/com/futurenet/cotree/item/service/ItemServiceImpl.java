@@ -1,6 +1,7 @@
 package com.futurenet.cotree.item.service;
 
-import com.futurenet.cotree.item.dto.ItemDto;
+import com.futurenet.cotree.item.domain.Item;
+import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.item.service.exception.ItemErrorCode;
@@ -19,8 +20,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemResponse> getItemsByCategory(Long categoryId) {
-        List<ItemDto> itemList = itemRepository.findItemsByCategory(categoryId);
+    public List<ItemResponse> getItemsByCategory(Long categoryId, int page) {
+        final int size = 20;
+        int start = (page - 1) * size;
+
+        List<Item> itemList = itemRepository.findItemsByCategory(categoryId, start, size);
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
@@ -34,5 +38,11 @@ public class ItemServiceImpl implements ItemService {
         if (result == 0) {
             throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
         }
+    }
+
+    @Override
+    @Transactional
+    public ItemDetailResponse getItemDetail(Long id) {
+        return ItemDetailResponse.from(itemRepository.findItemDetailById(id));
     }
 }

@@ -1,15 +1,14 @@
-package com.futurenet.cotree.item.dto;
+package com.futurenet.cotree.item.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class ItemDto {
+public class Item {
     private Long id;
     private String name;
     private int price;
     private int discount;
+    private int quantity;
     private String origin;
     private String thumbnailImage;
     private String brandName;

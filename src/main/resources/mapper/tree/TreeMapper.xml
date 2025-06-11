@@ -9,4 +9,10 @@
         INSERT INTO tree (member_id)
         VALUES(#{memberId})
     </insert>
+
+    <select id="getMyTree" resultType="int">
+        SELECT exp
+        FROM tree
+        WHERE member_id = #{memberId}
+    </select>
 </mapper>
