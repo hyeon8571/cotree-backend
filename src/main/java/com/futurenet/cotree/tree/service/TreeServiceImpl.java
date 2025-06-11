@@ -1,6 +1,7 @@
 package com.futurenet.cotree.tree.service;
 
 import com.futurenet.cotree.tree.repository.TreeRepository;
+import com.futurenet.cotree.tree.service.exception.TreeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,5 +16,12 @@ public class TreeServiceImpl implements TreeService {
     @Transactional
     public void registerTree(Long memberId) {
         treeRepository.saveTree(memberId);
+    }
+
+    @Override
+    public Integer getMyTree(Long memberId) {
+        Integer exp = treeRepository.getMyTree(memberId);
+        if (exp == null) throw new TreeNotFoundException();
+        return exp;
     }
 }
