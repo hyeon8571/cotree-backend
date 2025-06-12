@@ -20,7 +20,7 @@
         SELECT id, member_id, item_id, amount, CAST(created_at AS TIMESTAMP) AS createdAt
         FROM GREEN_POINT
         WHERE member_id = #{memberId}
-        ORDER BY created_at DESC
+        ORDER BY created_at DESC, id DESC
         OFFSET #{page} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
