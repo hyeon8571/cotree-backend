@@ -16,7 +16,7 @@
         WHERE member_id = #{memberId}
     </select>
 
-    <select id="getExp" parameterType="long" resultType="int">
+    <select id="getTreeExp" parameterType="long" resultType="int">
         SELECT NVL(EXP, 0) as exp
         FROM tree
         WHERE member_id = #{memberId}
