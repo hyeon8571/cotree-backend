@@ -1,6 +1,9 @@
 package com.futurenet.cotree.greenpoint.service;
 
+import com.futurenet.cotree.greenpoint.dto.GreenPointSaveRequest;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
+import com.futurenet.cotree.greenpoint.service.exception.GreenPointErrorCode;
+import com.futurenet.cotree.greenpoint.service.exception.GreenPointException;
 import com.futurenet.cotree.greenpoint.service.exception.GreenPointInsertFailedException;
 import com.futurenet.cotree.greenpoint.service.exception.NotEnoughPointException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,16 @@ public class GreenPointServiceImpl implements GreenPointService {
         int result = greenPointRepository.savePointUsageLog(memberId, -amount);
         if (result != 1) {
             throw new GreenPointInsertFailedException();
+        }
+    }
+
+    @Override
+    @Transactional
+    public void savePoint(GreenPointSaveRequest greenPointSaveRequest) {
+        int result = greenPointRepository.savePoint(greenPointSaveRequest);
+
+        if (result == 0) {
+            throw new GreenPointException(GreenPointErrorCode.GREEN_POINT_INSERT_FAILED);
         }
     }
 }

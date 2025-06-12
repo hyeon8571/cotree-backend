@@ -10,8 +10,13 @@
 
     <insert id="savePointUsageLog">
         INSERT INTO
-            green_point (member_id, item_id, amount)
+            green_point (member_id, amount)
         VALUES
-            (#{memberId}, NULL, #{amount})
+            (#{memberId}, #{amount})
+    </insert>
+
+    <insert id="savePoint" parameterType="com.futurenet.cotree.greenpoint.dto.GreenPointSaveRequest">
+        INSERT INTO green_point(member_id, payment_id, amount)
+        VALUES (#{request.memberId}, #{request.paymentId}, #{request.amount})
     </insert>
 </mapper>
