@@ -18,7 +18,8 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId, @RequestParam int page) {
+    public ResponseEntity<?> getItemsByCategory(@RequestParam(name = "categoryId", required = false, defaultValue = "0") Long categoryId, //카테고리 0이면 전체 조회
+                                                @RequestParam int page) {
         List<ItemResponse> result = itemService.getItemsByCategory(categoryId, page);
         return ResponseEntity.ok(new ApiResponse<>("IT100", result));
     }
@@ -33,5 +34,14 @@ public class ItemController {
     public ResponseEntity<?> getEcoItems(@RequestParam int page){
         List<ItemResponse> result = itemService.getEcoItems(page);
         return ResponseEntity.ok(new ApiResponse<>("IT102", result));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchItems(@RequestParam String keyword,
+                                         @RequestParam (name = "categoryId", required = false, defaultValue = "0") Long categoryId, //카테고리 0이면 전체 조회
+                                         @RequestParam int page,
+                                         @RequestParam(name = "isGreen", required = false) String isGreen) {
+        List<ItemResponse> result = itemService.searchItems(keyword, categoryId, page, isGreen);
+        return ResponseEntity.ok(new ApiResponse<>("IT103", result));
     }
 }

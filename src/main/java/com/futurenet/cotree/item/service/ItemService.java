@@ -10,4 +10,5 @@ public interface ItemService {
     List<ItemResponse> getItemsByCategory(Long categoryId, int page);
     ItemDetailResponse getItemDetail(Long id);
     List<ItemResponse> getEcoItems(int page);
+    List<ItemResponse> searchItems(String keyword, Long categoryId, int page, String isGreen);
 }
