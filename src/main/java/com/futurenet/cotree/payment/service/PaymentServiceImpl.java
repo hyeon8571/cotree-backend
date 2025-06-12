@@ -1,5 +1,7 @@
 package com.futurenet.cotree.payment.service;
 
+import com.futurenet.cotree.greenpoint.dto.GreenPointSaveRequest;
+import com.futurenet.cotree.greenpoint.service.GreenPointService;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.item.service.exception.ItemErrorCode;
 import com.futurenet.cotree.item.service.exception.ItemException;
@@ -23,6 +25,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
+    private final GreenPointService greenPointService;
 
     @Override
     @Transactional
@@ -41,12 +44,16 @@ public class PaymentServiceImpl implements PaymentService {
             }
         }
 
-        int paymentResult = paymentRepository.savePayment(PaymentRegisterRequest.of(paymentRequest, price));
+        PaymentRegisterRequest paymentRegisterRequest = PaymentRegisterRequest.of(paymentRequest, price);
+        int paymentResult = paymentRepository.savePayment(paymentRegisterRequest);
 
         if (paymentResult == 0) {
             throw new PaymentException(PaymentErrorCode.PAYMENT_FAIL);
         }
 
+        if (greenPrice != 0) {
+            greenPointService.savePoint(GreenPointSaveRequest.of(paymentRequest.getMemberId(), paymentRegisterRequest.getPaymentId(), greenPrice));
+        }
 
         int updateOrderStatusResult = orderRepository.updateOrderStatus(paymentRequest.getOrderId(), OrderStatus.SUCCESS.getStatus());
 

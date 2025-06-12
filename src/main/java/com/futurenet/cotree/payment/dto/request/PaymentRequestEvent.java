@@ -12,13 +12,15 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class PaymentRequestEvent {
+    private Long memberId;
     private Long orderId;
     private String cardNumber;
     private String bank;
     private List<OrderItemRegisterRequest> orderItems;
 
-    public static PaymentRequestEvent of(Long orderId, OrderRequest orderRequest) {
+    public static PaymentRequestEvent of(Long orderId, Long memberId, OrderRequest orderRequest) {
         return PaymentRequestEvent.builder()
+                .memberId(memberId)
                 .orderId(orderId)
                 .cardNumber(orderRequest.getCardNumber())
                 .bank(orderRequest.getBankName())
@@ -28,6 +30,7 @@ public class PaymentRequestEvent {
 
     public PaymentRequest toDto() {
         return PaymentRequest.builder()
+                .memberId(this.memberId)
                 .orderId(this.orderId)
                 .cardNumber(this.cardNumber)
                 .bank(this.bank)

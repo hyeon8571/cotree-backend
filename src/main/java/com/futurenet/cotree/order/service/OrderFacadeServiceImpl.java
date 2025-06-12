@@ -50,6 +50,6 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
             orderItemService.registerOrderItem(item);
         }
 
-        eventPublisher.publishEvent(PaymentRequestEvent.of(orderId, orderRequest));
+        eventPublisher.publishEvent(PaymentRequestEvent.of(orderId, memberId, orderRequest));
     }
 }

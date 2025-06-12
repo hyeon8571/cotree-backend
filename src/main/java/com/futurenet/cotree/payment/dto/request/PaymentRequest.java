@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class PaymentRequest {
+    private Long memberId;
     private Long orderId;
     private String cardNumber;
     private String bank;

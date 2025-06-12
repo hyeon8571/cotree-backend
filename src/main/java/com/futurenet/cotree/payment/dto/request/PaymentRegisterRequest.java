@@ -10,6 +10,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class PaymentRegisterRequest {
+    private Long paymentId;
     private Long orderId;
     private String cardNumber;
     private String bank;

@@ -41,7 +41,7 @@
     </select>
 
     <select id="getItemPriceAndIsEcoById">
-        SELECT price, discount, is_green
+        SELECT price, discount, is_green as isGreen
         FROM item
         WHERE id = #{id}
     </select>
