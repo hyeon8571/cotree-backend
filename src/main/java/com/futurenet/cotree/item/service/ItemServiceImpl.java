@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.futurenet.cotree.item.policy.PaginationPolicy.PAGE_SIZE;
+import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemResponse> getItemsByCategory(Long categoryId, int page) {
         int start = (page - 1) * PAGE_SIZE;
 
-        List<Item> itemList = itemRepository.findItemsByCategory(categoryId, start, PAGE_SIZE);
+        List<Item> itemList = itemRepository.getItemsByCategory(categoryId, start, PAGE_SIZE);
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemDetailResponse getItemDetail(Long id) {
-        return ItemDetailResponse.from(itemRepository.findItemDetailById(id));
+        return ItemDetailResponse.from(itemRepository.getItemDetailById(id));
     }
 
     @Override
