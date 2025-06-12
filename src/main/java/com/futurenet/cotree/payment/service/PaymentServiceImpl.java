@@ -8,6 +8,7 @@ import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import com.futurenet.cotree.order.repository.OrderRepository;
 import com.futurenet.cotree.payment.dto.request.PaymentRegisterRequest;
 import com.futurenet.cotree.payment.dto.request.PaymentRequest;
+import com.futurenet.cotree.payment.dto.response.ItemPriceAndIsEcoResponse;
 import com.futurenet.cotree.payment.repository.PaymentRepository;
 import com.futurenet.cotree.payment.service.exception.PaymentErrorCode;
 import com.futurenet.cotree.payment.service.exception.PaymentException;
@@ -30,8 +31,14 @@ public class PaymentServiceImpl implements PaymentService {
         // TODO: 반복문 내의 단발성 쿼리 Bulk 처리
 
         int price = 0;
+        int greenPrice = 0;
+
         for (OrderItemRegisterRequest item : paymentRequest.getOrderItems()) {
-            price += itemRepository.getItemPriceById(item.getItemId()) * item.getQuantity();
+            ItemPriceAndIsEcoResponse itemPriceAndIsEcoResponse = itemRepository.getItemPriceAndIsEcoById(item.getItemId());
+            price += (itemPriceAndIsEcoResponse.getPrice() - itemPriceAndIsEcoResponse.getDiscount()) * item.getQuantity();
+            if (itemPriceAndIsEcoResponse.getIsGreen().equals("Y")) {
+                greenPrice += (itemPriceAndIsEcoResponse.getPrice() - itemPriceAndIsEcoResponse.getDiscount()) * item.getQuantity();
+            }
         }
 
         int paymentResult = paymentRepository.savePayment(PaymentRegisterRequest.of(paymentRequest, price));
@@ -39,6 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (paymentResult == 0) {
             throw new PaymentException(PaymentErrorCode.PAYMENT_FAIL);
         }
+
 
         int updateOrderStatusResult = orderRepository.updateOrderStatus(paymentRequest.getOrderId(), OrderStatus.SUCCESS.getStatus());
 

@@ -40,8 +40,8 @@
         OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
-    <select id="getItemPriceById">
-        SELECT price
+    <select id="getItemPriceAndIsEcoById">
+        SELECT price, discount, is_green
         FROM item
         WHERE id = #{id}
     </select>

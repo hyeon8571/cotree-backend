@@ -2,6 +2,7 @@ package com.futurenet.cotree.item.repository;
 
 import com.futurenet.cotree.item.domain.Item;
 import com.futurenet.cotree.item.domain.ItemDetail;
+import com.futurenet.cotree.payment.dto.response.ItemPriceAndIsEcoResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,5 +14,5 @@ public interface ItemRepository {
     List<Item> findItemsByCategory(@Param("categoryId") Long categoryId, @Param("start") int start, @Param("size") int size);
     ItemDetail findItemDetailById(@Param("id") Long id);
     List<Item> getEcoItems(@Param("start") int start, @Param("size") int size);
-    int getItemPriceById(@Param("id") Long id);
+    ItemPriceAndIsEcoResponse getItemPriceAndIsEcoById(@Param("id") Long id);
 }
