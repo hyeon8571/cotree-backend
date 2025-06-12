@@ -39,4 +39,10 @@
         ORDER BY I.ID DESC
         OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
+
+    <select id="getItemPriceById">
+        SELECT price
+        FROM item
+        WHERE id = #{id}
+    </select>
 </mapper>

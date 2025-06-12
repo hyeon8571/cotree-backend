@@ -1,4 +1,4 @@
-package com.futurenet.cotree.item.service.exception;
+package com.futurenet.cotree.payment.service.exception;
 
 import com.futurenet.cotree.global.exception.ErrorCode;
 import lombok.AllArgsConstructor;
@@ -7,10 +7,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ItemErrorCode implements ErrorCode {
+public enum PaymentErrorCode implements ErrorCode {
 
-    ITEM_QUANTITY_LACK("IT000", HttpStatus.BAD_REQUEST),
-    ITEM_STATUS_UPDATE_FAIL("IT001", HttpStatus.BAD_REQUEST);
+    PAYMENT_FAIL("PA000", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final HttpStatus httpStatus;
