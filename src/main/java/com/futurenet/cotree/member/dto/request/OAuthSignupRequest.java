@@ -9,6 +9,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class OAuthSignupRequest {
+    private Long memberId;
     private String email;
     private String provider;
     private String nickname;
