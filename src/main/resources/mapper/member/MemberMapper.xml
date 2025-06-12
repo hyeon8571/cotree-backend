@@ -10,7 +10,10 @@
         WHERE email = #{email}
     </select>
 
-    <insert id="saveOAuthMember" parameterType="com.futurenet.cotree.member.dto.request.OAuthSignupRequest">
+    <insert id="saveOAuthMember" parameterType="com.futurenet.cotree.member.dto.request.OAuthSignupRequest"
+            useGeneratedKeys="true"
+            keyProperty="memberId"
+            keyColumn="id">
         INSERT INTO member (email, provider, nickname, profile_image)
         VALUES(#{request.email}, #{request.provider}, #{request.nickname}, #{request.profileImage})
     </insert>
