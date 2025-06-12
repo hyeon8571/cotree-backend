@@ -29,13 +29,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Response oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
         Member member = memberFindService.getMemberByEmail(oAuth2Response.getEmail());
 
+        UserAuthDto userAuthDto = null;
+
         if (member == null) {
             OAuthSignupRequest oAuthSignupRequest = OAuthSignupRequest.from(oAuth2Response);
-            signupFacadeService.signup(oAuthSignupRequest);
-            member = memberFindService.getMemberByEmail(oAuthSignupRequest.getEmail());
+            Long memberId = signupFacadeService.signup(oAuthSignupRequest);
+            userAuthDto = new UserAuthDto(memberId, "ROLE_USER");
+        } else {
+            userAuthDto = new UserAuthDto(member.getId(), "ROLE_USER");
         }
 
-        UserAuthDto userAuthDto = new UserAuthDto(member.getId(), "ROLE_USER");
         return new UserPrincipal(userAuthDto);
     }
 }

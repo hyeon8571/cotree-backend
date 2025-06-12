@@ -1,7 +1,6 @@
 package com.futurenet.cotree.auth.oauth2.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.futurenet.cotree.global.dto.response.ApiResponse;
+import com.futurenet.cotree.auth.util.ResponseUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,13 +19,6 @@ public class CustomOAuth2FailureHandler implements AuthenticationFailureHandler 
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error("OAuth2 Login Failed: {}", exception.getMessage());
 
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        ApiResponse<?> errorResponse = new ApiResponse<>("AU000", null);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(errorResponse);
-        response.getWriter().write(json);
+        ResponseUtil.setResponse(response, "AU000", HttpStatus.UNAUTHORIZED);
     }
 }

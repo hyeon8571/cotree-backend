@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface MemberRepository {
     Member getMemberByEmail(String email);
-    void saveOAuthMember(@Param("request") OAuthSignupRequest oAuthSignupRequest);
+    int saveOAuthMember(@Param("request") OAuthSignupRequest oAuthSignupRequest);
 }
