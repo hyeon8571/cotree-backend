@@ -20,14 +20,21 @@ public class TreeController {
     @GetMapping
     public ResponseEntity<?> getMyTree(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long memberId = userPrincipal.getId();
-        int exp = treeService.getMyTree(memberId);
-        return ResponseEntity.ok(new ApiResponse<>("TR100", new MyTreeResponse(exp)));
+        MyTreeResponse myTreeResponse = treeService.getMyTree(memberId);
+        return ResponseEntity.ok(new ApiResponse<>("TR100", myTreeResponse));
     }
 
-    @PostMapping
+    @PostMapping("/water")
     public ResponseEntity<?> giveWater(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GiveWaterRequest giveWaterRequest) {
         Long memberId = userPrincipal.getId();
         GiveWaterResponse giveWaterResponse = treeService.giveWater(memberId, giveWaterRequest);
+        return ResponseEntity.ok(new ApiResponse<>("TR100", giveWaterResponse));
+    }
+
+    @PostMapping("/water-all")
+    public ResponseEntity<?> giveAllWater(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody GiveWaterRequest giveWaterRequest) {
+        Long memberId = userPrincipal.getId();
+        GiveWaterResponse giveWaterResponse = treeService.giveAllWater(memberId, giveWaterRequest);
         return ResponseEntity.ok(new ApiResponse<>("TR100", giveWaterResponse));
     }
 }
