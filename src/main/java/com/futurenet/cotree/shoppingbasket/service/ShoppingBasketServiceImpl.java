@@ -30,9 +30,6 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     @Override
     @Transactional
     public void saveBasketItem(Long memberId, Long itemId, Integer quantity) {
-        if(itemId == null) throw new ShoppingBasketException(ShoppingBasketErrorCode.INVALID_ITEM_ID);
-        if(quantity==null || quantity <= 0) throw new ShoppingBasketException(ShoppingBasketErrorCode.INVALID_QUANTITY);
-
         // ...
         // TODO: (아이템 서비스 연동) itemId가 유효하고, 실제로 존재하는 상품인지 확인하는 로직 추가 필요.
         //       - 아이템 Repository를 사용해야 함.
