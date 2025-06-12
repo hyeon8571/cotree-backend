@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
 
@@ -39,12 +38,12 @@ public class GreenPointServiceImpl implements GreenPointService {
     }
 
     @Override
-    public List<GreenPointHistoryResponse> getPointHistory(Long memberId, int page) {
+    public GreenPointHistoryResponse getPointHistory(Long memberId, int page) {
         int start = (page - 1) * PAGE_SIZE;
         List<GreenPoint> points = greenPointRepository.getPointHistory(memberId, start, PAGE_SIZE);
-        return greenPointRepository.getPointHistory(memberId, start, PAGE_SIZE).stream()
-                .map(GreenPointHistoryResponse::from)
-                .collect(Collectors.toList());
+        int remainPoint = greenPointRepository.getPoint(memberId);
+        int totalCount = greenPointRepository.countPointHistory(memberId);
+        return GreenPointHistoryResponse.of(points, remainPoint, totalCount);
     }
 
 }

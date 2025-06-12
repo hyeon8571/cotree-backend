@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +22,8 @@ public class GreenPointController {
     @GetMapping
     public ResponseEntity<?> getPointHistory(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam int page) {
         Long memberId = userPrincipal.getId();
-        List<GreenPointHistoryResponse> greenPointHistory = greenPointService.getPointHistory(memberId, page);
-        return ResponseEntity.ok(new ApiResponse<>("GP100", greenPointHistory));
+        GreenPointHistoryResponse greenPointHistoryResponse = greenPointService.getPointHistory(memberId, page);
+        return ResponseEntity.ok(new ApiResponse<>("GP100", greenPointHistoryResponse));
     }
 
 }

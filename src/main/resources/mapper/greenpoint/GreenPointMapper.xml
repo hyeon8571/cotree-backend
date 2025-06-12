@@ -23,5 +23,11 @@
         ORDER BY created_at DESC
         OFFSET #{page} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
+
+    <select id="countPointHistory" resultType="int">
+        SELECT COUNT(*)
+        FROM green_point
+        WHERE member_id = #{memberId}
+    </select>
 </mapper>
 

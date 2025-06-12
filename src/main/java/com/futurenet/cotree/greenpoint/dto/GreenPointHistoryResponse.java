@@ -6,21 +6,42 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
 public class GreenPointHistoryResponse {
-    private Long id;
-    private int amount;
+    private int remainPoint;
+    private int totalCount;
+    private List<History> history;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime createdAt;
+    @Getter
+    @Builder
+    public static class History {
+        private Long id;
+        private int amount;
 
-    public static GreenPointHistoryResponse from(GreenPoint greenPoint) {
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+        private LocalDateTime createdAt;
+
+        public static History from(GreenPoint entity) {
+            return History.builder()
+                    .id(entity.getId())
+                    .amount(entity.getAmount())
+                    .createdAt(entity.getCreatedAt())
+                    .build();
+        }
+    }
+
+    public static GreenPointHistoryResponse of(List<GreenPoint> points, int remainPoint, int totalCount) {
+        List<History> list = points.stream()
+                .map(History::from)
+                .toList();
+
         return GreenPointHistoryResponse.builder()
-                .id(greenPoint.getId())
-                .amount(greenPoint.getAmount())
-                .createdAt(greenPoint.getCreatedAt())
+                .remainPoint(remainPoint)
+                .totalCount(totalCount)
+                .history(list)
                 .build();
     }
 }
