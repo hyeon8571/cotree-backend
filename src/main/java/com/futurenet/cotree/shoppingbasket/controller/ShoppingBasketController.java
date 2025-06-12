@@ -5,6 +5,7 @@ import com.futurenet.cotree.global.dto.response.ApiResponse;
 import com.futurenet.cotree.shoppingbasket.dto.request.ShoppingBasketAddRequest;
 import com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse;
 import com.futurenet.cotree.shoppingbasket.service.ShoppingBasketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +27,7 @@ public class ShoppingBasketController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveBasketItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ShoppingBasketAddRequest shoppingBasketAddRequest) {
+    public ResponseEntity<?> saveBasketItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid ShoppingBasketAddRequest shoppingBasketAddRequest) {
         Long memberId = userPrincipal.getId();
         Long itemId = shoppingBasketAddRequest.getItemId();
         Integer quantity = shoppingBasketAddRequest.getQuantity();

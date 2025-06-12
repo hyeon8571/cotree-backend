@@ -33,7 +33,7 @@ public class TreeServiceImpl implements TreeService {
     @Override
     public MyTreeResponse getMyTree(Long memberId) {
         Integer exp = treeRepository.getMyTree(memberId);
-        if (exp == null) throw new TreeNotFoundException();
+        if (exp == null) throw new TreeException(TreeErrorCode.TREE_NOT_FOUND);
         int point = greenPointService.getPoint(memberId);
         int remainingWaterUnit = point / TreePolicy.WATER_COST;
         return MyTreeResponse.of(exp, remainingWaterUnit);
@@ -51,9 +51,9 @@ public class TreeServiceImpl implements TreeService {
         growthValidator.validateCanGain(currentPoint, tree);
 
         GrowthPlan growthPlan = growthCalculator.calculate(tree, currentPoint, false);
-        if (growthPlan.isPointInsufficient()) throw new PointLackException();
-        if (growthPlan.isMaxExpReached()) throw new MaxExpReachedException();
-        if (growthPlan.isEmpty()) throw new TreeExpUpdateFailedException();
+        if (growthPlan.isPointInsufficient()) throw new TreeException(TreeErrorCode.POINT_LACK);
+        if (growthPlan.isMaxExpReached()) throw new TreeException(TreeErrorCode.MAX_EXP_REACHED);
+        if (growthPlan.isEmpty()) throw new TreeException(TreeErrorCode.TREE_EXP_UPDATE_FAILED);
 
         tree.gainExp(growthPlan.waterUnits());
 
@@ -75,9 +75,9 @@ public class TreeServiceImpl implements TreeService {
         growthValidator.validateCanGain(currentPoint, tree);
 
         GrowthPlan growthPlan = growthCalculator.calculate(tree, currentPoint, true);
-        if (growthPlan.isPointInsufficient()) throw new PointLackException();
-        if (growthPlan.isMaxExpReached()) throw new MaxExpReachedException();
-        if (growthPlan.isEmpty()) throw new TreeExpUpdateFailedException();
+        if (growthPlan.isPointInsufficient()) throw new TreeException(TreeErrorCode.POINT_LACK);
+        if (growthPlan.isMaxExpReached()) throw new TreeException(TreeErrorCode.MAX_EXP_REACHED);
+        if (growthPlan.isEmpty()) throw new TreeException(TreeErrorCode.TREE_EXP_UPDATE_FAILED);
 
         tree.gainExp(growthPlan.waterUnits());
 
@@ -90,7 +90,7 @@ public class TreeServiceImpl implements TreeService {
     private void updateExp(Long memberId, int exp) {
         int updated = treeRepository.updateExp(memberId, exp);
         if (updated != 1) {
-            throw new TreeExpUpdateFailedException();
+            throw new TreeException(TreeErrorCode.TREE_EXP_UPDATE_FAILED);
         }
     }
 
