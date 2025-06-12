@@ -1,11 +1,18 @@
 package com.futurenet.cotree.greenpoint.service;
 
+import com.futurenet.cotree.greenpoint.domain.GreenPoint;
+import com.futurenet.cotree.greenpoint.dto.GreenPointHistoryResponse;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
 import com.futurenet.cotree.greenpoint.service.exception.GreenPointInsertFailedException;
 import com.futurenet.cotree.greenpoint.service.exception.NotEnoughPointException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
 
 @Service
 @RequiredArgsConstructor
@@ -30,4 +37,14 @@ public class GreenPointServiceImpl implements GreenPointService {
             throw new GreenPointInsertFailedException();
         }
     }
+
+    @Override
+    public List<GreenPointHistoryResponse> getPointHistory(Long memberId, int page) {
+        int start = (page - 1) * PAGE_SIZE;
+        List<GreenPoint> points = greenPointRepository.getPointHistory(memberId, start, PAGE_SIZE);
+        return greenPointRepository.getPointHistory(memberId, start, PAGE_SIZE).stream()
+                .map(GreenPointHistoryResponse::from)
+                .collect(Collectors.toList());
+    }
+
 }
