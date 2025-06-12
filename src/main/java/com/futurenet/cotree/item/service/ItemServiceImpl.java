@@ -57,4 +57,14 @@ public class ItemServiceImpl implements ItemService {
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public List<ItemResponse> searchItems(String keyword, Long categoryId, int page, String isGreen) {
+        int start = (page - 1) * PAGE_SIZE;
+        List<Item> itemList = itemRepository.searchItems(keyword, categoryId, start, PAGE_SIZE, isGreen);
+        return itemList.stream()
+                .map(ItemResponse::from)
+                .collect(Collectors.toList());
+    }
 }

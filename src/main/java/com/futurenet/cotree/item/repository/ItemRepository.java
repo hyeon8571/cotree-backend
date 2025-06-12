@@ -13,4 +13,5 @@ public interface ItemRepository {
     List<Item> findItemsByCategory(@Param("categoryId") Long categoryId, @Param("start") int start, @Param("size") int size);
     ItemDetail findItemDetailById(@Param("id") Long id);
     List<Item> getEcoItems(@Param("start") int start, @Param("size") int size);
+    List<Item> searchItems(@Param("keyword")String keyword, @Param("categoryId") Long categoryId, @Param("start") int start, @Param("size") int size, @Param("isGreen") String isGreen);
 }
