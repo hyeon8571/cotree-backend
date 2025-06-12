@@ -8,6 +8,8 @@ import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.order.constant.OrderStatus;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import com.futurenet.cotree.order.repository.OrderRepository;
+import com.futurenet.cotree.order.service.exception.OrderErrorCode;
+import com.futurenet.cotree.order.service.exception.OrderException;
 import com.futurenet.cotree.payment.dto.request.PaymentRegisterRequest;
 import com.futurenet.cotree.payment.dto.request.PaymentRequest;
 import com.futurenet.cotree.payment.dto.response.ItemPriceAndIsEcoResponse;
@@ -58,7 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
         int updateOrderStatusResult = orderRepository.updateOrderStatus(paymentRequest.getOrderId(), OrderStatus.SUCCESS.getStatus());
 
         if (updateOrderStatusResult == 0) {
-            throw new ItemException(ItemErrorCode.ITEM_STATUS_UPDATE_FAIL);
+            throw new OrderException(OrderErrorCode.ORDER_STATUS_UPDATE_FAIL);
         }
     }
 }
