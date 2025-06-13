@@ -5,6 +5,7 @@ import com.futurenet.cotree.auth.security.filter.JwtFilter;
 import com.futurenet.cotree.auth.oauth2.handler.CustomOAuth2FailureHandler;
 import com.futurenet.cotree.auth.oauth2.handler.CustomOAuth2SuccessHandler;
 import com.futurenet.cotree.auth.oauth2.service.CustomOAuth2UserService;
+import com.futurenet.cotree.auth.security.handler.CustomAuthenticationEntryPoint;
 import com.futurenet.cotree.auth.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class SecurityConfig {
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     private final JwtUtil jwtUtil;
     private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
-
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -79,6 +80,10 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
 
                         .anyRequest().permitAll());
+        http
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                );
 
         http
                 .addFilterBefore(new CustomLogoutFilter(), LogoutFilter.class);
