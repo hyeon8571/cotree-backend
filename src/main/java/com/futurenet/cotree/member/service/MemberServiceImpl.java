@@ -1,6 +1,7 @@
 package com.futurenet.cotree.member.service;
 
 import com.futurenet.cotree.global.service.AmazonS3Service;
+import com.futurenet.cotree.member.dto.request.MemberAgeAndGenderRequest;
 import com.futurenet.cotree.member.dto.request.MemberInfoUpdateRequest;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.member.service.exception.MemberErrorCode;
@@ -30,6 +31,16 @@ public class MemberServiceImpl implements MemberService {
         }
 
         int result = memberRepository.updateMemberInfo(request.toDto(profileImage, memberId));
+
+        if (result == 0) {
+            throw new MemberException(MemberErrorCode.MEMBER_UPDATE_FAIL);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateMemberAgeAndGender(MemberAgeAndGenderRequest request, Long memberId) {
+        int result = memberRepository.updateMemberAgeAndGender(request.toDto(memberId));
 
         if (result == 0) {
             throw new MemberException(MemberErrorCode.MEMBER_UPDATE_FAIL);

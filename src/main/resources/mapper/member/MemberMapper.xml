@@ -36,4 +36,13 @@
         WHERE
         id = #{request.id}
     </update>
+
+    <update id="updateMemberAgeAndGender" parameterType="com.futurenet.cotree.member.dto.MemberUpdateAgeAndGenderDto">
+        UPDATE member
+        SET
+        age_range = #{request.ageRange},
+        gender = #{request.gender},
+        updated_at = SYSDATE
+        WHERE id = #{request.id}
+    </update>
 </mapper>
