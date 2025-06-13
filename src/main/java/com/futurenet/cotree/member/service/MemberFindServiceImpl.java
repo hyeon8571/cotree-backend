@@ -37,19 +37,16 @@ public class MemberFindServiceImpl implements MemberFindService {
             throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-
-        // 배송 정보 조회
+        List<MemberOrderStatusResponse> orderStatusResponses = orderRepository.getOrderStatus(id);
 
         int orderStatusPaidCount = 0;
         int orderStatusPendingCount = 0;
 
-        List<MemberOrderStatusResponse> orderStatusResponses = orderRepository.getOrderStatus(id);
-
         for (MemberOrderStatusResponse response : orderStatusResponses) {
-            if (response.getStatus().equals(OrderStatus.SUCCESS.getStatus())) {
-                orderStatusPaidCount++;
-            } else if (response.getStatus().equals(OrderStatus.WAITING.getStatus())) {
-                orderStatusPendingCount++;
+            if (OrderStatus.SUCCESS.getStatus().equals(response.getStatus())) {
+                orderStatusPaidCount = response.getCount();
+            } else if (OrderStatus.WAITING.getStatus().equals(response.getStatus())) {
+                orderStatusPendingCount = response.getCount();
             }
         }
 

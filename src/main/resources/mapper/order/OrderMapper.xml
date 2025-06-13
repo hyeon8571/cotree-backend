@@ -19,8 +19,9 @@
     </update>
 
     <select id="getOrderStatus" resultType="com.futurenet.cotree.order.dto.response.MemberOrderStatusResponse">
-        SELECT id, status
+        SELECT COUNT(id) AS count, status
         FROM orders
         WHERE member_id = #{memberId}
+        GROUP BY status
     </select>
 </mapper>
