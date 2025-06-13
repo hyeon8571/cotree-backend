@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum OrderStatus {
 
-    SUCCESS("PAID"), FAIL("FAILED");
+    SUCCESS("PAID"), FAIL("FAILED"), WAITING("PENDING");
 
     private final String status;
 }
