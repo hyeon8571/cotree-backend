@@ -24,4 +24,25 @@
         WHERE m.id = #{id}
         GROUP BY m.nickname, m.profile_image, m.age_range, m.gender
     </select>
+
+    <update id="updateMemberInfo" parameterType="com.futurenet.cotree.member.dto.MemberUpdateInfoDto">
+        UPDATE member
+        SET
+        profile_image = #{request.profileImage},
+        nickname = #{request.nickname},
+        age_range = #{request.ageRange},
+        gender = #{request.gender},
+        updated_at = SYSDATE
+        WHERE
+        id = #{request.id}
+    </update>
+
+    <update id="updateMemberAgeAndGender" parameterType="com.futurenet.cotree.member.dto.MemberUpdateAgeAndGenderDto">
+        UPDATE member
+        SET
+        age_range = #{request.ageRange},
+        gender = #{request.gender},
+        updated_at = SYSDATE
+        WHERE id = #{request.id}
+    </update>
 </mapper>
