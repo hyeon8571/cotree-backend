@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class GreenPoint {
     private Long id;
     private Long memberId;
-    private Long itemId;
+    private Long paymentId;
     private int amount;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createdAt;

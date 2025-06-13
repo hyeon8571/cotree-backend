@@ -11,4 +11,10 @@
         INSERT INTO orders (member_id, order_number, destination, receiver_name, receiver_tel, request)
         VALUES(#{request.memberId}, #{request.orderNumber}, #{request.destination}, #{request.receiverName}, #{request.receiverTel}, #{request.request})
     </insert>
+    
+    <update id="updateOrderStatus">
+        UPDATE orders
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
 </mapper>

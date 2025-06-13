@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface OrderRepository {
     int saveOrder(@Param("request") OrderRegisterRequest request);
+    int updateOrderStatus(@Param("id") Long id, @Param("status") String status);
 }
