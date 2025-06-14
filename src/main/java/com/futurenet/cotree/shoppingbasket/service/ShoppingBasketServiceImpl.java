@@ -77,4 +77,9 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
             throw new ShoppingBasketException(ShoppingBasketErrorCode.BASKET_ITEM_NOT_FOUND);
         }
     }
+
+    @Override
+    public int countBasketItems(Long memberId) {
+        return shoppingBasketRepository.countBasketItems(memberId);
+    }
 }
