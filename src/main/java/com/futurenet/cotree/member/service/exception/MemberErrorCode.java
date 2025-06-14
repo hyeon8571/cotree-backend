@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum MemberErrorCode implements ErrorCode {
 
-    SIGNUP_FAIL("AU000", HttpStatus.UNAUTHORIZED);
+    SIGNUP_FAIL("AU000", HttpStatus.UNAUTHORIZED),
+    MEMBER_NOT_FOUND("AU002", HttpStatus.BAD_REQUEST),
+    MEMBER_UPDATE_FAIL("AU004", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final HttpStatus httpStatus;
