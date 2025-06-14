@@ -51,9 +51,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemDetailResponse getItemDetail(UserPrincipal userPrincipal, Long id) {
-        saveMemberActionLog(userPrincipal, id, null);
-        return ItemDetailResponse.from(itemRepository.getItemDetailById(id));
+    public ItemDetailResponse getItemDetail(Long memberId, Long itemId) {
+        if (memberId != null) {
+            saveMemberActionLog(memberId, itemId, null);
+        }
+        return ItemDetailResponse.from(itemRepository.getItemDetailById(itemId));
     }
 
     @Override
@@ -68,8 +70,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemResponse> searchItems(UserPrincipal userPrincipal, String keyword, Long categoryId, int page, String isGreen) {
-        saveMemberActionLog(userPrincipal, null, keyword);
+    public List<ItemResponse> searchItems(Long memberId, String keyword, Long categoryId, int page, String isGreen) {
+        if (memberId != null) {
+            saveMemberActionLog(memberId, null, keyword);
+        }
 
         int start = (page - 1) * PAGE_SIZE;
         List<Item> itemList = itemRepository.searchItems(keyword, categoryId, start, PAGE_SIZE, isGreen);
@@ -78,17 +82,16 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
-    private void saveMemberActionLog(UserPrincipal userPrincipal, Long itemId, String keyword) {
-        if (userPrincipal != null) {
-            MemberGenderAgeResponse info = memberRepository.getMemberGenderAge(userPrincipal.getId());
-            MemberActionRequestEvent event;
+    private void saveMemberActionLog(Long memberId, Long itemId, String keyword) {
+        MemberGenderAgeResponse info = memberRepository.getMemberGenderAge(memberId);
+        MemberActionRequestEvent event;
 
-            if (itemId != null) {
-                event = new MemberActionRequestEvent(userPrincipal.getId(), info.getGender(), info.getAge(), itemId);
-            } else {
-                event = new MemberActionRequestEvent(userPrincipal.getId(), info.getGender(), info.getAge(), keyword);
-            }
-            eventPublisher.publishEvent(event);
+        if (itemId != null) {
+            event = new MemberActionRequestEvent(memberId, info.getGender(), info.getAge(), itemId);
         }
+        else{
+            event = new MemberActionRequestEvent(memberId, info.getGender(), info.getAge(), keyword);
+        }
+        eventPublisher.publishEvent(event);
     }
 }

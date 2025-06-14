@@ -29,7 +29,7 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ResponseEntity<?> getItemDetail (@Valid @AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable Long itemId) {
-        ItemDetailResponse result = itemService.getItemDetail(userPrincipal ,itemId);
+        ItemDetailResponse result = itemService.getItemDetail(userPrincipal.getId() ,itemId);
         return ResponseEntity.ok(new ApiResponse<>("IT101", result));
     }
 
@@ -45,7 +45,7 @@ public class ItemController {
                                          @RequestParam (name = "categoryId", required = false, defaultValue = "0") Long categoryId, //카테고리 0이면 전체 조회
                                          @RequestParam int page,
                                          @RequestParam(name = "isGreen", required = false) String isGreen) {
-        List<ItemResponse> result = itemService.searchItems(userPrincipal, keyword, categoryId, page, isGreen);
+        List<ItemResponse> result = itemService.searchItems(userPrincipal.getId(), keyword, categoryId, page, isGreen);
         return ResponseEntity.ok(new ApiResponse<>("IT103", result));
     }
 }
