@@ -14,4 +14,5 @@ public interface ShoppingBasketRepository {
     int updateBasketItemQuantity(@Param("basketItemId") Long basketItemId, @Param("quantity") Integer quantity);
     int saveBasketItem(@Param("memberId") Long memberId, @Param("itemId") Long itemId, @Param("quantity") Integer quantity);
     int deleteBasketItem(@Param("memberId") Long memberId, @Param("basketItemId") Long basketItemId);
+    int getBasketItemQuantity(@Param("memberId") Long memberId, @Param("itemId") Long itemId);
 }

@@ -1,5 +1,7 @@
 package com.futurenet.cotree.shoppingbasket.service;
 
+import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
+import com.futurenet.cotree.item.service.ItemService;
 import com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse;
 import com.futurenet.cotree.shoppingbasket.repository.ShoppingBasketRepository;
 import com.futurenet.cotree.shoppingbasket.service.exception.ShoppingBasketErrorCode;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ShoppingBasketServiceImpl implements ShoppingBasketService {
 
     private final ShoppingBasketRepository shoppingBasketRepository;
+    private final ItemService itemService;
 
     @Override
     @Transactional
@@ -30,26 +33,34 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     @Override
     @Transactional
     public void saveBasketItem(Long memberId, Long itemId, Integer quantity) {
-        // ...
-        // TODO: (아이템 서비스 연동) itemId가 유효하고, 실제로 존재하는 상품인지 확인하는 로직 추가 필요.
-        //       - 아이템 Repository를 사용해야 함.
-        //       - 상품이 없을 경우 ShoppingBasketErrorCode.ITEM_NOT_FOUND 예외 발생.
-        // --------------------------------------------------------
+        ItemDetailResponse itemDetail = itemService.getItemDetail(itemId);
+        if (itemDetail == null) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.ITEM_NOT_FOUND);
+        }
+
+        int stock = itemDetail.getQuantity();
+        if (quantity > stock) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.QUANTITY_EXCEEDS_STOCK);
+        }
 
         Long basketItemId = shoppingBasketRepository.getBasketItemId(memberId, itemId);
 
-        if (basketItemId != null) {
-            int updated = shoppingBasketRepository.updateBasketItemQuantity(basketItemId, quantity);
-            if (updated != 1) {
-                throw new ShoppingBasketException(ShoppingBasketErrorCode.UPDATE_FAILED);
+        if (basketItemId == null) {
+            int inserted = shoppingBasketRepository.saveBasketItem(memberId, itemId, quantity);
+            if (inserted != 1) {
+                throw new ShoppingBasketException(ShoppingBasketErrorCode.INSERT_FAILED);
             }
             return;
-
         }
 
-        int inserted = shoppingBasketRepository.saveBasketItem(memberId, itemId, quantity);
-        if (inserted != 1) {
-            throw new ShoppingBasketException(ShoppingBasketErrorCode.INSERT_FAILED);
+        int currentQuantity = shoppingBasketRepository.getBasketItemQuantity(memberId, itemId);
+        if (currentQuantity + quantity > stock) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.QUANTITY_EXCEEDS_STOCK);
+        }
+
+        int updated = shoppingBasketRepository.updateBasketItemQuantity(basketItemId, quantity);
+        if (updated != 1) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.UPDATE_FAILED);
         }
     }
 

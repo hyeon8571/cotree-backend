@@ -13,8 +13,8 @@
     <select id="getAllShoppingBasketItemsByMemberId" parameterType="Long" resultType="com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse">
         SELECT
             bi.id AS basket_item_id,
-            bi.quantity,
             i.id AS item_id,
+            bi.quantity,
             i.name as item_name,
             i.price,
             i.discount,
@@ -58,4 +58,12 @@
         )
         AND id = #{basketItemId}
     </delete>
+
+    <select id="getBasketItemQuantity" resultType="int" parameterType="map">
+        SELECT bi.quantity
+        FROM basket_item bi
+        JOIN shopping_basket sb ON bi.shopping_basket_id = sb.id
+        WHERE sb.member_id = #{memberId}
+        AND bi.item_id = #{itemId}
+    </select>
 </mapper>
