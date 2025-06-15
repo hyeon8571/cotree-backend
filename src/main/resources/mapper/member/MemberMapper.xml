@@ -24,20 +24,26 @@
     </insert>
 
     <select id="getMyPageInfo" resultType="com.futurenet.cotree.member.dto.response.MyPageResponse">
-        SELECT m.nickname, m.profile_image AS profileImage, m.age_range AS ageRange, m.gender, SUM(gp.AMOUNT) as greenPoint
-        FROM member m JOIN green_point gp ON m.ID = gp.MEMBER_ID
+        SELECT
+        m.nickname,
+        m.profile_image AS profileImage,
+        m.age_range AS ageRange,
+        m.gender,
+        NVL(SUM(gp.AMOUNT), 0) AS greenPoint
+        FROM member m
+        LEFT JOIN green_point gp ON m.ID = gp.MEMBER_ID
         WHERE m.id = #{id}
         GROUP BY m.nickname, m.profile_image, m.age_range, m.gender
     </select>
 
     <update id="updateMemberInfo" parameterType="com.futurenet.cotree.member.dto.MemberUpdateInfoDto">
         UPDATE member
-        SET
-        profile_image = #{request.profileImage},
-        nickname = #{request.nickname},
-        age_range = #{request.ageRange},
-        gender = #{request.gender},
-        updated_at = SYSDATE
+        <set>
+            <if test="request.nickname != null">nickname = #{request.nickname},</if>
+            <if test="request.ageRange != null">age_range = #{request.ageRange},</if>
+            <if test="request.gender != null">gender = #{request.gender},</if>
+            <if test="request.profileImage != null">profile_image = #{request.profileImage},</if>
+        </set>
         WHERE
         id = #{request.id}
     </update>
