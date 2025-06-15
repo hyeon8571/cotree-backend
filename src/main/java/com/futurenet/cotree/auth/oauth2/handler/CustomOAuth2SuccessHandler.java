@@ -6,6 +6,7 @@ import com.futurenet.cotree.auth.dto.request.RefreshTokenSaveRequest;
 import com.futurenet.cotree.auth.repository.RefreshTokenRepository;
 import com.futurenet.cotree.auth.util.JwtUtil;
 import com.futurenet.cotree.auth.util.ResponseUtil;
+import com.futurenet.cotree.member.constant.IsSignupCompletedStatus;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         response.addCookie(ResponseUtil.createCookie("Authorization", accessToken, JwtConstants.ACCESS_COOKIE_EXPIRED));
         response.addCookie(ResponseUtil.createCookie("refresh", refreshToken, JwtConstants.REFRESH_COOKIE_EXPIRED));
 
-        if ("Y".equals(isSignupCompleted)) {
+        if (IsSignupCompletedStatus.COMPLETED.getStatus().equals(isSignupCompleted)) {
             response.sendRedirect("http://localhost:5173/");
         } else {
             response.sendRedirect("http://localhost:5173/login/onboarding");
