@@ -9,4 +9,6 @@ public interface ShoppingBasketService {
     List<ShoppingBasketItemsResponse> getAllShoppingBasketItemsByMemberId(Long memberId);
     void saveBasketItem(Long memberId, Long itemId, Integer quantity);
     void deleteBasketItem(Long memberId, Long basketItemId);
+    int countBasketItems(Long memberId);
+    void deleteBasketItemsByMemberIdAndItemIds(Long memberId, List<Long> itemIds);
 }

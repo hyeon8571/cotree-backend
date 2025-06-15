@@ -3,6 +3,7 @@ package com.futurenet.cotree.shoppingbasket.controller;
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.global.dto.response.ApiResponse;
 import com.futurenet.cotree.shoppingbasket.dto.request.ShoppingBasketAddRequest;
+import com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketCountResponse;
 import com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse;
 import com.futurenet.cotree.shoppingbasket.service.ShoppingBasketService;
 import jakarta.validation.Valid;
@@ -40,5 +41,12 @@ public class ShoppingBasketController {
         Long memberId = userPrincipal.getId();
         shoppingBasketService.deleteBasketItem(memberId, basketItemId);
         return ResponseEntity.ok(new ApiResponse<>("SB100", null));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> getBasketItemCount(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        int count = (userPrincipal == null) ? 0 : shoppingBasketService.countBasketItems(userPrincipal.getId());
+        ShoppingBasketCountResponse shoppingBasketCountResponse = new ShoppingBasketCountResponse(count);
+        return ResponseEntity.ok(new ApiResponse<>("SB101", shoppingBasketCountResponse));
     }
 }

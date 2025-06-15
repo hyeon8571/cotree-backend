@@ -13,8 +13,8 @@
     <select id="getAllShoppingBasketItemsByMemberId" parameterType="Long" resultType="com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse">
         SELECT
             bi.id AS basket_item_id,
-            bi.quantity,
             i.id AS item_id,
+            bi.quantity,
             i.name as item_name,
             i.price,
             i.discount,
@@ -23,7 +23,9 @@
             b.name AS brand_name
         FROM
             shopping_basket sb
-            JOIN basket_item bi ON sb.id = bi.shopping_basket_id
+            JOIN basket_item
+
+        bi ON sb.id = bi.shopping_basket_id
             JOIN item i ON bi.item_id = i.id
             LEFT JOIN brand b ON i.brand_id = b.id
         WHERE sb.member_id = #{memberId}
@@ -57,5 +59,31 @@
             SELECT id FROM shopping_basket WHERE member_id = #{memberId}
         )
         AND id = #{basketItemId}
+    </delete>
+
+    <select id="getBasketItemQuantity" resultType="int" parameterType="map">
+        SELECT bi.quantity
+        FROM basket_item bi
+        JOIN shopping_basket sb ON bi.shopping_basket_id = sb.id
+        WHERE sb.member_id = #{memberId}
+        AND bi.item_id = #{itemId}
+    </select>
+
+    <select id="countBasketItems" resultType="int">
+        SELECT COUNT(*) as count
+        FROM basket_item bi
+        JOIN shopping_basket sb ON bi.shopping_basket_id = sb.id
+        WHERE sb.member_id = #{memberId}
+    </select>
+
+    <delete id="deleteBasketItemsByMemberIdAndItemIds" parameterType="map">
+        DELETE FROM basket_item
+        WHERE shopping_basket_id = (
+        SELECT id FROM shopping_basket WHERE member_id = #{memberId}
+        )
+        AND item_id IN
+        <foreach item="itemId" collection="itemIds" open="(" separator="," close=")">
+            #{itemId}
+        </foreach>
     </delete>
 </mapper>

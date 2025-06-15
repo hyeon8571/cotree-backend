@@ -19,7 +19,8 @@ public enum ShoppingBasketErrorCode implements ErrorCode {
     UPDATE_FAILED("SB008", HttpStatus.INTERNAL_SERVER_ERROR),
     DELETE_FAILED("SB009", HttpStatus.INTERNAL_SERVER_ERROR),
     BASKET_ITEM_NOT_FOUND("SB010", HttpStatus.NOT_FOUND),
-    INVALID_BASKET_ITEM_ID("SB011", HttpStatus.BAD_REQUEST);
+    INVALID_BASKET_ITEM_ID("SB011", HttpStatus.BAD_REQUEST),
+    QUANTITY_EXCEEDS_STOCK("SB012", HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final HttpStatus httpStatus;
