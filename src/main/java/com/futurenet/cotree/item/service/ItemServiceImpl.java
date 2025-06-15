@@ -7,7 +7,7 @@ import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.item.service.exception.ItemErrorCode;
 import com.futurenet.cotree.item.service.exception.ItemException;
-import com.futurenet.cotree.log.dto.request.MemberActionRequestEvent;
+import com.futurenet.cotree.history.dto.request.MemberActionRequestEvent;
 import com.futurenet.cotree.member.dto.response.MemberGenderAgeResponse;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
