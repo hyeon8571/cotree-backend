@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.futurenet.cotree.history.repository.LogRepository">
+    <insert id="saveMemberActionLog">
+        INSERT INTO user_action_log (member_id, member_gender, member_age, search_word, item_id, created_at)
+        VALUES (#{memberId}, #{gender}, #{age}, #{keyword, jdbcType=VARCHAR}, #{itemId, jdbcType=NUMERIC}, SYSDATE)
+    </insert>
+</mapper>
