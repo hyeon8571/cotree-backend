@@ -66,4 +66,14 @@
         OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
+    <select id="getTotalItemCount" resultType="long">
+        SELECT COUNT(*) as totalItemCount
+        FROM item
+    </select>
+
+    <select id="getTotalEcoItemCount" resultType="long">
+        SELECT COUNT(*) as totalEcoItemCount
+        FROM item
+        WHERE is_green = 'Y'
+    </select>
 </mapper>

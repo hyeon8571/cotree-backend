@@ -34,5 +34,16 @@
         FROM green_point
         WHERE member_id = #{memberId}
     </select>
+
+    <select id="getPointStatsByRange"  resultType="com.futurenet.cotree.admin.dto.response.PointStat">
+        SELECT
+            TO_CHAR(created_at, 'YYYY-MM-DD') AS statDate,
+            SUM(CASE WHEN amount &lt; 0 THEN -amount ELSE 0 END) AS used,
+            SUM(CASE WHEN amount &gt; 0 THEN amount ELSE 0 END) AS rewarded
+        FROM green_point
+        WHERE created_at &gt;= #{from} AND created_at &lt; #{to}
+        GROUP BY TO_CHAR(created_at, 'YYYY-MM-DD')
+        ORDER BY statDate
+    </select>
 </mapper>
 
