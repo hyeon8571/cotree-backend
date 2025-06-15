@@ -23,6 +23,11 @@ public class AmazonS3Service {
 
     public String uploadImage(MultipartFile multipartFile) throws IOException {
         String originalFileName = multipartFile.getOriginalFilename();
+
+        if (!isImageFile(originalFileName)) {
+            throw new IllegalArgumentException("File is not an image");
+        }
+
         String fileName = UUID.randomUUID() + "_" + originalFileName;
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -31,6 +36,15 @@ public class AmazonS3Service {
 
         amazonS3.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
         return amazonS3.getUrl(bucket, fileName).toString();
+    }
+
+    private boolean isImageFile(String fileName) {
+        if (fileName == null) return false;
+
+        String lower = fileName.toLowerCase();
+        return lower.endsWith(".jpg") || lower.endsWith(".jpeg")
+                || lower.endsWith(".png") || lower.endsWith(".gif")
+                || lower.endsWith(".bmp") || lower.endsWith(".webp");
     }
 
 }
