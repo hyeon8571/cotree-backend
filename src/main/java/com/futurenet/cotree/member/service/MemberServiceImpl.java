@@ -45,5 +45,11 @@ public class MemberServiceImpl implements MemberService {
         if (result == 0) {
             throw new MemberException(MemberErrorCode.MEMBER_UPDATE_FAIL);
         }
+
+        int updateStatusResult = memberRepository.updateMemberSignupStatus(memberId);
+
+        if (updateStatusResult == 0) {
+            throw new MemberException(MemberErrorCode.MEMBER_UPDATE_FAIL);
+        }
     }
 }

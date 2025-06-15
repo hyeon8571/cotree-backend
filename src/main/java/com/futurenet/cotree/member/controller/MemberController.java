@@ -34,7 +34,7 @@ public class MemberController {
         return ResponseEntity.ok(new ApiResponse<>("ME101", null));
     }
 
-    @PatchMapping("/age-gender")
+    @PatchMapping("/basic-info")
     public ResponseEntity<?> setAgeRangeAndGender(@Valid @RequestBody MemberAgeAndGenderRequest request,
                                                   @AuthenticationPrincipal UserPrincipal userPrincipal) {
         memberService.updateMemberAgeAndGender(request, userPrincipal.getId());

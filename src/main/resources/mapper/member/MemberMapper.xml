@@ -50,4 +50,11 @@
         updated_at = SYSDATE
         WHERE id = #{request.id}
     </update>
+
+    <update id="updateMemberSignupStatus">
+        UPDATE member
+        SET
+        is_signup_completed = 'Y'
+        WHERE id = #{id}
+    </update>
 </mapper>
