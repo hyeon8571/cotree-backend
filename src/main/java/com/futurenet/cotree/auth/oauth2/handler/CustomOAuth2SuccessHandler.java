@@ -6,6 +6,7 @@ import com.futurenet.cotree.auth.dto.request.RefreshTokenSaveRequest;
 import com.futurenet.cotree.auth.repository.RefreshTokenRepository;
 import com.futurenet.cotree.auth.util.JwtUtil;
 import com.futurenet.cotree.auth.util.ResponseUtil;
+import com.futurenet.cotree.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private final JwtUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -37,6 +39,8 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         Long memberId = userPrincipal.getId();
         String role = auth.getAuthority();
 
+        String isSignupCompleted = memberRepository.getSignupStatusByMemberId(memberId);
+
         String accessToken = jwtUtil.createJwt("access", memberId, role, JwtConstants.ACCESS_EXPIRED);
         String refreshToken = jwtUtil.createJwt("refresh", memberId, role, JwtConstants.REFRESH_EXPIRED);
 
@@ -45,6 +49,10 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         response.addCookie(ResponseUtil.createCookie("Authorization", accessToken, JwtConstants.ACCESS_COOKIE_EXPIRED));
         response.addCookie(ResponseUtil.createCookie("refresh", refreshToken, JwtConstants.REFRESH_COOKIE_EXPIRED));
 
-        response.sendRedirect("http://localhost:5173/");
+        if ("Y".equals(isSignupCompleted)) {
+            response.sendRedirect("http://localhost:5173/");
+        } else {
+            response.sendRedirect("http://localhost:5173/login/onboarding");
+        }
     }
 }
