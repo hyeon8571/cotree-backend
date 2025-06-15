@@ -1,6 +1,7 @@
 package com.futurenet.cotree.order.service;
 
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
+import com.futurenet.cotree.order.dto.response.RegisterOrderResponse;
 import com.futurenet.cotree.order.repository.OrderRepository;
 import com.futurenet.cotree.order.service.exception.OrderErrorCode;
 import com.futurenet.cotree.order.service.exception.OrderException;
@@ -19,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Long registerOrderRequest(OrderRegisterRequest orderRegisterRequest) {
+    public RegisterOrderResponse registerOrderRequest(OrderRegisterRequest orderRegisterRequest) {
 
         String orderNumber = createOrderNumber(orderRegisterRequest.getMemberId());
         orderRegisterRequest.setOrderNumber(orderNumber);
@@ -29,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderException(OrderErrorCode.ORDER_REGISTER_FAIL);
         }
 
-        return orderRegisterRequest.getOrderId();
+        return new RegisterOrderResponse(orderRegisterRequest.getOrderId(), orderNumber);
     }
 
     private String createOrderNumber(Long memberId) {

@@ -23,7 +23,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequest orderRequest,
                                          @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        orderFacadeService.registerOrder(orderRequest, userPrincipal.getId());
-        return ResponseEntity.ok(new ApiResponse<>("OR100", null));
+        String orderNumber = orderFacadeService.registerOrder(orderRequest, userPrincipal.getId());
+        return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
     }
 }
