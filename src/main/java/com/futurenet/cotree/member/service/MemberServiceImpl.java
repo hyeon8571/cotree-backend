@@ -24,10 +24,12 @@ public class MemberServiceImpl implements MemberService {
     public void updateMemberInfo(MemberInfoUpdateRequest request, Long memberId) {
         String profileImage = null;
 
-        try {
-            profileImage = amazonS3Service.uploadImage(request.getProfileImage());
-        } catch (IOException e) {
-            throw new MemberException(MemberErrorCode.MEMBER_UPDATE_FAIL);
+        if (request.getProfileImage() != null) {
+            try {
+                profileImage = amazonS3Service.uploadImage(request.getProfileImage());
+            } catch (IOException e) {
+                throw new MemberException(MemberErrorCode.MEMBER_UPDATE_FAIL);
+            }
         }
 
         int result = memberRepository.updateMemberInfo(request.toDto(profileImage, memberId));
@@ -40,6 +42,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updateMemberAgeAndGender(MemberAgeAndGenderRequest request, Long memberId) {
+
         int result = memberRepository.updateMemberAgeAndGender(request.toDto(memberId));
 
         if (result == 0) {

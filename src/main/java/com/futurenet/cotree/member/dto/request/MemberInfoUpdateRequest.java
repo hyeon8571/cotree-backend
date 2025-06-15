@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberInfoUpdateRequest {
-    @NotNull
     private MultipartFile profileImage;
     @NotNull
     private String nickname;
