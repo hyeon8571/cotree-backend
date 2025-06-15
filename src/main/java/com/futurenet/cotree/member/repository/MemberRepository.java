@@ -18,4 +18,5 @@ public interface MemberRepository {
     int updateMemberInfo(@Param("request") MemberUpdateInfoDto request);
     int updateMemberAgeAndGender(@Param("request") MemberUpdateAgeAndGenderDto request);
     int updateMemberSignupStatus(@Param("id") Long id);
+    String getSignupStatusByMemberId(@Param("id") Long id);
 }

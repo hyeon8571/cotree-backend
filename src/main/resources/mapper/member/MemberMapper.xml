@@ -57,4 +57,10 @@
         is_signup_completed = 'Y'
         WHERE id = #{id}
     </update>
+
+    <select id="getSignupStatusByMemberId">
+        SELECT is_signup_completed
+        FROM member
+        WHERE id = #{id}
+    </select>
 </mapper>
