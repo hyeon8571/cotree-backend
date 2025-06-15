@@ -1,9 +1,8 @@
 package com.futurenet.cotree.admin.service;
 
+import com.futurenet.cotree.admin.constants.StatPeriod;
 import com.futurenet.cotree.admin.dto.response.InsightOverviewResponse;
 import com.futurenet.cotree.admin.dto.response.PointStat;
-import com.futurenet.cotree.admin.service.exception.AdminErrorCode;
-import com.futurenet.cotree.admin.service.exception.AdminException;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.member.repository.MemberRepository;
@@ -44,21 +43,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<PointStat> getPointStatsByRange(String range) {
+        StatPeriod period = StatPeriod.from(range);
         LocalDate today = LocalDate.now();
-        int days = parseRangeToDays(range);
-        LocalDate from = today.minusDays(days - 1);
+        LocalDate from = today.minusDays(period.getDays() - 1);
         LocalDate to = today.plusDays(1);
-
         return greenPointRepository.getPointStatsByRange(from, to);
-    }
-
-
-    private int parseRangeToDays(String range) {
-        return switch (range) {
-            case "7d" -> 7;
-            case "30d" -> 30;
-            case "90d" -> 90;
-            default -> throw new AdminException(AdminErrorCode.INVALID_RANGE);
-        };
     }
 }
