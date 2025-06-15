@@ -2,6 +2,8 @@ package com.futurenet.cotree.admin.service;
 
 import com.futurenet.cotree.admin.dto.response.InsightOverviewResponse;
 import com.futurenet.cotree.admin.dto.response.PointStat;
+import com.futurenet.cotree.admin.service.exception.AdminErrorCode;
+import com.futurenet.cotree.admin.service.exception.AdminException;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.member.repository.MemberRepository;
@@ -56,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
             case "7d" -> 7;
             case "30d" -> 30;
             case "90d" -> 90;
-            default -> throw new IllegalArgumentException("Invalid range: " + range);
+            default -> throw new AdminException(AdminErrorCode.INVALID_RANGE);
         };
     }
 }
