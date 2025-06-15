@@ -29,10 +29,9 @@ public class ShoppingBasketController {
 
     @PostMapping
     public ResponseEntity<?> saveBasketItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid ShoppingBasketAddRequest shoppingBasketAddRequest) {
-        Long memberId = userPrincipal.getId();
         Long itemId = shoppingBasketAddRequest.getItemId();
         Integer quantity = shoppingBasketAddRequest.getQuantity();
-        shoppingBasketService.saveBasketItem(memberId, itemId, quantity);
+        shoppingBasketService.saveBasketItem(userPrincipal, itemId, quantity);
         return ResponseEntity.ok(new ApiResponse<>("SB100", null));
     }
 

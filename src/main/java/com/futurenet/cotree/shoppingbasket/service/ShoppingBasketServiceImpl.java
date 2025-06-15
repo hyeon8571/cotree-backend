@@ -1,5 +1,6 @@
 package com.futurenet.cotree.shoppingbasket.service;
 
+import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.service.ItemService;
 import com.futurenet.cotree.shoppingbasket.dto.response.ShoppingBasketItemsResponse;
@@ -32,8 +33,9 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
 
     @Override
     @Transactional
-    public void saveBasketItem(Long memberId, Long itemId, Integer quantity) {
-        ItemDetailResponse itemDetail = itemService.getItemDetail(itemId);
+    public void saveBasketItem(UserPrincipal userPrincipal, Long itemId, Integer quantity) {
+        Long memberId = userPrincipal.getId();
+        ItemDetailResponse itemDetail = itemService.getItemDetail(userPrincipal, itemId);
         if (itemDetail == null) {
             throw new ShoppingBasketException(ShoppingBasketErrorCode.ITEM_NOT_FOUND);
         }
