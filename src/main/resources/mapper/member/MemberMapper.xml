@@ -24,8 +24,14 @@
     </insert>
 
     <select id="getMyPageInfo" resultType="com.futurenet.cotree.member.dto.response.MyPageResponse">
-        SELECT m.nickname, m.profile_image AS profileImage, m.age_range AS ageRange, m.gender, SUM(gp.AMOUNT) as greenPoint
-        FROM member m JOIN green_point gp ON m.ID = gp.MEMBER_ID
+        SELECT
+        m.nickname,
+        m.profile_image AS profileImage,
+        m.age_range AS ageRange,
+        m.gender,
+        NVL(SUM(gp.AMOUNT), 0) AS greenPoint
+        FROM member m
+        LEFT JOIN green_point gp ON m.ID = gp.MEMBER_ID
         WHERE m.id = #{id}
         GROUP BY m.nickname, m.profile_image, m.age_range, m.gender
     </select>
