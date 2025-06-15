@@ -75,4 +75,15 @@
         JOIN shopping_basket sb ON bi.shopping_basket_id = sb.id
         WHERE sb.member_id = #{memberId}
     </select>
+
+    <delete id="deleteBasketItemsByMemberIdAndItemIds" parameterType="map">
+        DELETE FROM basket_item
+        WHERE shopping_basket_id = (
+        SELECT id FROM shopping_basket WHERE member_id = #{memberId}
+        )
+        AND item_id IN
+        <foreach item="itemId" collection="itemIds" open="(" separator="," close=")">
+            #{itemId}
+        </foreach>
+    </delete>
 </mapper>

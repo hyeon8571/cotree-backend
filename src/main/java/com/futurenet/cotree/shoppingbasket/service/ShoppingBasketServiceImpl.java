@@ -82,4 +82,17 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     public int countBasketItems(Long memberId) {
         return shoppingBasketRepository.countBasketItems(memberId);
     }
+
+    @Override
+    @Transactional
+    public void deleteBasketItemsByMemberIdAndItemIds(Long memberId, List<Long> itemIds) {
+        if (itemIds == null || itemIds.isEmpty()) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.INVALID_BASKET_ITEM_ID);
+        }
+
+        int deleted = shoppingBasketRepository.deleteBasketItemsByMemberIdAndItemIds(memberId, itemIds);
+        if (deleted == 0) {
+            throw new ShoppingBasketException(ShoppingBasketErrorCode.DELETE_FAILED);
+        }
+    }
 }
