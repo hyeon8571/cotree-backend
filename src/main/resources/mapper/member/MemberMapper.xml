@@ -63,4 +63,10 @@
         FROM member
         WHERE id = #{id}
     </select>
+
+    <select id="getNewMemberCount" resultType="long">
+        SELECT COUNT(*) as newMemberCount
+        FROM member
+        WHERE created_at &gt;= #{from} AND created_at &lt; #{to}
+    </select>
 </mapper>
