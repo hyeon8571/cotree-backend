@@ -51,9 +51,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemDetailResponse getItemDetail(Long memberId, Long itemId) {
-        if (memberId != null) {
-            saveMemberActionLog(memberId, itemId, null);
+    public ItemDetailResponse getItemDetail(UserPrincipal userPrincipal, Long itemId) {
+        if (userPrincipal != null) {
+            saveMemberActionLog(userPrincipal.getId(), itemId, null);
         }
         return ItemDetailResponse.from(itemRepository.getItemDetailById(itemId));
     }
@@ -70,9 +70,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemResponse> searchItems(Long memberId, String keyword, Long categoryId, int page, String isGreen) {
-        if (memberId != null) {
-            saveMemberActionLog(memberId, null, keyword);
+    public List<ItemResponse> searchItems(UserPrincipal userPrincipal, String keyword, Long categoryId, int page, String isGreen) {
+        if (userPrincipal != null) {
+            saveMemberActionLog(userPrincipal.getId(), null, keyword);
         }
 
         int start = (page - 1) * PAGE_SIZE;
