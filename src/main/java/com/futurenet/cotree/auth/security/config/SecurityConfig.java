@@ -76,7 +76,7 @@ public class SecurityConfig {
                         .failureHandler(customOAuth2FailureHandler));
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/auth/refresh-token", "/admin/**","/shopping-basket/count", "/items/**", "/categories/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/auth/refresh-token", "/admin/**","/shopping-basket/count", "/items/**", "/categories/**", "/oauth2/**","/tree/summary").permitAll()
                         .anyRequest().authenticated());
 
         http
