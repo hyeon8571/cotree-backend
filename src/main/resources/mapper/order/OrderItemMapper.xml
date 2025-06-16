@@ -8,4 +8,19 @@
         INSERT INTO order_item (order_id, item_id, quantity)
         VALUES(#{request.orderId}, #{request.itemId}, #{request.quantity})
     </insert>
+
+    <select id="getAllOrderItemsByOrderIds" resultType="com.futurenet.cotree.order.dto.OrderItemDto">
+        SELECT oi.order_id AS orderId,
+        oi.item_id AS itemId,
+        oi.quantity AS quantity,
+        i.name AS itemName,
+        i.thumbnail_image AS itemThumbnailImage,
+        i.is_green AS isGreen,
+        i.price AS price
+        FROM order_item oi JOIN item i ON oi.item_id = i.id
+        WHERE oi.order_id IN
+        <foreach collection="orderIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

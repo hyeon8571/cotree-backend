@@ -1,9 +1,13 @@
 package com.futurenet.cotree.order.service;
 
 import com.futurenet.cotree.item.service.ItemService;
+import com.futurenet.cotree.order.domain.Order;
+import com.futurenet.cotree.order.dto.OrderItemDto;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRequest;
+import com.futurenet.cotree.order.dto.response.OrderItemResponse;
+import com.futurenet.cotree.order.dto.response.OrderResponse;
 import com.futurenet.cotree.order.dto.response.RegisterOrderResponse;
 import com.futurenet.cotree.payment.dto.request.PaymentRequestEvent;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -54,5 +64,36 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
         eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
 
         return response.getOrderNumber();
+    }
+
+
+    @Override
+    @Transactional
+    public List<OrderResponse> getOrdersByMember(Long memberId, String status) {
+        List<Order> orders = orderService.getAllOrderByMemberIdAndStatus(memberId, status);
+        orders.sort(Comparator.comparing(Order::getOrderDate).reversed());
+
+        List<Long> orderIds = orders.stream()
+                .map(Order::getId)
+                .toList();
+
+        if (orderIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<OrderItemDto> orderItems = orderItemService.getAllOrderItemsByOrderIds(orderIds);
+
+        Map<Long, List<OrderItemDto>> orderMaps = orderItems.stream()
+                .collect(Collectors.groupingBy(OrderItemDto::getOrderId));
+
+        return orders.stream().map(order -> {
+            List<OrderItemResponse> itemResponses = orderMaps.getOrDefault(order.getId(), List.of())
+                    .stream()
+                    .map(OrderItemDto::toResponse)
+                    .toList();
+
+            return OrderResponse.of(order, itemResponses);
+        })
+                .toList();
     }
 }
