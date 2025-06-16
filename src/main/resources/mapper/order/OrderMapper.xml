@@ -33,4 +33,18 @@
             AND status = #{status}
         </if>
     </select>
+
+    <select id="getOrderByOrderNumber" resultType="com.futurenet.cotree.order.dto.response.OrderDetailResponse">
+        SELECT
+        o.id AS orderId,
+        o.order_number AS orderNumber,
+        o.destination AS destination,
+        o.receiver_name AS receiverName,
+        o.receiver_tel AS receiverTel,
+        o.request AS request,
+        p.price AS totalPrice,
+        NVL(gp.amount, 0) AS rewardGreenPoint
+        FROM orders o JOIN payment p ON o.id = p.order_id LEFT JOIN green_point gp ON p.id = gp.payment_id
+        WHERE o.order_number = #{orderNumber}
+    </select>
 </mapper>

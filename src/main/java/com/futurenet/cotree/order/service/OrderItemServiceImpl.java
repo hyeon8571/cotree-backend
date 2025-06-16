@@ -2,6 +2,7 @@ package com.futurenet.cotree.order.service;
 
 import com.futurenet.cotree.order.dto.OrderItemDto;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
+import com.futurenet.cotree.order.dto.response.OrderItemResponse;
 import com.futurenet.cotree.order.repository.OrderItemRepository;
 import com.futurenet.cotree.order.service.exception.OrderErrorCode;
 import com.futurenet.cotree.order.service.exception.OrderException;
@@ -32,5 +33,11 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Transactional
     public List<OrderItemDto> getAllOrderItemsByOrderIds(List<Long> orderIds) {
         return orderItemRepository.getAllOrderItemsByOrderIds(orderIds);
+    }
+
+    @Override
+    @Transactional
+    public List<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
+        return orderItemRepository.getOrderItemsByOrderId(orderId);
     }
 }
