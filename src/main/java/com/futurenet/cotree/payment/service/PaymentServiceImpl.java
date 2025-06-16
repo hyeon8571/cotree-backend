@@ -3,13 +3,15 @@ package com.futurenet.cotree.payment.service;
 import com.futurenet.cotree.greenpoint.dto.GreenPointSaveRequest;
 import com.futurenet.cotree.greenpoint.service.GreenPointService;
 import com.futurenet.cotree.item.repository.ItemRepository;
-import com.futurenet.cotree.item.service.exception.ItemErrorCode;
-import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.order.constant.OrderStatus;
+import com.futurenet.cotree.order.domain.Order;
+import com.futurenet.cotree.order.domain.OrderItem;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
+import com.futurenet.cotree.order.repository.OrderItemRepository;
 import com.futurenet.cotree.order.repository.OrderRepository;
 import com.futurenet.cotree.order.service.exception.OrderErrorCode;
 import com.futurenet.cotree.order.service.exception.OrderException;
+import com.futurenet.cotree.payment.dto.request.PaymentConfirmRequest;
 import com.futurenet.cotree.payment.dto.request.PaymentRegisterRequest;
 import com.futurenet.cotree.payment.dto.request.PaymentRequest;
 import com.futurenet.cotree.payment.dto.response.ItemPriceAndIsEcoResponse;
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
@@ -28,6 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
     private final GreenPointService greenPointService;
+    private final OrderItemRepository orderItemRepository;
 
     @Override
     @Transactional
@@ -62,5 +67,20 @@ public class PaymentServiceImpl implements PaymentService {
         if (updateOrderStatusResult == 0) {
             throw new OrderException(OrderErrorCode.ORDER_STATUS_UPDATE_FAIL);
         }
+    }
+
+    @Override
+    @Transactional
+    public void payConfirm(PaymentConfirmRequest paymentConfirmRequest, Long memberId) {
+
+        Order order = orderRepository.getOrderByOrderNumberForPayConfirm(paymentConfirmRequest.getOrderNumber());
+        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(order.getId());
+
+        List<OrderItemRegisterRequest> orderItemRegisterRequests =
+                orderItems.stream()
+                        .map(OrderItemRegisterRequest::from)
+                        .toList();
+
+        pay(PaymentRequest.of(memberId, paymentConfirmRequest, order, orderItemRegisterRequests));
     }
 }

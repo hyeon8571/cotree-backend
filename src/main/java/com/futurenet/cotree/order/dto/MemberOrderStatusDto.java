@@ -1,11 +1,11 @@
-package com.futurenet.cotree.order.dto.response;
+package com.futurenet.cotree.order.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberOrderStatusResponse {
+public class MemberOrderStatusDto {
     private int count;
     private String status;
 }

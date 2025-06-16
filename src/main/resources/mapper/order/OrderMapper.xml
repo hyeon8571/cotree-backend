@@ -18,7 +18,7 @@
         WHERE id = #{id}
     </update>
 
-    <select id="getOrderStatus" resultType="com.futurenet.cotree.order.dto.response.MemberOrderStatusResponse">
+    <select id="getOrderStatus" resultType="com.futurenet.cotree.order.dto.MemberOrderStatusDto">
         SELECT COUNT(id) AS count, status
         FROM orders
         WHERE member_id = #{memberId}
@@ -42,9 +42,16 @@
         o.receiver_name AS receiverName,
         o.receiver_tel AS receiverTel,
         o.request AS request,
+        o.status AS status,
         p.price AS totalPrice,
         NVL(gp.amount, 0) AS rewardGreenPoint
         FROM orders o JOIN payment p ON o.id = p.order_id LEFT JOIN green_point gp ON p.id = gp.payment_id
         WHERE o.order_number = #{orderNumber}
+    </select>
+
+    <select id="getOrderByOrderNumberForPayConfirm" resultType="com.futurenet.cotree.order.domain.Order">
+        SELECT id, member_id
+        FROM orders
+        WHERE order_number = #{orderNumber}
     </select>
 </mapper>
