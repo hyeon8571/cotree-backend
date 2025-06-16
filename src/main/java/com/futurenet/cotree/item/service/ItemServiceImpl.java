@@ -94,11 +94,14 @@ public class ItemServiceImpl implements ItemService {
         MemberGenderAgeResponse info = memberRepository.getMemberGenderAge(memberId);
         MemberActionRequestEvent event;
 
+        //age가 DB상에서 String로 되어있어서 int형식으로 변경
+        int age = Integer.parseInt(info.getAge().replace("s", ""));
+
         if (itemId != null) {
-            event = new MemberActionRequestEvent(memberId, info.getGender(), info.getAge(), itemId);
+            event = new MemberActionRequestEvent(memberId, info.getGender(), age, itemId);
         }
         else{
-            event = new MemberActionRequestEvent(memberId, info.getGender(), info.getAge(), keyword);
+            event = new MemberActionRequestEvent(memberId, info.getGender(),age, keyword);
         }
         eventPublisher.publishEvent(event);
     }
