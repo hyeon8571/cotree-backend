@@ -5,6 +5,7 @@ import com.futurenet.cotree.global.dto.response.ApiResponse;
 import com.futurenet.cotree.tree.dto.request.GiveWaterRequest;
 import com.futurenet.cotree.tree.dto.response.GiveWaterResponse;
 import com.futurenet.cotree.tree.dto.response.MyTreeResponse;
+import com.futurenet.cotree.tree.dto.response.MyTreeSummaryResponse;
 import com.futurenet.cotree.tree.service.TreeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,12 @@ public class TreeController {
         Long memberId = userPrincipal.getId();
         GiveWaterResponse giveWaterResponse = treeService.giveAllWater(memberId, giveWaterRequest);
         return ResponseEntity.ok(new ApiResponse<>("TR100", giveWaterResponse));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<?> getTreeSummary(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        Long memberId = (userPrincipal != null) ? userPrincipal.getId() : null;
+        MyTreeSummaryResponse myTreeSummaryResponse = treeService.getMyTreeSummary(memberId);
+        return ResponseEntity.ok(new ApiResponse<>("TR100", myTreeSummaryResponse));
     }
 }

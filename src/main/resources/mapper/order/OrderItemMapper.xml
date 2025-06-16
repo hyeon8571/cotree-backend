@@ -35,6 +35,17 @@
         WHERE oi.order_id = #{orderId}
     </select>
 
+
+    <select id="getEcoItemPurchaseCountThisMonth" resultType="int">
+        SELECT COUNT(*) AS ecoCount
+        FROM order_item oi
+        JOIN orders o ON oi.order_id = o.id
+        JOIN item i ON oi.item_id = i.id
+        WHERE i.is_green = 'Y'
+        AND o.member_id = #{memberId}
+        AND o.created_at BETWEEN #{start} AND #{end}
+    </select>
+
     <select id="getOrderItemsByOrderId" resultType="com.futurenet.cotree.order.domain.OrderItem">
         SELECT id, order_id AS orderId, item_id AS itemId, quantity
         FROM order_item

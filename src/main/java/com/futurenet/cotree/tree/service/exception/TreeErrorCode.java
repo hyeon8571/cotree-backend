@@ -12,7 +12,8 @@ public enum TreeErrorCode implements ErrorCode {
     TREE_EXP_UPDATE_FAILED("TR002", HttpStatus.INTERNAL_SERVER_ERROR),
     POINT_LACK("TR003", HttpStatus.BAD_REQUEST),
     INVALID_ACTION("TR004", HttpStatus.BAD_REQUEST),
-    MAX_EXP_REACHED("TR005", HttpStatus.CONFLICT);
+    MAX_EXP_REACHED("TR005", HttpStatus.CONFLICT),
+    UNAUTHORIZED_SUMMARY_REQUEST("TR006", HttpStatus.UNAUTHORIZED);
 
     private final String code;
     private final HttpStatus httpStatus;
