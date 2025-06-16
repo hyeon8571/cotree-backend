@@ -31,6 +31,7 @@
         i.thumbnail_image AS itemThumbnailImage,
         i.is_green AS isGreen,
         i.price AS price,
+        i.discount AS discount,
         oi.quantity AS quantity
         FROM order_item oi JOIN item i ON oi.item_id = i.id
         WHERE oi.order_id = #{orderId}
