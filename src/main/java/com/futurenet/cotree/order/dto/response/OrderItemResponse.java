@@ -15,5 +15,6 @@ public class OrderItemResponse {
     private String itemThumbnailImage;
     private String isGreen;
     private int price;
+    private int discount;
     private int quantity;
 }

@@ -14,6 +14,7 @@ public class OrderItemDto {
     private String itemThumbnailImage;
     private String isGreen;
     private int price;
+    private int discount;
 
     public OrderItemResponse toResponse() {
         return OrderItemResponse.builder()
@@ -23,6 +24,7 @@ public class OrderItemDto {
                 .isGreen(this.isGreen)
                 .price(this.price)
                 .quantity(this.quantity)
+                .discount(this.discount)
                 .build();
     }
 }
