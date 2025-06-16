@@ -26,7 +26,7 @@
     </select>
 
     <select id="getOrderByMemberIdAndStatus" resultType="com.futurenet.cotree.order.domain.Order">
-        SELECT id, order_number AS orderNumber, updated_at AS orderDate
+        SELECT id, order_number AS orderNumber, updated_at AS orderDate, status
         FROM orders
         WHERE member_id = #{memberId}
         <if test="status != null and status != ''">

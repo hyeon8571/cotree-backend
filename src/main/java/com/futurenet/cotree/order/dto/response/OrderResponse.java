@@ -17,6 +17,7 @@ public class OrderResponse {
     private Long orderId;
     private LocalDateTime orderDate;
     private String orderNumber;
+    private String orderStatus;
     private List<OrderItemResponse> orderItemResponses;
 
     public static OrderResponse of(Order order, List<OrderItemResponse> orderItemResponses) {
@@ -25,6 +26,7 @@ public class OrderResponse {
                 .orderDate(order.getOrderDate())
                 .orderNumber(order.getOrderNumber())
                 .orderItemResponses(orderItemResponses)
+                .orderStatus(order.getStatus())
                 .build();
     }
 }

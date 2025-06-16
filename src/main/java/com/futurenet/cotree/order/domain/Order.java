@@ -16,4 +16,5 @@ public class Order {
     private String receiverName;
     private String receiverTel;
     private String request;
+    private String status;
 }
