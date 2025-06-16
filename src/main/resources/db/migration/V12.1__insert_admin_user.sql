@@ -1,0 +1,1 @@
+INSERT INTO ADMIN (login_id, password, code) VALUES('admin','$2a$10$dVhA/Q50MNxLsD9ei8TqVuIBeSULMUvnncLN39AOTjvm39J6uQCiS','A001');

@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum AdminErrorCode implements ErrorCode {
-    INVALID_RANGE("AD001", HttpStatus.BAD_REQUEST);
+    INVALID_RANGE("AD001", HttpStatus.BAD_REQUEST),
+    INVALID_CREDENTIAL("AD002", HttpStatus.UNAUTHORIZED);
 
     private final String code;
     private final HttpStatus httpStatus;

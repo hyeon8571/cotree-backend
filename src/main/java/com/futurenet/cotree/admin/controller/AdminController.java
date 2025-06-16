@@ -1,15 +1,15 @@
 package com.futurenet.cotree.admin.controller;
 
+import com.futurenet.cotree.admin.dto.request.AdminLoginRequest;
+import com.futurenet.cotree.admin.dto.response.AdminLoginResponse;
 import com.futurenet.cotree.admin.dto.response.InsightOverviewResponse;
 import com.futurenet.cotree.admin.dto.response.PointStat;
 import com.futurenet.cotree.admin.service.AdminService;
 import com.futurenet.cotree.global.dto.response.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,11 +19,16 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid AdminLoginRequest adminLoginRequest) {
+        AdminLoginResponse response = adminService.login(adminLoginRequest);
+        return ResponseEntity.ok(new ApiResponse<>("AD100", response));
+    }
+
     @GetMapping("/insights/overview")
     public ResponseEntity<?> getInsightsOverview() {
         InsightOverviewResponse insightOverviewResponse = adminService.getInsightOverview();
         return ResponseEntity.ok(new ApiResponse<>("AD100", insightOverviewResponse));
-
     }
 
     @GetMapping("/insights/points")

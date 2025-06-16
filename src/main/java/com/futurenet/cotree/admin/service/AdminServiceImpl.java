@@ -1,13 +1,21 @@
 package com.futurenet.cotree.admin.service;
 
 import com.futurenet.cotree.admin.constants.StatPeriod;
+import com.futurenet.cotree.admin.domain.Admin;
+import com.futurenet.cotree.admin.dto.request.AdminLoginRequest;
+import com.futurenet.cotree.admin.dto.response.AdminLoginResponse;
 import com.futurenet.cotree.admin.dto.response.InsightOverviewResponse;
 import com.futurenet.cotree.admin.dto.response.PointStat;
+import com.futurenet.cotree.admin.repository.AdminRepository;
+import com.futurenet.cotree.admin.service.exception.AdminErrorCode;
+import com.futurenet.cotree.admin.service.exception.AdminException;
+import com.futurenet.cotree.admin.util.AdminTokenUtil;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,6 +24,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
+    private final AdminRepository adminRepository;
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
@@ -48,5 +57,19 @@ public class AdminServiceImpl implements AdminService {
         LocalDate from = today.minusDays(period.getDays() - 1);
         LocalDate to = today.plusDays(1);
         return greenPointRepository.getPointStatsByRange(from, to);
+    }
+
+    @Override
+    public AdminLoginResponse login(AdminLoginRequest adminLoginRequest) {
+        String loginId = adminLoginRequest.getLoginId();
+        String password = adminLoginRequest.getPassword();
+
+        Admin admin = adminRepository.getAdminByLoginId(loginId);
+        if (admin == null || !BCrypt.checkpw(password, admin.getPassword())) {
+            throw new AdminException(AdminErrorCode.INVALID_CREDENTIAL);
+        }
+
+        String token = AdminTokenUtil.encode(admin.getId());
+        return new AdminLoginResponse(token);
     }
 }
