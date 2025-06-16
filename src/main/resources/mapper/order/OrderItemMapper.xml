@@ -24,7 +24,7 @@
         </foreach>
     </select>
 
-    <select id="getOrderItemsByOrderId" resultType="com.futurenet.cotree.order.dto.response.OrderItemResponse">
+    <select id="getOrderItemsWithItemInfoByOrderId" resultType="com.futurenet.cotree.order.dto.response.OrderItemResponse">
         SELECT i.id AS itemId,
         i.name AS itemName,
         i.thumbnail_image AS itemThumbnailImage,
@@ -44,5 +44,11 @@
         WHERE i.is_green = 'Y'
         AND o.member_id = #{memberId}
         AND o.created_at BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="getOrderItemsByOrderId" resultType="com.futurenet.cotree.order.domain.OrderItem">
+        SELECT id, order_id AS orderId, item_id AS itemId, quantity
+        FROM order_item
+        WHERE order_id = #{orderId}
     </select>
 </mapper>

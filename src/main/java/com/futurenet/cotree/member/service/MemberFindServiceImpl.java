@@ -6,7 +6,7 @@ import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.member.service.exception.MemberErrorCode;
 import com.futurenet.cotree.member.service.exception.MemberException;
 import com.futurenet.cotree.order.constant.OrderStatus;
-import com.futurenet.cotree.order.dto.response.MemberOrderStatusResponse;
+import com.futurenet.cotree.order.dto.MemberOrderStatusDto;
 import com.futurenet.cotree.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,12 +37,12 @@ public class MemberFindServiceImpl implements MemberFindService {
             throw new MemberException(MemberErrorCode.MEMBER_NOT_FOUND);
         }
 
-        List<MemberOrderStatusResponse> orderStatusResponses = orderRepository.getOrderStatus(id);
+        List<MemberOrderStatusDto> orderStatusResponses = orderRepository.getOrderStatus(id);
 
         int orderStatusPaidCount = 0;
         int orderStatusPendingCount = 0;
 
-        for (MemberOrderStatusResponse response : orderStatusResponses) {
+        for (MemberOrderStatusDto response : orderStatusResponses) {
             if (OrderStatus.SUCCESS.getStatus().equals(response.getStatus())) {
                 orderStatusPaidCount = response.getCount();
             } else if (OrderStatus.WAITING.getStatus().equals(response.getStatus())) {
