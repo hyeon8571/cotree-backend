@@ -6,9 +6,12 @@ import com.futurenet.cotree.order.dto.OrderItemDto;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRequest;
+import com.futurenet.cotree.order.dto.response.OrderDetailResponse;
 import com.futurenet.cotree.order.dto.response.OrderItemResponse;
 import com.futurenet.cotree.order.dto.response.OrderResponse;
 import com.futurenet.cotree.order.dto.response.RegisterOrderResponse;
+import com.futurenet.cotree.order.service.exception.OrderErrorCode;
+import com.futurenet.cotree.order.service.exception.OrderException;
 import com.futurenet.cotree.payment.dto.request.PaymentRequestEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +70,15 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     }
 
 
+    /**
+     * 주문 상태별 주문 목록을 조회합니다.
+     * 1. 회원의 정보와 조회하고자 하는 주문 상태를 통해 주문 식별자들을 탐색합니다. 이 때 status가 없으면 전체 조회입니다.
+     * 2. 주문 식별자들을 이용하여 해당 식별자에 해당하는 주문 상품들을 찾습니다.
+     * 3. Map을 이용하여 주문과 주문 상품들을 묶습니다.
+     * 4. Java Stream을 이용하여 결과를 반환합니다.
+     *
+     * @param status PAID: 결제 완료, PENDING: 결제 대기, null: 전체 주문
+     * */
     @Override
     @Transactional
     public List<OrderResponse> getOrdersByMember(Long memberId, String status) {
@@ -95,5 +107,26 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
             return OrderResponse.of(order, itemResponses);
         })
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public OrderDetailResponse getOrderDetail(String orderNumber) {
+
+        OrderDetailResponse orderDetailResponse = orderService.getOrderByOrderNumber(orderNumber);
+
+        if (orderDetailResponse == null) {
+            throw new OrderException(OrderErrorCode.ORDER_NOT_FOUND);
+        }
+
+        List<OrderItemResponse> orderItems = orderItemService.getOrderItemsByOrderId(orderDetailResponse.getOrderId());
+
+        if (orderItems.isEmpty()) {
+            throw new OrderException(OrderErrorCode.ORDER_ITEM_NOT_FOUND);
+        }
+
+        orderDetailResponse.setOrderItems(orderItems);
+
+        return orderDetailResponse;
     }
 }
