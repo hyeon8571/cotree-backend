@@ -1,13 +1,13 @@
 package com.futurenet.cotree.item.service;
 
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
+import com.futurenet.cotree.history.dto.request.MemberActionRequestEvent;
 import com.futurenet.cotree.item.domain.Item;
 import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.item.service.exception.ItemErrorCode;
 import com.futurenet.cotree.item.service.exception.ItemException;
-import com.futurenet.cotree.history.dto.request.MemberActionRequestEvent;
 import com.futurenet.cotree.member.dto.response.MemberGenderAgeResponse;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +77,14 @@ public class ItemServiceImpl implements ItemService {
 
         int start = (page - 1) * PAGE_SIZE;
         List<Item> itemList = itemRepository.searchItems(keyword, categoryId, start, PAGE_SIZE, isGreen);
+        return itemList.stream()
+                .map(ItemResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemResponse> getTodayItems() {
+        List<Item> itemList = itemRepository.getTodayItems();
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());

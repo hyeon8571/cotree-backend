@@ -76,4 +76,16 @@
         FROM item
         WHERE is_green = 'Y'
     </select>
+    <select id="getTodayItems" resultType="com.futurenet.cotree.item.domain.Item">
+        SELECT *
+        FROM (
+        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT,
+        I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,
+        B.NAME AS brandName, I.QUANTITY
+        FROM ITEM I
+        JOIN BRAND B ON I.BRAND_ID = B.ID
+        ORDER BY DBMS_RANDOM.VALUE
+        )
+        WHERE ROWNUM &lt;= 20
+    </select>
 </mapper>

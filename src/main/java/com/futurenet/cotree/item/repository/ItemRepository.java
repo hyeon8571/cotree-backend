@@ -18,4 +18,5 @@ public interface ItemRepository {
     List<Item> searchItems(@Param("keyword")String keyword, @Param("categoryId") Long categoryId, @Param("start") int start, @Param("size") int size, @Param("isGreen") String isGreen);
     long getTotalItemCount();
     long getTotalEcoItemCount();
+    List<Item> getTodayItems();
 }

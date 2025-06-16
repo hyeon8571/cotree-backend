@@ -48,4 +48,10 @@ public class ItemController {
         List<ItemResponse> result = itemService.searchItems(userPrincipal, keyword, categoryId, page, isGreen);
         return ResponseEntity.ok(new ApiResponse<>("IT103", result));
     }
+
+    @GetMapping("/today")
+    public ResponseEntity<?> getTodayItems() {
+        List<ItemResponse> result = itemService.getTodayItems();
+        return ResponseEntity.ok(new ApiResponse<>("IT104", result));
+    }
 }
