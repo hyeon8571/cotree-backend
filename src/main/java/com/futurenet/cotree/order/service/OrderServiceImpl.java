@@ -2,6 +2,7 @@ package com.futurenet.cotree.order.service;
 
 import com.futurenet.cotree.order.domain.Order;
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
+import com.futurenet.cotree.order.dto.response.OrderDetailResponse;
 import com.futurenet.cotree.order.dto.response.RegisterOrderResponse;
 import com.futurenet.cotree.order.repository.OrderRepository;
 import com.futurenet.cotree.order.service.exception.OrderErrorCode;
@@ -36,8 +37,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<Order> getAllOrderByMemberIdAndStatus(Long memberId, String status) {
         return orderRepository.getOrderByMemberIdAndStatus(memberId, status);
+    }
+
+    @Override
+    @Transactional
+    public OrderDetailResponse getOrderByOrderNumber(String orderNumber) {
+        return orderRepository.getOrderByOrderNumber(orderNumber);
     }
 
     private String createOrderNumber(Long memberId) {

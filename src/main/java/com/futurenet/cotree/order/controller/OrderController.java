@@ -3,6 +3,7 @@ package com.futurenet.cotree.order.controller;
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.global.dto.response.ApiResponse;
 import com.futurenet.cotree.order.dto.request.OrderRequest;
+import com.futurenet.cotree.order.dto.response.OrderDetailResponse;
 import com.futurenet.cotree.order.dto.response.OrderResponse;
 import com.futurenet.cotree.order.service.OrderFacadeService;
 import jakarta.validation.Valid;
@@ -32,5 +33,11 @@ public class OrderController {
                                        @RequestParam(name = "status", required = false) String status) {
         List<OrderResponse> result = orderFacadeService.getOrdersByMember(userPrincipal.getId(), status);
         return ResponseEntity.ok(new ApiResponse<>("OR101", result));
+    }
+
+    @GetMapping("/{orderNumber}")
+    public ResponseEntity<?> getOrderDetail(@PathVariable String orderNumber) {
+        OrderDetailResponse result = orderFacadeService.getOrderDetail(orderNumber);
+        return ResponseEntity.ok(new ApiResponse<>("OR102", result));
     }
 }
