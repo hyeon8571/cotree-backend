@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberGenderAgeResponse {
     private String gender;
-    private int age;
+    private String age;
 }
