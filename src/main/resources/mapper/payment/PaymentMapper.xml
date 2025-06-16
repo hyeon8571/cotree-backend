@@ -9,4 +9,16 @@
         INSERT INTO payment (order_id, card_number, bank, price)
         VALUES (#{request.orderId}, #{request.cardNumber}, #{request.bank}, #{request.price})
     </insert>
-</mapper>
+
+    <select id="getMonthlyRevenue" resultType="long">
+        SELECT COALESCE(SUM(price), 0)
+        FROM payment
+        WHERE created_at &gt;= #{from} AND created_at &lt; #{to}
+    </select>
+
+    <select id="getMonthlyOrderCount" resultType="long">
+        SELECT COUNT(*) as orderCount
+        FROM payment
+        WHERE created_at &gt;= #{from} AND created_at &lt; #{to}
+    </select>
+ </mapper>

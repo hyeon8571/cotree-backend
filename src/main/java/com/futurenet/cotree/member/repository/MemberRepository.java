@@ -9,6 +9,8 @@ import com.futurenet.cotree.member.dto.response.MyPageResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
+
 @Mapper
 public interface MemberRepository {
     Member getMemberByEmail(String email);
@@ -19,4 +21,6 @@ public interface MemberRepository {
     int updateMemberAgeAndGender(@Param("request") MemberUpdateAgeAndGenderDto request);
     int updateMemberSignupStatus(@Param("id") Long id);
     String getSignupStatusByMemberId(@Param("id") Long id);
+    long getNewMemberCount(@Param("from") LocalDate from, @Param("to") LocalDate to);
+
 }
