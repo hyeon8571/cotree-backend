@@ -24,4 +24,13 @@
         WHERE member_id = #{memberId}
         GROUP BY status
     </select>
+
+    <select id="getOrderByMemberIdAndStatus" resultType="com.futurenet.cotree.order.domain.Order">
+        SELECT id, order_number AS orderNumber, updated_at AS orderDate
+        FROM orders
+        WHERE member_id = #{memberId}
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+    </select>
 </mapper>
