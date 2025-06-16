@@ -1,5 +1,6 @@
 package com.futurenet.cotree.order.service;
 
+import com.futurenet.cotree.order.domain.Order;
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
 import com.futurenet.cotree.order.dto.response.RegisterOrderResponse;
 import com.futurenet.cotree.order.repository.OrderRepository;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,11 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return new RegisterOrderResponse(orderRegisterRequest.getOrderId(), orderNumber);
+    }
+
+    @Override
+    public List<Order> getAllOrderByMemberIdAndStatus(Long memberId, String status) {
+        return orderRepository.getOrderByMemberIdAndStatus(memberId, status);
     }
 
     private String createOrderNumber(Long memberId) {
