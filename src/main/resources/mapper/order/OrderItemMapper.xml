@@ -24,7 +24,7 @@
         </foreach>
     </select>
 
-    <select id="getOrderItemsByOrderId" resultType="com.futurenet.cotree.order.dto.response.OrderItemResponse">
+    <select id="getOrderItemsWithItemInfoByOrderId" resultType="com.futurenet.cotree.order.dto.response.OrderItemResponse">
         SELECT i.id AS itemId,
         i.name AS itemName,
         i.thumbnail_image AS itemThumbnailImage,
@@ -33,5 +33,11 @@
         oi.quantity AS quantity
         FROM order_item oi JOIN item i ON oi.item_id = i.id
         WHERE oi.order_id = #{orderId}
+    </select>
+
+    <select id="getOrderItemsByOrderId" resultType="com.futurenet.cotree.order.domain.OrderItem">
+        SELECT id, order_id AS orderId, item_id AS itemId, quantity
+        FROM order_item
+        WHERE order_id = #{orderId}
     </select>
 </mapper>

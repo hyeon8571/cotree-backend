@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class Order {
     private Long id;
+    private Long memberId;
     private String orderNumber;
     private LocalDateTime orderDate;
     private String destination;

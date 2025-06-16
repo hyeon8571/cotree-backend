@@ -38,6 +38,6 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     @Transactional
     public List<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
-        return orderItemRepository.getOrderItemsByOrderId(orderId);
+        return orderItemRepository.getOrderItemsWithItemInfoByOrderId(orderId);
     }
 }

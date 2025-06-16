@@ -1,6 +1,7 @@
 package com.futurenet.cotree.order.service;
 
 import com.futurenet.cotree.item.service.ItemService;
+import com.futurenet.cotree.order.constant.OrderStatus;
 import com.futurenet.cotree.order.domain.Order;
 import com.futurenet.cotree.order.dto.OrderItemDto;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
@@ -13,6 +14,8 @@ import com.futurenet.cotree.order.dto.response.RegisterOrderResponse;
 import com.futurenet.cotree.order.service.exception.OrderErrorCode;
 import com.futurenet.cotree.order.service.exception.OrderException;
 import com.futurenet.cotree.payment.dto.request.PaymentRequestEvent;
+import com.futurenet.cotree.payment.service.exception.PaymentErrorCode;
+import com.futurenet.cotree.payment.service.exception.PaymentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -117,6 +120,10 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
         if (orderDetailResponse == null) {
             throw new OrderException(OrderErrorCode.ORDER_NOT_FOUND);
+        }
+
+        if (!OrderStatus.SUCCESS.getStatus().equals(orderDetailResponse.getStatus())) {
+            throw new PaymentException(PaymentErrorCode.PAYMENT_FAIL);
         }
 
         List<OrderItemResponse> orderItems = orderItemService.getOrderItemsByOrderId(orderDetailResponse.getOrderId());
