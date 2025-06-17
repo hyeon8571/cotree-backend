@@ -1,4 +1,4 @@
-package com.futurenet.cotree.statistic.ecoItem.dto.response;
+package com.futurenet.cotree.admin.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

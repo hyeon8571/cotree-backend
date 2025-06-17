@@ -1,9 +1,9 @@
-package com.futurenet.cotree.statistic.ecoItem.repository;
+package com.futurenet.cotree.admin.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface EcoItemStatisticRepository {
+public interface AdminEcoItemStatisticRepository {
     int getEcoOrderItemCount();
     int getOrderItemCount();
 }
