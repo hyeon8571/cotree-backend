@@ -100,9 +100,9 @@ public class TreeServiceImpl implements TreeService {
         LocalDate today = LocalDate.now();
         LocalDate start = today.withDayOfMonth(1);
         LocalDate end = today.withDayOfMonth(today.lengthOfMonth());
-        int currentPoint = greenPointService.getPoint(memberId);
+        int exp = treeRepository.getTreeExp(memberId);
         int ecoCount = orderItemRepository.getEcoItemPurchaseCountThisMonth(memberId, start, end);
-        return new MyTreeSummaryResponse(currentPoint, ecoCount);
+        return new MyTreeSummaryResponse(exp, ecoCount);
     }
 
     private void updateExp(Long memberId, int exp) {
