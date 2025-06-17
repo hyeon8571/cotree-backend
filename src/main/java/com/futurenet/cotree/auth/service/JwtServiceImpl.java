@@ -44,9 +44,8 @@ public class JwtServiceImpl implements JwtService {
 
         refreshTokenRepository.saveRefreshToken(new RefreshTokenSaveRequest(newRefresh, memberId));
 
-        response.addCookie(ResponseUtil.createCookie("Authorization", newAccess, JwtConstants.ACCESS_COOKIE_EXPIRED));
-        response.addCookie(ResponseUtil.createCookie("refresh", newRefresh, JwtConstants.REFRESH_COOKIE_EXPIRED));
+        response.addHeader("Set-Cookie", ResponseUtil.createResponseCookie("Authorization", newAccess, JwtConstants.ACCESS_COOKIE_EXPIRED));
+        response.addHeader("Set-Cookie", ResponseUtil.createResponseCookie("refresh", newRefresh, JwtConstants.REFRESH_COOKIE_EXPIRED));
     }
-
 
 }
