@@ -1,14 +1,16 @@
 package com.futurenet.cotree.admin.service;
 
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse;
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseRatioResponse;
-import com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse;
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseAgeResponse;
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseCountResponse;
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseGenderResponse;
 import com.futurenet.cotree.admin.repository.AdminEcoItemStatisticRepository;
-import com.futurenet.cotree.admin.util.RatioUtil;
+import com.futurenet.cotree.item.constants.ItemClassification;
+import com.futurenet.cotree.member.constant.MemberAge;
+import com.futurenet.cotree.member.constant.MemberGender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,32 +21,29 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
     private final AdminEcoItemStatisticRepository adminEcoItemStatisticRepository;
 
     @Override
-    public List<EcoPurchaseRatioResponse> getEcoPurchaseRatio() {
-        int totalPurchased = adminEcoItemStatisticRepository.getOrderItemCount();
-        int ecoPurchased = adminEcoItemStatisticRepository.getEcoOrderItemCount();
-
-        if(totalPurchased == 0 && ecoPurchased == 0){
-            return Arrays.asList(
-                    new EcoPurchaseRatioResponse("일반 상품", 0 ),
-                    new EcoPurchaseRatioResponse("친환경 상품", 0)
-            );
-        }
-
-        double ecoRatio = RatioUtil.calculateRatio(ecoPurchased, totalPurchased);
+    public List<EcoPurchaseCountResponse> getEcoPurchaseCount() {
         return Arrays.asList(
-                new EcoPurchaseRatioResponse("일반 상품", 100 - ecoRatio),
-                new EcoPurchaseRatioResponse("친환경 상품", ecoRatio)
+                new EcoPurchaseCountResponse(ItemClassification.GENERAL, adminEcoItemStatisticRepository.getGeneralOrderItemCount()),
+                new EcoPurchaseCountResponse(ItemClassification.ECO, adminEcoItemStatisticRepository.getEcoOrderItemCount())
         );
     }
 
     @Override
-    @Transactional
-    public List<PopularEcoItemResponse> getEcoPopularItem() {
-        return adminEcoItemStatisticRepository.getPopularEcoItems();
+    public List<EcoPurchaseAgeResponse> getEcoPurchaseAgeCount() {
+        List<EcoPurchaseAgeResponse> result = new ArrayList<>();
+
+        for (MemberAge ageEnum : MemberAge.values()) {
+            int count = adminEcoItemStatisticRepository.getEcoOrderItemCountByAge(ageEnum.getValue());
+            result.add(new EcoPurchaseAgeResponse(ageEnum, count));
+        }
+        return result;
     }
 
     @Override
-    public List<EcoPurchaseCategoryResponse> getPurchaseCountByCategory() {
-        return adminEcoItemStatisticRepository.getPurchaseByCategory();
+    public List<EcoPurchaseGenderResponse> getEcoPurchaseGenderCount() {
+        return Arrays.asList(
+                new EcoPurchaseGenderResponse(MemberGender.M, adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.M)),
+                new EcoPurchaseGenderResponse(MemberGender.F, adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.F))
+        );
     }
 }

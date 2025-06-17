@@ -1,15 +1,13 @@
 package com.futurenet.cotree.admin.repository;
 
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse;
-import com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse;
+import com.futurenet.cotree.member.constant.MemberGender;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AdminEcoItemStatisticRepository {
     int getEcoOrderItemCount();
-    int getOrderItemCount();
-    List<PopularEcoItemResponse> getPopularEcoItems();
-    List<EcoPurchaseCategoryResponse> getPurchaseByCategory();
+    int getGeneralOrderItemCount();
+    int getEcoOrderItemCountByAge(@Param("age") String age);
+    int getEcoOrderItemCountByGender(@Param("gender") MemberGender gender);
 }

@@ -1,10 +1,10 @@
 package com.futurenet.cotree.admin.controller;
 
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse;
-import com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse;
-import com.futurenet.cotree.global.dto.response.ApiResponse;
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseRatioResponse;
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseAgeResponse;
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseCountResponse;
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseGenderResponse;
 import com.futurenet.cotree.admin.service.AdminEcoItemStatisticService;
+import com.futurenet.cotree.global.dto.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,21 +20,21 @@ public class AdminEcoItemStatisticController {
 
     private final AdminEcoItemStatisticService adminEcoItemStatisticService;
 
-    @GetMapping("/purchase-ratio")
-    public ResponseEntity<?> getEcoPurchaseRatio() {
-        List<EcoPurchaseRatioResponse> result = adminEcoItemStatisticService.getEcoPurchaseRatio();
+    @GetMapping("/purchase-count")
+    public ResponseEntity<?> getEcoPurchaseCount() {
+        List<EcoPurchaseCountResponse> result = adminEcoItemStatisticService.getEcoPurchaseCount();
         return ResponseEntity.ok(new ApiResponse<>("SE100", result));
     }
 
-    @GetMapping("/popular-item")
-    public ResponseEntity<?> getEcoPopularItem() {
-        List<PopularEcoItemResponse> result = adminEcoItemStatisticService.getEcoPopularItem();
-        return ResponseEntity.ok(new ApiResponse<>("SE101", result));
+    @GetMapping("/purchase-age")
+    public ResponseEntity<?> getEcoPurchaseAgeCount() {
+        List<EcoPurchaseAgeResponse> result =  adminEcoItemStatisticService.getEcoPurchaseAgeCount();
+        return ResponseEntity.ok(new ApiResponse<>("SE102", result));
     }
 
-    @GetMapping("/purchase-category")
-    public ResponseEntity<?> getPurchaseCategory() {
-        List<EcoPurchaseCategoryResponse> result = adminEcoItemStatisticService.getPurchaseCountByCategory();
-        return ResponseEntity.ok(new ApiResponse<>("SE103", result));
+    @GetMapping("/purchase-purchase-gender")
+    public ResponseEntity<?> getEcoPurchaseGenderCount() {
+        List<EcoPurchaseGenderResponse> result = adminEcoItemStatisticService.getEcoPurchaseGenderCount();
+        return ResponseEntity.ok(new ApiResponse<>("SE104", result));
     }
 }
