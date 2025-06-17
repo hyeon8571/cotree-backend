@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EcoPurchaseGenderResponse {
-    MemberGender gender;
+    String gender;
     int count;
 }

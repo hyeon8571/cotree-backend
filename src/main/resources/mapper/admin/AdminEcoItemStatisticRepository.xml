@@ -6,13 +6,13 @@
     <select id="getEcoOrderItemCount" resultType="java.lang.Integer">
         SELECT COUNT(OI.ID)
         FROM ORDER_ITEM OI, ITEM I
-        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y' AND OI.UPDATED_AT &lt; TRUNC(SYSDATE) - 30
+        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y' AND OI.UPDATED_AT &gt; TRUNC(SYSDATE) - 30
     </select>
 
     <select id="getGeneralOrderItemCount" resultType="java.lang.Integer">
         SELECT COUNT(OI.ID)
         FROM ORDER_ITEM OI, ITEM I
-        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'N' AND OI.UPDATED_AT &lt; TRUNC(SYSDATE) - 30
+        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'N' AND OI.UPDATED_AT &gt; TRUNC(SYSDATE) - 30
     </select>
 
     <select id="getEcoOrderItemCountByAge" resultType="java.lang.Integer">
@@ -21,7 +21,7 @@
         JOIN ORDERS O ON OI.ORDER_ID = O.ID
         JOIN MEMBER M ON O.MEMBER_ID = M.ID
         JOIN ITEM I ON OI.ITEM_ID = I.ID
-        WHERE I.IS_GREEN = 'Y' AND M.GENDER = #{age} AND OI.UPDATED_AT &lt; TRUNC(SYSDATE) - 30
+        WHERE I.IS_GREEN = 'Y' AND M.AGE_RANGE = #{age} AND OI.UPDATED_AT &gt; TRUNC(SYSDATE) - 30
     </select>
 
     <select id="getEcoOrderItemCountByGender" resultType="java.lang.Integer">
@@ -30,7 +30,7 @@
         JOIN ORDERS O ON OI.ORDER_ID = O.ID
         JOIN MEMBER M ON O.MEMBER_ID = M.ID
         JOIN ITEM I ON OI.ITEM_ID = I.ID
-        WHERE I.IS_GREEN = 'Y' AND M.GENDER = #{gender} AND OI.UPDATED_AT &lt; TRUNC(SYSDATE) - 30
+        WHERE I.IS_GREEN = 'Y' AND M.GENDER = #{gender} AND OI.UPDATED_AT &gt; TRUNC(SYSDATE) - 30
     </select>
     <select id="getPopularEcoItems" resultType="com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse">
         SELECT *

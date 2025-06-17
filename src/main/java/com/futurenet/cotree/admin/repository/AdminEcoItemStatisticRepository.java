@@ -13,7 +13,7 @@ public interface AdminEcoItemStatisticRepository {
     int getEcoOrderItemCount();
     int getGeneralOrderItemCount();
     int getEcoOrderItemCountByAge(@Param("age") String age);
-    int getEcoOrderItemCountByGender(@Param("gender") MemberGender gender);
+    int getEcoOrderItemCountByGender(@Param("gender") String gender);
     List<PopularEcoItemResponse> getPopularEcoItems();
     List<EcoPurchaseCategoryResponse> getPurchaseByCategory();
 }
