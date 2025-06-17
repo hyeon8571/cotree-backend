@@ -6,4 +6,10 @@
         FROM admin
         WHERE login_id = #{loginId}
     </select>
+
+    <select id="getAdminById" resultType="com.futurenet.cotree.admin.domain.Admin">
+        SELECT id, login_id, password, code
+        FROM admin
+        WHERE id = #{id}
+    </select>
 </mapper>
