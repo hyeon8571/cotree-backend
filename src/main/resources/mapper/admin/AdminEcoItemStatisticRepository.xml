@@ -6,7 +6,7 @@
     <select id="getEcoOrderItemCount" resultType="java.lang.Integer">
         SELECT COUNT(OI.ID)
         FROM ORDER_ITEM OI, ITEM I
-        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y' AND UPDATED_AT &lt; TRUNC(SYSDATE) - 30
+        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y' AND OI.UPDATED_AT &lt; TRUNC(SYSDATE) - 30
     </select>
 
     <select id="getGeneralOrderItemCount" resultType="java.lang.Integer">
