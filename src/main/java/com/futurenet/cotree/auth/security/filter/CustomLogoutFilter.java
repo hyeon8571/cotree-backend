@@ -5,7 +5,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,17 +28,8 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
-        Cookie refreshCookie = new Cookie("refresh", null);
-        refreshCookie.setMaxAge(0);
-        refreshCookie.setPath("/");
-        refreshCookie.setSecure(true);
-        response.addCookie(refreshCookie);
-
-        Cookie accessCookie = new Cookie("Authorization", null);
-        accessCookie.setMaxAge(0);
-        accessCookie.setPath("/");
-        accessCookie.setSecure(true);
-        response.addCookie(accessCookie);
+        response.addHeader("Set-Cookie", ResponseUtil.createResponseCookie("Authorization", null, 0));
+        response.addHeader("Set-Cookie", ResponseUtil.createResponseCookie("refresh", null, 0));
 
         ResponseUtil.setResponse(response, "AU101", HttpStatus.OK);
     }
