@@ -1,5 +1,7 @@
 package com.futurenet.cotree.admin.controller;
 
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse;
+import com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse;
 import com.futurenet.cotree.global.dto.response.ApiResponse;
 import com.futurenet.cotree.admin.dto.response.EcoPurchaseRatioResponse;
 import com.futurenet.cotree.admin.service.AdminEcoItemStatisticService;
@@ -22,5 +24,17 @@ public class AdminEcoItemStatisticController {
     public ResponseEntity<?> getEcoPurchaseRatio() {
         List<EcoPurchaseRatioResponse> result = adminEcoItemStatisticService.getEcoPurchaseRatio();
         return ResponseEntity.ok(new ApiResponse<>("SE100", result));
+    }
+
+    @GetMapping("/popular-item")
+    public ResponseEntity<?> getEcoPopularItem() {
+        List<PopularEcoItemResponse> result = adminEcoItemStatisticService.getEcoPopularItem();
+        return ResponseEntity.ok(new ApiResponse<>("SE101", result));
+    }
+
+    @GetMapping("/purchase-category")
+    public ResponseEntity<?> getPurchaseCategory() {
+        List<EcoPurchaseCategoryResponse> result = adminEcoItemStatisticService.getPurchaseCountByCategory();
+        return ResponseEntity.ok(new ApiResponse<>("SE103", result));
     }
 }
