@@ -9,7 +9,6 @@ import com.futurenet.cotree.admin.dto.response.PointStat;
 import com.futurenet.cotree.admin.repository.AdminRepository;
 import com.futurenet.cotree.admin.service.exception.AdminErrorCode;
 import com.futurenet.cotree.admin.service.exception.AdminException;
-import com.futurenet.cotree.admin.util.AdminTokenUtil;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.member.repository.MemberRepository;
