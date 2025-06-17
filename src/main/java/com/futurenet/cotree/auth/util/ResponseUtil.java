@@ -39,6 +39,7 @@ public class ResponseUtil {
                 .path("/")
                 .maxAge(maxAge)
                 .sameSite("None")
+                .domain(".n-e.kr")
                 .build();
 
         return cookie.toString();
