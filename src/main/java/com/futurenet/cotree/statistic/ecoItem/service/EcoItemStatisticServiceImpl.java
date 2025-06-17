@@ -18,10 +18,16 @@ public class EcoItemStatisticServiceImpl implements EcoItemStatisticService{
     @Override
     public List<EcoPurchaseRatioResponse> getEcoPurchaseRatio() {
         int totalPurchased = ecoItemStatisticRepository.getOrderItemCount();
-        int ecoPurchased = ecoItemStatisticRepository.getOrderItemCount();
+        int ecoPurchased = ecoItemStatisticRepository.getEcoOrderItemCount();
+
+        if(totalPurchased == 0 && ecoPurchased == 0){
+            return Arrays.asList(
+                    new EcoPurchaseRatioResponse("일반 상품", 0 ),
+                    new EcoPurchaseRatioResponse("친환경 상품", 0)
+            );
+        }
 
         double ecoRatio = RatioUtils.calculateRatio(ecoPurchased, totalPurchased);
-
         return Arrays.asList(
                 new EcoPurchaseRatioResponse("일반 상품", 100 - ecoRatio),
                 new EcoPurchaseRatioResponse("친환경 상품", ecoRatio)

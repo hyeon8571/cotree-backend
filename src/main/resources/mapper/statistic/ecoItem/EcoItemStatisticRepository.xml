@@ -4,13 +4,14 @@
 
 
     <select id="getEcoOrderItemCount" resultType="java.lang.Integer">
-        SELECT COUNT(*)
+        SELECT COUNT(OI.ID)
         FROM ORDER_ITEM OI, ITEM I
-        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y'
+        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y' AND UPDATE_AT &lt; TRUNC(SYSDATE) - 30
     </select>
 
     <select id="getOrderItemCount" resultType="java.lang.Integer">
-        SELECT COUNT(*)
+        SELECT COUNT(ID)
         FROM ORDER_ITEM
+        WHERE UPDATE_AT &lt; TRUNC(SYSDATE) - 30
     </select>
 </mapper>
