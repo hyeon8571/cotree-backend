@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.futurenet.cotree.statistic.ecoItem.repository.EcoItemStatisticRepository">
+
+
+    <select id="getEcoOrderItemCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ORDER_ITEM OI, ITEM I
+        WHERE OI.ITEM_ID = I.ID AND I.IS_GREEN = 'Y'
+    </select>
+
+    <select id="getOrderItemCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ORDER_ITEM
+    </select>
+</mapper>
