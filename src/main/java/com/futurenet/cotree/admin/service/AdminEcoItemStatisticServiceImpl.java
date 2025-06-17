@@ -1,10 +1,13 @@
 package com.futurenet.cotree.admin.service;
 
+import com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse;
 import com.futurenet.cotree.admin.dto.response.EcoPurchaseRatioResponse;
+import com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse;
 import com.futurenet.cotree.admin.repository.AdminEcoItemStatisticRepository;
 import com.futurenet.cotree.admin.util.RatioUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,5 +35,16 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
                 new EcoPurchaseRatioResponse("일반 상품", 100 - ecoRatio),
                 new EcoPurchaseRatioResponse("친환경 상품", ecoRatio)
         );
+    }
+
+    @Override
+    @Transactional
+    public List<PopularEcoItemResponse> getEcoPopularItem() {
+        return adminEcoItemStatisticRepository.getPopularEcoItems();
+    }
+
+    @Override
+    public List<EcoPurchaseCategoryResponse> getPurchaseCountByCategory() {
+        return adminEcoItemStatisticRepository.getPurchaseByCategory();
     }
 }
