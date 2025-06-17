@@ -5,6 +5,7 @@ import com.futurenet.cotree.global.dto.response.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 
 import java.io.IOException;
 
@@ -29,5 +30,17 @@ public class ResponseUtil {
         cookie.setSecure(true);
 
         return cookie;
+    }
+
+    public static String createResponseCookie(String key, String value, int maxAge) {
+        ResponseCookie cookie = ResponseCookie.from(key, value)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(maxAge)
+                .sameSite("None")
+                .build();
+
+        return cookie.toString();
     }
 }
