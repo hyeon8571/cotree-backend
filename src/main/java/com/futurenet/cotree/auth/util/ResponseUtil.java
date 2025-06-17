@@ -26,6 +26,7 @@ public class ResponseUtil {
         cookie.setMaxAge(expired);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
 
         return cookie;
     }
