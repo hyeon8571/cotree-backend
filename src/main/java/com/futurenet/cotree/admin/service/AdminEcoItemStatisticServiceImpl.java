@@ -23,8 +23,8 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
     @Transactional
     public List<EcoPurchaseCountResponse> getEcoPurchaseCount() {
         return Arrays.asList(
-                new EcoPurchaseCountResponse(ItemClassification.GENERAL, adminEcoItemStatisticRepository.getGeneralOrderItemCount()),
-                new EcoPurchaseCountResponse(ItemClassification.ECO, adminEcoItemStatisticRepository.getEcoOrderItemCount())
+                new EcoPurchaseCountResponse(ItemClassification.GENERAL.getValue(), adminEcoItemStatisticRepository.getGeneralOrderItemCount()),
+                new EcoPurchaseCountResponse(ItemClassification.ECO.getValue(), adminEcoItemStatisticRepository.getEcoOrderItemCount())
         );
     }
 
@@ -35,7 +35,7 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
 
         for (MemberAge ageEnum : MemberAge.values()) {
             int count = adminEcoItemStatisticRepository.getEcoOrderItemCountByAge(ageEnum.getValue());
-            result.add(new EcoPurchaseAgeResponse(ageEnum, count));
+            result.add(new EcoPurchaseAgeResponse(ageEnum.getValue(), count));
         }
         return result;
     }
@@ -44,8 +44,8 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
     @Transactional
     public List<EcoPurchaseGenderResponse> getEcoPurchaseGenderCount() {
         return Arrays.asList(
-                new EcoPurchaseGenderResponse(MemberGender.M, adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.M)),
-                new EcoPurchaseGenderResponse(MemberGender.F, adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.F))
+                new EcoPurchaseGenderResponse(MemberGender.M.getValue(), adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.M.getValue())),
+                new EcoPurchaseGenderResponse(MemberGender.F.getValue(), adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.F.getValue()))
         );
     }
 

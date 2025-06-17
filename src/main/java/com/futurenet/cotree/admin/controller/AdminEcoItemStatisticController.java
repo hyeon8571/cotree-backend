@@ -41,7 +41,7 @@ public class AdminEcoItemStatisticController {
         return ResponseEntity.ok(new ApiResponse<>("SE103", result));
     }
 
-    @GetMapping("/purchase-purchase-gender")
+    @GetMapping("/purchase-gender")
     public ResponseEntity<?> getEcoPurchaseGenderCount() {
         List<EcoPurchaseGenderResponse> result = adminEcoItemStatisticService.getEcoPurchaseGenderCount();
         return ResponseEntity.ok(new ApiResponse<>("SE104", result));
