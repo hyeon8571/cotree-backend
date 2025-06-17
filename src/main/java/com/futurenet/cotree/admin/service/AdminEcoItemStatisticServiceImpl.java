@@ -1,14 +1,13 @@
 package com.futurenet.cotree.admin.service;
 
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseAgeResponse;
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseCountResponse;
-import com.futurenet.cotree.admin.dto.response.EcoPurchaseGenderResponse;
+import com.futurenet.cotree.admin.dto.response.*;
 import com.futurenet.cotree.admin.repository.AdminEcoItemStatisticRepository;
 import com.futurenet.cotree.item.constants.ItemClassification;
 import com.futurenet.cotree.member.constant.MemberAge;
 import com.futurenet.cotree.member.constant.MemberGender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +20,7 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
     private final AdminEcoItemStatisticRepository adminEcoItemStatisticRepository;
 
     @Override
+    @Transactional
     public List<EcoPurchaseCountResponse> getEcoPurchaseCount() {
         return Arrays.asList(
                 new EcoPurchaseCountResponse(ItemClassification.GENERAL, adminEcoItemStatisticRepository.getGeneralOrderItemCount()),
@@ -29,6 +29,7 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
     }
 
     @Override
+    @Transactional
     public List<EcoPurchaseAgeResponse> getEcoPurchaseAgeCount() {
         List<EcoPurchaseAgeResponse> result = new ArrayList<>();
 
@@ -40,10 +41,24 @@ public class AdminEcoItemStatisticServiceImpl implements AdminEcoItemStatisticSe
     }
 
     @Override
+    @Transactional
     public List<EcoPurchaseGenderResponse> getEcoPurchaseGenderCount() {
         return Arrays.asList(
                 new EcoPurchaseGenderResponse(MemberGender.M, adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.M)),
                 new EcoPurchaseGenderResponse(MemberGender.F, adminEcoItemStatisticRepository.getEcoOrderItemCountByGender(MemberGender.F))
         );
     }
+
+    @Override
+    @Transactional
+    public List<PopularEcoItemResponse> getEcoPopularItem() {
+        return adminEcoItemStatisticRepository.getPopularEcoItems();
+    }
+
+    @Override
+    public List<EcoPurchaseCategoryResponse> getPurchaseCountByCategory() {
+        return adminEcoItemStatisticRepository.getPurchaseByCategory();
+    }
+
+
 }
