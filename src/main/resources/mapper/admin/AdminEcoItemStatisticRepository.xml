@@ -32,4 +32,32 @@
         JOIN ITEM I ON OI.ITEM_ID = I.ID
         WHERE I.IS_GREEN = 'Y' AND M.GENDER = #{gender} AND OI.UPDATED_AT &lt; TRUNC(SYSDATE) - 30
     </select>
+    <select id="getPopularEcoItems" resultType="com.futurenet.cotree.admin.dto.response.PopularEcoItemResponse">
+        SELECT *
+        FROM (
+                 SELECT i.name AS itemName, i.id AS itemId, SUM(oi.QUANTITY) AS purchaseCount
+                 FROM item i
+                          JOIN order_item oi ON i.ID = oi.ITEM_ID
+                          JOIN orders o ON oi.ORDER_ID = o.id
+                 WHERE o.status = 'PAID' AND oi.UPDATED_AT &gt; TRUNC(SYSDATE - 30)
+                 GROUP BY i.name, i.id
+                 ORDER BY purchaseCount DESC
+             )
+        WHERE ROWNUM &lt; 11
+    </select>
+
+    <select id="getPurchaseByCategory" resultType="com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse">
+        SELECT
+            ic.name AS categoryName,
+            SUM(CASE WHEN i.is_green = 'N' THEN oi.quantity ELSE 0 END) AS normalItemPurchaseCount,
+            SUM(CASE WHEN i.is_green = 'Y' THEN oi.quantity ELSE 0 END) AS ecoItemPurchaseCount
+        FROM item i
+                 JOIN item_category ic ON i.CATEGORY_ID = ic.id
+                 JOIN order_item oi ON i.id = oi.item_id
+                 JOIN orders o ON oi.order_id = o.id
+        WHERE o.status = 'PAID'
+          AND o.updated_at &gt; SYSDATE - 30
+        GROUP BY ic.name
+        ORDER BY ic.name
+    </select>
 </mapper>
