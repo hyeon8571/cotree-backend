@@ -3,9 +3,9 @@ package com.futurenet.cotree.auth.security.filter;
 import com.futurenet.cotree.auth.security.dto.UserAuthDto;
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.auth.util.JwtUtil;
+import com.futurenet.cotree.auth.util.RequestUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String accessToken = extractTokenFromCookie(request);
+        String accessToken = RequestUtil.getAccessToken(request);
 
         if (accessToken != null && !jwtUtil.isExpired(accessToken)) {
             if ("access".equals(jwtUtil.getCategory(accessToken))) {
@@ -42,20 +42,5 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private String extractTokenFromCookie(HttpServletRequest request) {
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("Authorization".equals(cookie.getName())) {
-                    authorization = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        return authorization;
     }
 }

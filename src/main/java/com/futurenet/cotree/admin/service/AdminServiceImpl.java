@@ -9,11 +9,12 @@ import com.futurenet.cotree.admin.dto.response.PointStat;
 import com.futurenet.cotree.admin.repository.AdminRepository;
 import com.futurenet.cotree.admin.service.exception.AdminErrorCode;
 import com.futurenet.cotree.admin.service.exception.AdminException;
-import com.futurenet.cotree.admin.util.AdminTokenUtil;
 import com.futurenet.cotree.greenpoint.repository.GreenPointRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.payment.repository.PaymentRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminLoginResponse login(AdminLoginRequest adminLoginRequest) {
+    public AdminLoginResponse login(AdminLoginRequest adminLoginRequest, HttpServletResponse response) {
         String loginId = adminLoginRequest.getLoginId();
         String password = adminLoginRequest.getPassword();
 
@@ -69,7 +70,13 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException(AdminErrorCode.INVALID_CREDENTIAL);
         }
 
-        String token = AdminTokenUtil.encode(admin.getId());
+        Cookie cookie = new Cookie("admin", admin.getId().toString());
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        response.addCookie(cookie);
+
+        String token =  BCrypt.hashpw(admin.getCode(), BCrypt.gensalt());
         return new AdminLoginResponse(token);
     }
 }
