@@ -16,6 +16,7 @@ import com.futurenet.cotree.order.service.exception.OrderException;
 import com.futurenet.cotree.payment.dto.request.PaymentRequestEvent;
 import com.futurenet.cotree.payment.service.exception.PaymentErrorCode;
 import com.futurenet.cotree.payment.service.exception.PaymentException;
+import com.futurenet.cotree.shoppingbasket.dto.request.ShoppingBasketDeleteRequestEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -68,6 +69,10 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
         }
 
         eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+
+        if (orderRequest.isCart()) {
+            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
+        }
 
         return response.getOrderNumber();
     }
