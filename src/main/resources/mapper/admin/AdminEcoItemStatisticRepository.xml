@@ -26,7 +26,7 @@
         GROUP BY i.name, i.id
         ORDER BY purchaseCount DESC
         )
-        WHERE ROWNUM &lt; 11;
+        WHERE ROWNUM &lt; 11
     </select>
 
     <select id="getPurchaseByCategory" resultType="com.futurenet.cotree.admin.dto.response.EcoPurchaseCategoryResponse">
