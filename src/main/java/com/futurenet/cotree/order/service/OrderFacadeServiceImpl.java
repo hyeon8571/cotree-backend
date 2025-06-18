@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -82,9 +84,9 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
      * */
     @Override
     @Transactional
-    public List<OrderResponse> getOrdersByMember(Long memberId, String status) {
-        List<Order> orders = orderService.getAllOrderByMemberIdAndStatus(memberId, status);
-        orders.sort(Comparator.comparing(Order::getOrderDate).reversed());
+    public List<OrderResponse> getOrdersByMember(Long memberId, String status, int page) {
+        int start = (page - 1) * PAGE_SIZE;
+        List<Order> orders = orderService.getAllOrderByMemberIdAndStatus(memberId, status, start);
 
         List<Long> orderIds = orders.stream()
                 .map(Order::getId)

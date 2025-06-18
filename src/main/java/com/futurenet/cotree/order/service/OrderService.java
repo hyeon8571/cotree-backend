@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface OrderService {
     RegisterOrderResponse registerOrderRequest(OrderRegisterRequest orderRegisterRequest);
-    List<Order> getAllOrderByMemberIdAndStatus(Long memberId, String status);
+    List<Order> getAllOrderByMemberIdAndStatus(Long memberId, String status, int start);
     OrderDetailResponse getOrderByOrderNumber(String orderNumber);
 }
