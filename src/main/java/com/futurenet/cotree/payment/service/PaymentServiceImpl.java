@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,20 +37,48 @@ public class PaymentServiceImpl implements PaymentService {
     private final GreenPointService greenPointService;
     private final OrderItemRepository orderItemRepository;
 
+    /**
+     * 결제 기능: 주문이 성공하면 실행된다. 역할 분리와 성능을 위해 비동기로 처리한다.
+     * 1. 주문한 상품의 아이디를 이용하여 상품 정보를 찾는다.
+     * 2. 결제할 가격을 계산하고 그린 포인트 적립을 위해 친환경 상품 결제 가격을 계산
+     * 3. 그린 포인트 저장
+     * 4. 주문 상태를 PENDING에서 PAID로 업데이트
+     *
+     * @param paymentRequest 주문 정보, 카드 및 은행 정보, 가격 계산 및 포인트 계산을 위한 주문 상품 목록
+     * */
     @Override
     @Transactional
     public void pay(PaymentRequest paymentRequest) {
 
-        // TODO: 반복문 내의 단발성 쿼리 Bulk 처리
+        List<OrderItemRegisterRequest> orderItems = paymentRequest.getOrderItems();
 
         int price = 0;
         int greenPrice = 0;
 
-        for (OrderItemRegisterRequest item : paymentRequest.getOrderItems()) {
-            ItemPriceAndIsEcoResponse itemPriceAndIsEcoResponse = itemRepository.getItemPriceAndIsEcoById(item.getItemId());
-            price += (itemPriceAndIsEcoResponse.getPrice() - itemPriceAndIsEcoResponse.getDiscount()) * item.getQuantity();
-            if (itemPriceAndIsEcoResponse.getIsGreen().equals("Y")) {
-                greenPrice += (itemPriceAndIsEcoResponse.getPrice() - itemPriceAndIsEcoResponse.getDiscount()) * item.getQuantity();
+        List<Long> itemIds = orderItems.stream()
+                .map(OrderItemRegisterRequest::getItemId)
+                .toList();
+
+        List<ItemPriceAndIsEcoResponse> itemInfos = itemRepository.getItemPriceAndIsEcoByIds(itemIds);
+
+        Map<Long, ItemPriceAndIsEcoResponse> itemInfoMap = itemInfos.stream()
+                .collect(Collectors.toMap(ItemPriceAndIsEcoResponse::getId, Function.identity()));
+
+
+        for (OrderItemRegisterRequest item : orderItems) {
+            ItemPriceAndIsEcoResponse info = itemInfoMap.get(item.getItemId());
+
+            if (info == null) {
+                throw new OrderException(OrderErrorCode.ORDER_ITEM_NOT_FOUND);
+            }
+
+            int unitPrice = info.getPrice() - info.getDiscount();
+            int totalPrice = unitPrice * item.getQuantity();
+
+            price += totalPrice;
+
+            if ("Y".equals(info.getIsGreen())) {
+                greenPrice += totalPrice;
             }
         }
 

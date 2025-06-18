@@ -21,16 +21,6 @@ public class OrderItemServiceImpl implements OrderItemService {
 
     @Override
     @Transactional
-    public void registerOrderItem(OrderItemRegisterRequest orderItemRegisterRequest) {
-        int result = orderItemRepository.saveOrderItem(orderItemRegisterRequest);
-
-        if (result == 0) {
-            throw new OrderException(OrderErrorCode.ORDER_ITEM_REGISTER_FAIL);
-        }
-    }
-
-    @Override
-    @Transactional
     public List<OrderItemDto> getAllOrderItemsByOrderIds(List<Long> orderIds) {
         return orderItemRepository.getAllOrderItemsByOrderIds(orderIds);
     }
@@ -39,5 +29,15 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Transactional
     public List<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
         return orderItemRepository.getOrderItemsWithItemInfoByOrderId(orderId);
+    }
+
+    @Override
+    @Transactional
+    public void registerOrderItems(Long orderId, List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+        int result = orderItemRepository.saveOrderItems(orderId, orderItemRegisterRequests);
+
+        if (result != orderItemRegisterRequests.size()) {
+            throw new OrderException(OrderErrorCode.ORDER_ITEM_REGISTER_FAIL);
+        }
     }
 }

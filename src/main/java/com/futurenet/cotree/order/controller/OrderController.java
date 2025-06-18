@@ -36,8 +36,9 @@ public class OrderController {
     }
 
     @GetMapping("/{orderNumber}")
-    public ResponseEntity<?> getOrderDetail(@PathVariable String orderNumber) {
-        OrderDetailResponse result = orderFacadeService.getOrderDetail(orderNumber);
+    public ResponseEntity<?> getOrderDetail(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                            @PathVariable String orderNumber) {
+        OrderDetailResponse result = orderFacadeService.getOrderDetail(orderNumber, userPrincipal.getId());
         return ResponseEntity.ok(new ApiResponse<>("OR102", result));
     }
 }

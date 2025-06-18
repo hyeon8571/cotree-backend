@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ItemPriceAndIsEcoResponse {
+    private Long id;
     private int price;
     private int discount;
     private String isGreen;

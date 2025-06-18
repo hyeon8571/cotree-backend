@@ -7,7 +7,7 @@ import com.futurenet.cotree.order.dto.response.OrderItemResponse;
 import java.util.List;
 
 public interface OrderItemService {
-    void registerOrderItem(OrderItemRegisterRequest orderItemRegisterRequest);
     List<OrderItemDto> getAllOrderItemsByOrderIds(List<Long> orderIds);
     List<OrderItemResponse> getOrderItemsByOrderId(Long orderId);
+    void registerOrderItems(Long orderId, List<OrderItemRegisterRequest> orderItemRegisterRequests);
 }

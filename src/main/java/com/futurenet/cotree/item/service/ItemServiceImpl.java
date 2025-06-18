@@ -10,6 +10,7 @@ import com.futurenet.cotree.item.service.exception.ItemErrorCode;
 import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.member.dto.response.MemberGenderAgeResponse;
 import com.futurenet.cotree.member.repository.MemberRepository;
+import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -37,16 +38,6 @@ public class ItemServiceImpl implements ItemService {
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional
-    public void decreaseStock(Long itemId, int quantity) {
-        int result = itemRepository.decreaseStock(itemId, quantity);
-
-        if (result == 0) {
-            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
-        }
     }
 
     @Override
@@ -88,6 +79,17 @@ public class ItemServiceImpl implements ItemService {
         return itemList.stream()
                 .map(ItemResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void bulkDecreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+
+        int result = itemRepository.bulkDecreaseStock(orderItemRegisterRequests);
+
+        if (result != orderItemRegisterRequests.size()) {
+            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+        }
     }
 
     private void saveMemberActionLog(Long memberId, Long itemId, String keyword) {

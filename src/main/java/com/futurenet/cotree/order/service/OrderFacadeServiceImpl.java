@@ -52,21 +52,14 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrder(OrderRequest orderRequest, Long memberId) {
 
-        // TODO: 반복문 내의 단발성 쿼리 Bulk 처리하기
-
-        for (OrderItemRegisterRequest item : orderRequest.getOrderItems()) {
-            itemService.decreaseStock(item.getItemId(), item.getQuantity());
-        }
+        itemService.bulkDecreaseStock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
 
         RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
 
-        for (OrderItemRegisterRequest item : orderRequest.getOrderItems()) {
-            item.setOrderId(response.getOrderId());
-            orderItemService.registerOrderItem(item);
-        }
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
 
         eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
 
@@ -119,12 +112,16 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
     @Override
     @Transactional
-    public OrderDetailResponse getOrderDetail(String orderNumber) {
+    public OrderDetailResponse getOrderDetail(String orderNumber, Long memberId) {
 
         OrderDetailResponse orderDetailResponse = orderService.getOrderByOrderNumber(orderNumber);
 
         if (orderDetailResponse == null) {
             throw new OrderException(OrderErrorCode.ORDER_NOT_FOUND);
+        }
+
+        if (!memberId.equals(orderDetailResponse.getMemberId())) {
+            throw new OrderException(OrderErrorCode.ORDER_ACCESS_DENIED);
         }
 
         if (!OrderStatus.SUCCESS.getStatus().equals(orderDetailResponse.getStatus())) {
