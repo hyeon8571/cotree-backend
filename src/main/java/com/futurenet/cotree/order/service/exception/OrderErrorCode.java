@@ -13,7 +13,8 @@ public enum OrderErrorCode implements ErrorCode {
     ORDER_ITEM_REGISTER_FAIL("OR001", HttpStatus.BAD_REQUEST),
     ORDER_STATUS_UPDATE_FAIL("OR002", HttpStatus.BAD_REQUEST),
     ORDER_NOT_FOUND("OR003", HttpStatus.BAD_REQUEST),
-    ORDER_ITEM_NOT_FOUND("OR004", HttpStatus.BAD_REQUEST);
+    ORDER_ITEM_NOT_FOUND("OR004", HttpStatus.BAD_REQUEST),
+    ORDER_ACCESS_DENIED("OR005", HttpStatus.FORBIDDEN);
 
     private final String code;
     private final HttpStatus httpStatus;

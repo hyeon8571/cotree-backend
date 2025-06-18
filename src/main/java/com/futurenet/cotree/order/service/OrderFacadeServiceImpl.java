@@ -112,12 +112,16 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
     @Override
     @Transactional
-    public OrderDetailResponse getOrderDetail(String orderNumber) {
+    public OrderDetailResponse getOrderDetail(String orderNumber, Long memberId) {
 
         OrderDetailResponse orderDetailResponse = orderService.getOrderByOrderNumber(orderNumber);
 
         if (orderDetailResponse == null) {
             throw new OrderException(OrderErrorCode.ORDER_NOT_FOUND);
+        }
+
+        if (!memberId.equals(orderDetailResponse.getMemberId())) {
+            throw new OrderException(OrderErrorCode.ORDER_ACCESS_DENIED);
         }
 
         if (!OrderStatus.SUCCESS.getStatus().equals(orderDetailResponse.getStatus())) {

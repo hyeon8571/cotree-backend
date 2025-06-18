@@ -9,5 +9,5 @@ import java.util.List;
 public interface OrderFacadeService {
     String registerOrder(OrderRequest orderRequest, Long memberId);
     List<OrderResponse> getOrdersByMember(Long memberId, String status);
-    OrderDetailResponse getOrderDetail(String orderNumber);
+    OrderDetailResponse getOrderDetail(String orderNumber, Long memberId);
 }

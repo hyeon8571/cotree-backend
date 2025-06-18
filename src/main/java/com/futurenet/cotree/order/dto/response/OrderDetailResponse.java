@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderDetailResponse {
+    private Long memberId;
     private Long orderId;
     private String orderNumber;
     private String destination;

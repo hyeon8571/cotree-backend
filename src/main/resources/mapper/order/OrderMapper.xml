@@ -37,6 +37,7 @@
     <select id="getOrderByOrderNumber" resultType="com.futurenet.cotree.order.dto.response.OrderDetailResponse">
         SELECT
         o.id AS orderId,
+        o.member_id AS memberId,
         o.order_number AS orderNumber,
         o.destination AS destination,
         o.receiver_name AS receiverName,
