@@ -32,4 +32,6 @@ public class OrderRequest {
 
     @NotNull
     private String bankName;
+
+    private boolean isCart;
 }
