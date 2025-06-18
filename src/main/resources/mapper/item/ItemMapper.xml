@@ -24,11 +24,6 @@
         WHERE I.ID = #{id}
     </select>
 
-    <update id="decreaseStock">
-        UPDATE item
-        SET quantity = quantity - #{quantity}
-        WHERE id = #{itemId} AND quantity >= #{quantity}
-    </update>
     <select id="getEcoItems" resultType="com.futurenet.cotree.item.domain.Item">
         SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT,
                I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,
@@ -40,11 +35,15 @@
         OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
-    <select id="getItemPriceAndIsEcoById" resultType="com.futurenet.cotree.payment.dto.response.ItemPriceAndIsEcoResponse">
-        SELECT price, discount, is_green as isGreen
+    <select id="getItemPriceAndIsEcoByIds" resultType="com.futurenet.cotree.payment.dto.response.ItemPriceAndIsEcoResponse">
+        SELECT id, price, discount, is_green as isGreen
         FROM item
-        WHERE id = #{id}
+        WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
+
     <select id="searchItems" resultType="com.futurenet.cotree.item.domain.Item">
         SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT,
         I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,
@@ -76,6 +75,7 @@
         FROM item
         WHERE is_green = 'Y'
     </select>
+
     <select id="getTodayItems" resultType="com.futurenet.cotree.item.domain.Item">
         SELECT *
         FROM (
@@ -88,4 +88,26 @@
         )
         WHERE ROWNUM &lt;= 20
     </select>
+
+    <update id="bulkDecreaseStock">
+        UPDATE item
+        SET quantity = quantity - CASE id
+        <foreach collection="request" item="item" separator=" ">
+            WHEN #{item.itemId} THEN #{item.quantity}
+        </foreach>
+        ELSE 0
+        END
+        WHERE id IN
+        <foreach collection="request" item="item" open="(" separator="," close=")">
+            #{item.itemId}
+        </foreach>
+        AND quantity >= CASE id
+        <foreach collection="request" item="item" separator=" ">
+            WHEN #{item.itemId} THEN #{item.quantity}
+        </foreach>
+        ELSE 0
+        END
+    </update>
+
+
 </mapper>

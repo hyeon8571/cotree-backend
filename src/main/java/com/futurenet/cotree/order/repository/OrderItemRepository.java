@@ -17,4 +17,5 @@ public interface OrderItemRepository {
     int getEcoItemPurchaseCountThisMonth(@Param("memberId") Long memberId, @Param("start") LocalDate start, @Param("end") LocalDate end);
     List<OrderItemResponse> getOrderItemsWithItemInfoByOrderId(Long orderId);
     List<OrderItem> getOrderItemsByOrderId(Long orderId);
+    int saveOrderItems(@Param("orderId") Long orderId, @Param("request") List<OrderItemRegisterRequest> registerRequests);
 }
