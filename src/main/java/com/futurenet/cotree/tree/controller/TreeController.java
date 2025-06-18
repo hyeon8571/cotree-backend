@@ -42,6 +42,7 @@ public class TreeController {
     @GetMapping("/summary")
     public ResponseEntity<?> getTreeSummary(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         Long memberId = (userPrincipal != null) ? userPrincipal.getId() : null;
+        if (memberId == null) return ResponseEntity.noContent().build();
         MyTreeSummaryResponse myTreeSummaryResponse = treeService.getMyTreeSummary(memberId);
         return ResponseEntity.ok(new ApiResponse<>("TR100", myTreeSummaryResponse));
     }

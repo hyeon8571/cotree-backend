@@ -94,9 +94,6 @@ public class TreeServiceImpl implements TreeService {
 
     @Override
     public MyTreeSummaryResponse getMyTreeSummary(Long memberId) {
-        if(memberId==null) {
-            throw new TreeException(TreeErrorCode.UNAUTHORIZED_SUMMARY_REQUEST);
-        }
         LocalDate today = LocalDate.now();
         LocalDate start = today.withDayOfMonth(1);
         LocalDate end = today.withDayOfMonth(today.lengthOfMonth());
