@@ -101,7 +101,7 @@
         <foreach collection="request" item="item" open="(" separator="," close=")">
             #{item.itemId}
         </foreach>
-        AND quantity >= CASE id
+        AND quantity &gt;= CASE id
         <foreach collection="request" item="item" separator=" ">
             WHEN #{item.itemId} THEN #{item.quantity}
         </foreach>
