@@ -1,5 +1,6 @@
 package com.futurenet.cotree.order.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -33,5 +34,6 @@ public class OrderRequest {
     @NotNull
     private String bankName;
 
+    @JsonProperty("isCart")
     private boolean isCart;
 }
