@@ -30,8 +30,9 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<?> getOrders(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                                       @RequestParam(name = "status", required = false) String status) {
-        List<OrderResponse> result = orderFacadeService.getOrdersByMember(userPrincipal.getId(), status);
+                                       @RequestParam(name = "status", required = false) String status,
+                                       @RequestParam(required = false, defaultValue = "1") int page) {
+        List<OrderResponse> result = orderFacadeService.getOrdersByMember(userPrincipal.getId(), status, page);
         return ResponseEntity.ok(new ApiResponse<>("OR101", result));
     }
 

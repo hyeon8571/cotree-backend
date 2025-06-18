@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -38,8 +40,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public List<Order> getAllOrderByMemberIdAndStatus(Long memberId, String status) {
-        return orderRepository.getOrderByMemberIdAndStatus(memberId, status);
+    public List<Order> getAllOrderByMemberIdAndStatus(Long memberId, String status, int start) {
+        return orderRepository.getOrderByMemberIdAndStatus(memberId, status, start, PAGE_SIZE);
     }
 
     @Override

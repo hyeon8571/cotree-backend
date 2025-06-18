@@ -32,6 +32,8 @@
         <if test="status != null and status != ''">
             AND status = #{status}
         </if>
+        ORDER BY updated_at DESC
+        OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
     <select id="getOrderByOrderNumber" resultType="com.futurenet.cotree.order.dto.response.OrderDetailResponse">

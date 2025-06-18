@@ -14,7 +14,7 @@ public interface OrderRepository {
     int saveOrder(@Param("request") OrderRegisterRequest request);
     int updateOrderStatus(@Param("id") Long id, @Param("status") String status);
     List<MemberOrderStatusDto> getOrderStatus(@Param("memberId") Long memberId);
-    List<Order> getOrderByMemberIdAndStatus(@Param("memberId") Long memberId, @Param("status") String status);
+    List<Order> getOrderByMemberIdAndStatus(@Param("memberId") Long memberId, @Param("status") String status, @Param("start") int start, @Param("size") int pageSize);
     OrderDetailResponse getOrderByOrderNumber(String orderNumber);
     Order getOrderByOrderNumberForPayConfirm(String orderNumber);
 }
