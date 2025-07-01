@@ -92,6 +92,15 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @Override
+    @Transactional
+    public List<ItemResponse> getEventItems() {
+        List<Item> itemList = itemRepository.getEventItems();
+        return itemList.stream()
+                .map(ItemResponse::from)
+                .collect(Collectors.toList());
+    }
+
     private void saveMemberActionLog(Long memberId, Long itemId, String keyword) {
         MemberGenderAgeResponse info = memberRepository.getMemberGenderAge(memberId);
         MemberActionRequestEvent event;
