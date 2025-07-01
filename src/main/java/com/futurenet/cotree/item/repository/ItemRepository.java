@@ -20,4 +20,5 @@ public interface ItemRepository {
     List<Item> getTodayItems();
     int bulkDecreaseStock(@Param("request")List<OrderItemRegisterRequest> request);
     List<ItemPriceAndIsEcoResponse> getItemPriceAndIsEcoByIds(@Param("ids") List<Long> ids);
+    List<Item> getEventItems();
 }
