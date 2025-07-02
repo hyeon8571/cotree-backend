@@ -12,6 +12,7 @@ import com.futurenet.cotree.member.dto.response.MemberGenderAgeResponse;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +94,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Cacheable("eventItemsCache")
     @Transactional
     public List<ItemResponse> getEventItems() {
         List<Item> itemList = itemRepository.getEventItems();
