@@ -2,12 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.futurenet.cotree.item.repository.EventItemRepository">
 
+<!--    <select id="getEventItems" resultType="com.futurenet.cotree.item.domain.Item">-->
+<!--        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, EI.EVENT_DISCOUNT AS discount,-->
+<!--               I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,-->
+<!--               B.NAME AS brandName, I.QUANTITY-->
+<!--        FROM EVENT_ITEM EI JOIN ITEM I ON EI.ITEM_ID = I.ID JOIN BRAND B ON I.BRAND_ID = B.ID-->
+<!--        WHERE SYSDATE BETWEEN EI.EVENT_START_TIME AND EI.EVENT_END_TIME-->
+<!--    </select>-->
+
     <select id="getEventItems" resultType="com.futurenet.cotree.item.domain.Item">
-        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, EI.EVENT_DISCOUNT AS discount,
-               I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,
-               B.NAME AS brandName, I.QUANTITY
-        FROM EVENT_ITEM EI JOIN ITEM I ON EI.ITEM_ID = I.ID JOIN BRAND B ON I.BRAND_ID = B.ID
-        WHERE SYSDATE BETWEEN EI.EVENT_START_TIME AND EI.EVENT_END_TIME;
+        SELECT *
+        FROM (
+        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN,
+        EI.EVENT_DISCOUNT AS discount,
+        I.IS_GREEN AS isGreen,
+        I.THUMBNAIL_IMAGE AS thumbnailImage,
+        B.NAME AS brandName,
+        I.QUANTITY,
+        EI.ID AS eventItemId
+        FROM EVENT_ITEM EI
+        JOIN ITEM I ON EI.ITEM_ID = I.ID
+        JOIN BRAND B ON I.BRAND_ID = B.ID
+        ORDER BY EI.ID DESC
+        )
+        WHERE ROWNUM &lt;= 60
     </select>
 
     <insert id="saveEventItems" parameterType="com.futurenet.cotree.item.domain.EventItem">
@@ -15,7 +33,7 @@
             item_id,
             event_discount,
             event_start_time,
-            event_end_time,
+            event_end_time
         )
         VALUES
         <foreach collection="eventItems" item="event" separator=",">

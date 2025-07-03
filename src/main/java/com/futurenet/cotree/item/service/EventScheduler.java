@@ -21,13 +21,13 @@ public class EventScheduler {
     private final EventItemRepository eventItemRepository;
     private final ItemRepository itemRepository;
 
-    @Scheduled(cron = "0 15 16 * * *")
+    @Scheduled(cron = "0 0 19 * * *")
     @Transactional
     public void registerEventItems() {
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime eventStart = now.toLocalDate().atTime(20, 0);
-        LocalDateTime eventEnd = now.toLocalDate().atTime(21, 0);
+        LocalDateTime eventStart = now.toLocalDate().atTime(16, 0);
+        LocalDateTime eventEnd = now.toLocalDate().atTime(17, 0);
 
 
         List<Item> items = itemRepository.getEventItems();
