@@ -52,8 +52,8 @@ public class PaymentServiceImpl implements PaymentService {
 
         List<OrderItemRegisterRequest> orderItems = paymentRequest.getOrderItems();
 
-        int price = 0;
-        int greenPrice = 0;
+        long price = 0;
+        long greenPrice = 0;
 
         List<Long> itemIds = orderItems.stream()
                 .map(OrderItemRegisterRequest::getItemId)
@@ -73,7 +73,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             int unitPrice = info.getPrice() - info.getDiscount();
-            int totalPrice = unitPrice * item.getQuantity();
+            long totalPrice = (long) unitPrice * item.getQuantity();
 
             price += totalPrice;
 

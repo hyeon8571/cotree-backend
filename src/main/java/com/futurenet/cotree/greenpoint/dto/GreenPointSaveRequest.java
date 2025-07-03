@@ -13,13 +13,13 @@ import lombok.Setter;
 public class GreenPointSaveRequest {
     private Long memberId;
     private Long paymentId;
-    private int amount;
+    private long amount;
 
-    public static GreenPointSaveRequest of(Long memberId, Long paymentId, int price) {
+    public static GreenPointSaveRequest of(Long memberId, Long paymentId, long price) {
         return GreenPointSaveRequest.builder()
                 .memberId(memberId)
                 .paymentId(paymentId)
-                .amount((int) (price * GreenPointPolicy.GREEN_POINT_RATE))
+                .amount((long) (price * GreenPointPolicy.GREEN_POINT_RATE))
                 .build();
     }
 }

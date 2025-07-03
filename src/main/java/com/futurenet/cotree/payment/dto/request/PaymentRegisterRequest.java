@@ -14,9 +14,9 @@ public class PaymentRegisterRequest {
     private Long orderId;
     private String cardNumber;
     private String bank;
-    private int price;
+    private long price;
 
-    public static PaymentRegisterRequest of(PaymentRequest paymentRequest, int price) {
+    public static PaymentRegisterRequest of(PaymentRequest paymentRequest, long price) {
         return PaymentRegisterRequest.builder()
                 .orderId(paymentRequest.getOrderId())
                 .cardNumber(paymentRequest.getCardNumber())
