@@ -3,7 +3,7 @@
 <mapper namespace="com.futurenet.cotree.item.repository.EventItemRepository">
 
 <!--    <select id="getEventItems" resultType="com.futurenet.cotree.item.domain.Item">-->
-<!--        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, EI.EVENT_DISCOUNT AS discount,-->
+<!--        SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN, I.DISCOUNT,-->
 <!--               I.IS_GREEN AS isGreen, I.THUMBNAIL_IMAGE as thumbnailImage,-->
 <!--               B.NAME AS brandName, I.QUANTITY-->
 <!--        FROM EVENT_ITEM EI JOIN ITEM I ON EI.ITEM_ID = I.ID JOIN BRAND B ON I.BRAND_ID = B.ID-->
@@ -14,7 +14,7 @@
         SELECT *
         FROM (
         SELECT I.ID, I.CATEGORY_ID, I.NAME, I.PRICE, I.ORIGIN,
-        EI.EVENT_DISCOUNT AS discount,
+        I.DISCOUNT,
         I.IS_GREEN AS isGreen,
         I.THUMBNAIL_IMAGE AS thumbnailImage,
         B.NAME AS brandName,
