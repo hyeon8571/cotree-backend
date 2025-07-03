@@ -119,7 +119,7 @@
                           JOIN BRAND B ON I.BRAND_ID = B.ID
                  ORDER BY I.QUANTITY DESC
              )
-        WHERE ROWNUM &lt;= 60
+        WHERE isGreen = 'Y' AND ROWNUM &lt;= 60
     </select>
 
 
