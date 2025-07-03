@@ -16,7 +16,7 @@ public class OrderDetailResponse {
     private String receiverTel;
     private String request;
     private String status;
-    private int totalPrice;
+    private long totalPrice;
     private int rewardGreenPoint;
     List<OrderItemResponse> orderItems;
 }
