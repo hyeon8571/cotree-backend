@@ -54,10 +54,4 @@ public class ItemController {
         List<ItemResponse> result = itemService.getTodayItems();
         return ResponseEntity.ok(new ApiResponse<>("IT104", result));
     }
-
-    @GetMapping("/event")
-    public ResponseEntity<?> getEventItems() {
-        List<ItemResponse> result = itemService.getEventItems();
-        return ResponseEntity.ok(new ApiResponse<>("IT105", result));
-    }
 }
