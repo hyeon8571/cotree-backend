@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
-      maximum-pool-size: 4
+      maximum-pool-size: 20
       minimum-idle: 2
       connection-timeout: 3000
       idle-timeout: 10000
