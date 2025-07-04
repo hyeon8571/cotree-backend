@@ -3,12 +3,6 @@ spring:
     include: secret
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    hikari:
-      maximum-pool-size: 20
-      minimum-idle: 2
-      connection-timeout: 3000
-      idle-timeout: 300000
-      max-lifetime: 1800000
 
   flyway:
     enabled: false
