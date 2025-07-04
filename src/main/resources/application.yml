@@ -3,7 +3,12 @@ spring:
     include: secret
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@//134.185.103.214:1521/FREEPDB1
+    hikari:
+      maximum-pool-size: 4
+      minimum-idle: 2
+      connection-timeout: 3000
+      idle-timeout: 10000
+      max-lifetime: 30000
 
   flyway:
     enabled: false
@@ -20,3 +25,4 @@ management:
     web:
       exposure:
         include: "prometheus"
+
