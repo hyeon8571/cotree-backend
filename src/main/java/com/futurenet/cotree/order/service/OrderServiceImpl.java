@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
 
@@ -55,6 +56,8 @@ public class OrderServiceImpl implements OrderService {
         int rand = (int)(System.nanoTime() % 900) + 100;
         long value = memberId * rand % 999999;
 
-        return String.format("%s-%06d", timestamp, value);
+        String uuidSuffix = UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase();
+
+        return String.format("%s-%06d-%s", timestamp, value, uuidSuffix);
     }
 }
