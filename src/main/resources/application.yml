@@ -4,7 +4,7 @@ spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
-      maximum-pool-size: 6
+      maximum-pool-size: 15
       minimum-idle: 3
 
   flyway:
