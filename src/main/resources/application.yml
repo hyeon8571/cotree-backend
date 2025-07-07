@@ -3,6 +3,9 @@ spring:
     include: secret
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 6
+      minimum-idle: 2
 
   flyway:
     enabled: false
