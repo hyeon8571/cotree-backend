@@ -15,4 +15,6 @@ public interface ItemService {
     List<ItemResponse> getTodayItems();
     void bulkDecreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
     void decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
+    void decreaseQuantity(Long itemId, int quantity);
+
 }
