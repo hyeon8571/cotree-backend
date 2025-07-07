@@ -20,7 +20,7 @@ public interface ItemRepository {
     List<Item> getTodayItems();
     int bulkDecreaseStock(@Param("request")List<OrderItemRegisterRequest> request);
     int decreaseStock(@Param("request") OrderItemRegisterRequest request);
-    void lockItemsInOrder(@Param("ids") List<Long> ids);
+    List<Long> lockItemsInOrder(@Param("ids") List<Long> ids);
     List<ItemPriceAndIsEcoResponse> getItemPriceAndIsEcoByIds(@Param("ids") List<Long> ids);
     List<Item> getEventItems();
 }
