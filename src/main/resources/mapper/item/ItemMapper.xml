@@ -89,7 +89,7 @@
         WHERE ROWNUM &lt;= 20
     </select>
 
-    <update id="bulkDecreaseStock">
+    <update id="bulkDecreaseStock" parameterType="com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest">
         UPDATE item
         SET quantity = quantity - CASE id
         <foreach collection="request" item="item" separator=" ">
@@ -109,7 +109,7 @@
         END
     </update>
 
-    <update id="decreaseStockById">
+    <update id="decreaseStock" parameterType="com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest">
         UPDATE item
         SET quantity = quantity - #{request.quantity}
         WHERE id = #{request.itemId}
