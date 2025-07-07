@@ -5,6 +5,7 @@ import com.futurenet.cotree.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
@@ -13,7 +14,7 @@ public class PaymentEventHandler {
     private final PaymentService paymentService;
 
     @Async
-    @TransactionalEventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleEvent(PaymentRequestEvent paymentRequestEvent) {
         paymentService.pay(paymentRequestEvent.toDto());
     }

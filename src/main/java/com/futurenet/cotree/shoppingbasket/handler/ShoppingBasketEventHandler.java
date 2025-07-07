@@ -6,6 +6,7 @@ import com.futurenet.cotree.shoppingbasket.service.ShoppingBasketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ShoppingBasketEventHandler {
     private final ShoppingBasketService shoppingBasketService;
 
     @Async
-    @TransactionalEventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleDeleteEvent(ShoppingBasketDeleteRequestEvent deleteRequestEvent) {
         List<Long> itemIds = deleteRequestEvent.getOrderItems().stream()
                 .map(OrderItemRegisterRequest::getItemId)
