@@ -16,6 +16,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,6 +92,21 @@ public class ItemServiceImpl implements ItemService {
 
         if (result != orderItemRegisterRequests.size()) {
             throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+        List<OrderItemRegisterRequest> sortedItems = new ArrayList<>(orderItemRegisterRequests);
+        sortedItems.sort(Comparator.comparing(OrderItemRegisterRequest::getItemId));
+
+        for (OrderItemRegisterRequest orderItemRegisterRequest : sortedItems) {
+            int updated = itemRepository.decreaseStock(orderItemRegisterRequest);
+
+            if (updated == 0) {
+                throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+            }
         }
     }
 

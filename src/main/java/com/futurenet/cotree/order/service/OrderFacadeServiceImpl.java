@@ -51,10 +51,8 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrder(OrderRequest orderRequest, Long memberId) {
 
-        List<OrderItemRegisterRequest> orderItems = new ArrayList<>(orderRequest.getOrderItems());
-        orderItems.sort(Comparator.comparing(OrderItemRegisterRequest::getItemId));
-
-        itemService.bulkDecreaseStock(orderItems);
+        //itemService.bulkDecreaseStock(orderRequest.getOrderItems());
+        itemService.decreaseStock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);

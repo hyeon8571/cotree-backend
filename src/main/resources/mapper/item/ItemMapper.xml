@@ -109,6 +109,13 @@
         END
     </update>
 
+    <update id="decreaseStockById">
+        UPDATE item
+        SET quantity = quantity - #{request.quantity}
+        WHERE id = #{request.itemId}
+          AND quantity >= #{request.quantity}
+    </update>
+
     <select id="getEventItems" resultType="com.futurenet.cotree.item.domain.Item">
         SELECT *
         FROM (
