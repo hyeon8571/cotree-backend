@@ -152,4 +152,21 @@ public class ItemServiceImpl implements ItemService {
         }
 
     }
+
+    @Override
+    @Transactional
+    public void decreaseItemQuantitiesWithLock(List<OrderItemRegisterRequest> orderItems) {
+        List<Long> itemIds = orderItems.stream()
+                .map(OrderItemRegisterRequest::getItemId)
+                .collect(Collectors.toList());
+
+        itemRepository.lockItemsByIds(itemIds);
+
+        int updatedCount = itemRepository.batchDecreaseQuantities(orderItems);
+
+        if (updatedCount != orderItems.size()) {
+            throw new IllegalStateException("재고 부족 또는 차감 실패");
+        }
+    }
 }
+

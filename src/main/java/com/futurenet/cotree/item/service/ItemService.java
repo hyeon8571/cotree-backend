@@ -16,5 +16,6 @@ public interface ItemService {
     void bulkDecreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
     void decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
     void decreaseQuantity(Long itemId, int quantity);
+    void decreaseItemQuantitiesWithLock(List<OrderItemRegisterRequest> request);
 
 }

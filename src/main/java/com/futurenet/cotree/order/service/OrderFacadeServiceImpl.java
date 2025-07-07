@@ -55,7 +55,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrder(OrderRequest orderRequest, Long memberId) {
 
-        itemService.bulkDecreaseStock(orderRequest.getOrderItems());
+        itemService.decreaseItemQuantitiesWithLock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
@@ -154,18 +154,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Override
     @Transactional
     public String registerOrders(OrderRequest orderRequest, Long memberId) {
-
-
-        for(OrderItemRegisterRequest orderItem: orderRequest.getOrderItems()) {
-            try {
-                quantityDecreaseQueue.put(new QuantityDecreaseRequest(orderItem.getItemId(), orderItem.getQuantity()));
-                log.info("재고 차감 요청 큐에 추가: itemId={}, quantity={}", orderItem.getItemId(), orderItem.getQuantity());
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                log.error("재고 차감 요청 큐 추가 중 인터럽트 발생: {}", e.getMessage(), e);
-                throw new OrderException(OrderErrorCode.ORDER_PROCESSING_FAILED);
-            }
-        }
+        itemService.bulkDecreaseStock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
@@ -181,6 +170,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
         }
 
         return response.getOrderNumber();
+
     }
 
 }
