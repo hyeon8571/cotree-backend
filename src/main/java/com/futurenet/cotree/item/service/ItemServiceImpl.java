@@ -132,4 +132,24 @@ public class ItemServiceImpl implements ItemService {
         }
         eventPublisher.publishEvent(event);
     }
+
+    @Override
+    public void decreaseQuantity(Long itemId, int quantity) {
+        Item item = itemRepository.getItem(itemId);
+
+        if (item == null) {
+            throw new ItemException(ItemErrorCode.ITEM_NOT_FOUND);
+        }
+
+        if (item.getQuantity() < quantity) {
+            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+        }
+
+        int updatedRows = itemRepository.decreaseQuantity(itemId, quantity);
+
+        if (updatedRows == 0) {
+            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+        }
+
+    }
 }

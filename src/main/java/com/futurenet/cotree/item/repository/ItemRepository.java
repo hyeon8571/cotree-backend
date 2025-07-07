@@ -23,4 +23,10 @@ public interface ItemRepository {
     List<Long> lockItemsInOrder(@Param("ids") List<Long> ids);
     List<ItemPriceAndIsEcoResponse> getItemPriceAndIsEcoByIds(@Param("ids") List<Long> ids);
     List<Item> getEventItems();
+
+    Item getItem(@Param("id") Long id);
+    int decreaseQuantity(@Param("id") Long id, @Param("quantity") int quantity);
+
+
+
 }
