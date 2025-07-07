@@ -88,6 +88,13 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public void bulkDecreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
 
+        List<Long> itemIds = orderItemRegisterRequests.stream()
+                .map(OrderItemRegisterRequest::getItemId)
+                .sorted()
+                .toList();
+
+        itemRepository.lockItemsInOrder(itemIds);
+
         int result = itemRepository.bulkDecreaseStock(orderItemRegisterRequests);
 
         if (result != orderItemRegisterRequests.size()) {
