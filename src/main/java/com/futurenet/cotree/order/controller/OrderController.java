@@ -42,4 +42,11 @@ public class OrderController {
         OrderDetailResponse result = orderFacadeService.getOrderDetail(orderNumber, userPrincipal.getId());
         return ResponseEntity.ok(new ApiResponse<>("OR102", result));
     }
+
+    @PostMapping("/async")
+    public ResponseEntity<?> createOrders(@Valid @RequestBody OrderRequest orderRequest,
+                                         @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        String orderNumber = orderFacadeService.registerOrders(orderRequest, userPrincipal.getId());
+        return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
+    }
 }

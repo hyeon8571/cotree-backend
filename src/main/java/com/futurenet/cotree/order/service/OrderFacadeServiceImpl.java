@@ -7,6 +7,7 @@ import com.futurenet.cotree.order.dto.OrderItemDto;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRequest;
+import com.futurenet.cotree.order.dto.request.QuantityDecreaseRequest;
 import com.futurenet.cotree.order.dto.response.OrderDetailResponse;
 import com.futurenet.cotree.order.dto.response.OrderItemResponse;
 import com.futurenet.cotree.order.dto.response.OrderResponse;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 import java.util.stream.Collectors;
 
 import static com.futurenet.cotree.global.constant.PaginationConstants.PAGE_SIZE;
@@ -37,6 +39,8 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     private final ItemService itemService;
     private final OrderItemService orderItemService;
     private final ApplicationEventPublisher eventPublisher;
+    private final BlockingQueue<QuantityDecreaseRequest> quantityDecreaseQueue;
+
 
     /**
      * 사용자의 주문 요청을 처리합니다.
@@ -137,4 +141,46 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
         return orderDetailResponse;
     }
+
+    /**
+     * 사용자의 주문 요청을 처리합니다.
+     * 1. 각 주문 상품의 재고를 차감합니다.
+     * 2. 주문 정보를 저장합니다.
+     * 3. 주문 상품 정보를 저장합니다.
+     * 주문 완료 이벤트를 발행하여 결제 처리를 트리거합니다.
+     *
+     * @param orderRequest 사용자의 주문 요청 정보
+     * */
+    @Override
+    @Transactional
+    public String registerOrders(OrderRequest orderRequest, Long memberId) {
+
+
+        for(OrderItemRegisterRequest orderItem: orderRequest.getOrderItems()) {
+            try {
+                quantityDecreaseQueue.put(new QuantityDecreaseRequest(orderItem.getItemId(), orderItem.getQuantity()));
+                log.info("재고 차감 요청 큐에 추가: itemId={}, quantity={}", orderItem.getItemId(), orderItem.getQuantity());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error("재고 차감 요청 큐 추가 중 인터럽트 발생: {}", e.getMessage(), e);
+                throw new OrderException(OrderErrorCode.ORDER_PROCESSING_FAILED);
+            }
+        }
+
+        OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
+        orderRegisterRequest.setMemberId(memberId);
+
+        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
+
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+
+        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+
+        if (orderRequest.isCart()) {
+            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
+        }
+
+        return response.getOrderNumber();
+    }
+
 }
