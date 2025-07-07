@@ -1,6 +1,7 @@
 package com.futurenet.cotree.order.service;
 
 import com.futurenet.cotree.item.service.ItemService;
+import com.futurenet.cotree.item.service.RedisStockService;
 import com.futurenet.cotree.order.constant.OrderStatus;
 import com.futurenet.cotree.order.domain.Order;
 import com.futurenet.cotree.order.dto.OrderItemDto;
@@ -40,6 +41,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     private final OrderItemService orderItemService;
     private final ApplicationEventPublisher eventPublisher;
     private final BlockingQueue<QuantityDecreaseRequest> quantityDecreaseQueue;
+    private final RedisStockService redisStockService;
 
 
     /**
@@ -166,6 +168,28 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
                 throw new OrderException(OrderErrorCode.ORDER_PROCESSING_FAILED);
             }
         }
+
+        OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
+        orderRegisterRequest.setMemberId(memberId);
+
+        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
+
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+
+        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+
+        if (orderRequest.isCart()) {
+            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
+        }
+
+        return response.getOrderNumber();
+    }
+
+    @Override
+    @Transactional
+    public String registerEventOrder(OrderRequest orderRequest, Long memberId) {
+
+        redisStockService.decreaseStock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
