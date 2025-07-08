@@ -30,13 +30,14 @@ jobs:
 
             export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
 
-            # ✅ 기존에 수동으로 띄운 컨테이너 정리
+            # 🔥 기존 수동 컨테이너 정리 (이름 정확히 확인할 것)
             sudo docker stop cotree-app redis-server prometheus grafana || true
             sudo docker rm cotree-app redis-server prometheus grafana || true
             sudo docker network prune -f || true
 
-            # ✅ 새로 컴포즈로 올리기
+            # ✅ 최신 코드 반영을 위한 빌드 및 배포
+            ./gradlew clean build -x test || exit 1
             sudo docker compose down || true
-            sudo docker compose build || exit 1
+            sudo docker compose build --no-cache || exit 1
             sudo docker compose up -d || exit 1
           EOF
