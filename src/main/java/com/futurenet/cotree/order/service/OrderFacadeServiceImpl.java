@@ -5,7 +5,6 @@ import com.futurenet.cotree.item.service.RedisStockService;
 import com.futurenet.cotree.order.constant.OrderStatus;
 import com.futurenet.cotree.order.domain.Order;
 import com.futurenet.cotree.order.dto.OrderItemDto;
-import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRegisterRequest;
 import com.futurenet.cotree.order.dto.request.OrderRequest;
 import com.futurenet.cotree.order.dto.request.QuantityDecreaseRequest;
@@ -57,7 +56,9 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrder(OrderRequest orderRequest, Long memberId) {
 
-        itemService.bulkDecreaseStockWithLock(orderRequest.getOrderItems());
+        if (!itemService.bulkDecreaseStockWithLock(orderRequest.getOrderItems())) {
+            return null;
+        }
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
@@ -200,7 +201,9 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Override
     @Transactional
     public String registerOrderV2(OrderRequest orderRequest, Long memberId) {
-        itemService.decreaseStock(orderRequest.getOrderItems());
+        if (!itemService.decreaseStock(orderRequest.getOrderItems())) {
+            return null;
+        }
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
@@ -221,7 +224,9 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Override
     @Transactional
     public String registerOrderV3(OrderRequest orderRequest, Long memberId) {
-        itemService.bulkDecrease(orderRequest.getOrderItems());
+        if (!itemService.bulkDecrease(orderRequest.getOrderItems())) {
+            return null;
+        }
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);

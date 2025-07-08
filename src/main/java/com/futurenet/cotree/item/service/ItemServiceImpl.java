@@ -6,8 +6,6 @@ import com.futurenet.cotree.item.domain.Item;
 import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.repository.ItemRepository;
-import com.futurenet.cotree.item.service.exception.ItemErrorCode;
-import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.member.dto.response.MemberGenderAgeResponse;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
@@ -86,7 +84,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void bulkDecreaseStockWithLock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+    public boolean bulkDecreaseStockWithLock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
 
         List<Long> itemIds = orderItemRegisterRequests.stream()
                 .map(OrderItemRegisterRequest::getItemId)
@@ -97,14 +95,12 @@ public class ItemServiceImpl implements ItemService {
 
         int result = itemRepository.bulkDecreaseStock(orderItemRegisterRequests);
 
-        if (result != orderItemRegisterRequests.size()) {
-            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
-        }
+        return result == orderItemRegisterRequests.size();
     }
 
     @Override
     @Transactional
-    public void decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+    public boolean decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
         List<OrderItemRegisterRequest> sortedItems = new ArrayList<>(orderItemRegisterRequests);
         sortedItems.sort(Comparator.comparing(OrderItemRegisterRequest::getItemId));
 
@@ -112,18 +108,17 @@ public class ItemServiceImpl implements ItemService {
             int updated = itemRepository.decreaseStock(orderItemRegisterRequest);
 
             if (updated == 0) {
-                throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+                return false;
             }
         }
+        return true;
     }
 
     @Override
     @Transactional
-    public void bulkDecrease(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+    public boolean bulkDecrease(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
         int updated = itemRepository.bulkDecreaseStock(orderItemRegisterRequests);
-        if (updated == 0) {
-            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
-        }
+        return updated != 0;
     }
 
     private void saveMemberActionLog(Long memberId, Long itemId, String keyword) {
