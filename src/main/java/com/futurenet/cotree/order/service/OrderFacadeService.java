@@ -12,4 +12,5 @@ public interface OrderFacadeService {
     OrderDetailResponse getOrderDetail(String orderNumber, Long memberId);
     String registerOrders(OrderRequest orderRequest, Long memberId);
     String registerEventOrder(OrderRequest orderRequest, Long memberId);
+    String registerOrderV2(OrderRequest orderRequest, Long memberId);
 }

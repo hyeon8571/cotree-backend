@@ -15,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 @RestController
 @RequestMapping("/orders")
@@ -59,6 +58,14 @@ public class OrderController {
                                               @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
         String orderNumber = orderFacadeService.registerEventOrder(orderRequest, userPrincipal.getId());
+        return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
+    }
+
+    @PostMapping("/v2")
+    public ResponseEntity<?> createOrder2(@Valid @RequestBody OrderRequest orderRequest,
+                                              @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        String orderNumber = orderFacadeService.registerOrderV2(orderRequest, userPrincipal.getId());
         return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
     }
 }

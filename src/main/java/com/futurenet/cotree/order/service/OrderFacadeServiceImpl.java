@@ -59,22 +59,20 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
         itemService.bulkDecreaseStock(orderRequest.getOrderItems());
 
-//        OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
-//        orderRegisterRequest.setMemberId(memberId);
-//
-//        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
-//
-//        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
-//
-//        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
-//
-//        if (orderRequest.isCart()) {
-//            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
-//        }
+        OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
+        orderRegisterRequest.setMemberId(memberId);
 
-        //return response.getOrderNumber();
+        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
 
-        return null;
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+
+        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+
+        if (orderRequest.isCart()) {
+            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
+        }
+
+        return response.getOrderNumber();
     }
 
 
@@ -188,9 +186,30 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
         RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
 
-        //orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
 
-        //eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+
+        if (orderRequest.isCart()) {
+            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
+        }
+
+        return response.getOrderNumber();
+    }
+
+    @Override
+    @Transactional
+    public String registerOrderV2(OrderRequest orderRequest, Long memberId) {
+        itemService.decreaseStock(orderRequest.getOrderItems());
+
+        OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
+        orderRegisterRequest.setMemberId(memberId);
+
+        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
+
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+
+        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
 
         if (orderRequest.isCart()) {
             eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
