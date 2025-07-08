@@ -6,6 +6,8 @@ import com.futurenet.cotree.item.domain.Item;
 import com.futurenet.cotree.item.dto.response.ItemDetailResponse;
 import com.futurenet.cotree.item.dto.response.ItemResponse;
 import com.futurenet.cotree.item.repository.ItemRepository;
+import com.futurenet.cotree.item.service.exception.ItemErrorCode;
+import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.member.dto.response.MemberGenderAgeResponse;
 import com.futurenet.cotree.member.repository.MemberRepository;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
@@ -100,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public boolean decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+    public void decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
         List<OrderItemRegisterRequest> sortedItems = new ArrayList<>(orderItemRegisterRequests);
         sortedItems.sort(Comparator.comparing(OrderItemRegisterRequest::getItemId));
 
@@ -108,10 +110,9 @@ public class ItemServiceImpl implements ItemService {
             int updated = itemRepository.decreaseStock(orderItemRegisterRequest);
 
             if (updated == 0) {
-                return false;
+                throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
             }
         }
-        return true;
     }
 
     @Override

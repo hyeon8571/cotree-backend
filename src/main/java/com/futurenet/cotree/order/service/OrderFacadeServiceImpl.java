@@ -201,9 +201,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Override
     @Transactional
     public String registerOrderV2(OrderRequest orderRequest, Long memberId) {
-        if (!itemService.decreaseStock(orderRequest.getOrderItems())) {
-            return null;
-        }
+        itemService.decreaseStock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
