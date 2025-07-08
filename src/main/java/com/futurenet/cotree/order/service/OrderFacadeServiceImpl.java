@@ -219,6 +219,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     }
 
     @Override
+    @Transactional
     public String registerOrderV3(OrderRequest orderRequest, Long memberId) {
         itemService.bulkDecrease(orderRequest.getOrderItems());
 
