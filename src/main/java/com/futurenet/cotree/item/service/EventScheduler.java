@@ -52,8 +52,7 @@ public class EventScheduler {
         } else {
             items.forEach(item -> {
                 String key = "stock:" + item.getId();
-                int quantity = item.getQuantity();
-                redisTemplate.opsForValue().set(key, String.valueOf(quantity));
+                redisTemplate.opsForValue().set(key, String.valueOf(100));
             });
         }
     }
