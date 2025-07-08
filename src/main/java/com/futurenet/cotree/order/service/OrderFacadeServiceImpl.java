@@ -186,7 +186,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
         RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
 
-        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+        //orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
 
         eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
 
