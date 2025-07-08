@@ -154,11 +154,17 @@
 
 
     <update id="batchDecreaseQuantities" parameterType="list">
-        <foreach collection="list" item="item" separator=";">
-            UPDATE item
-            SET quantity = quantity - #{item.quantity}
-            WHERE id = #{item.itemId}
-            AND quantity >= #{item.quantity}
+        UPDATE item
+        SET quantity = quantity -
+        CASE
+        <foreach collection="list" item="item" separator=" " >
+            WHEN id = #{item.itemId} THEN #{item.quantity}
+        </foreach>
+        ELSE 0
+        END
+        WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.itemId}
         </foreach>
     </update>
 </mapper>
