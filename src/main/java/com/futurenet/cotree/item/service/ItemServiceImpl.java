@@ -86,7 +86,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void bulkDecreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+    public void bulkDecreaseStockWithLock(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
 
         List<Long> itemIds = orderItemRegisterRequests.stream()
                 .map(OrderItemRegisterRequest::getItemId)
@@ -117,6 +117,15 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @Override
+    @Transactional
+    public void bulkDecrease(List<OrderItemRegisterRequest> orderItemRegisterRequests) {
+        int updated = itemRepository.bulkDecreaseStock(orderItemRegisterRequests);
+        if (updated == 0) {
+            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+        }
+    }
+
     private void saveMemberActionLog(Long memberId, Long itemId, String keyword) {
         MemberGenderAgeResponse info = memberRepository.getMemberGenderAge(memberId);
         MemberActionRequestEvent event;
@@ -131,26 +140,6 @@ public class ItemServiceImpl implements ItemService {
             event = new MemberActionRequestEvent(memberId, info.getGender(),age, keyword);
         }
         eventPublisher.publishEvent(event);
-    }
-
-    @Override
-    public void decreaseQuantity(Long itemId, int quantity) {
-        Item item = itemRepository.getItem(itemId);
-
-        if (item == null) {
-            throw new ItemException(ItemErrorCode.ITEM_NOT_FOUND);
-        }
-
-        if (item.getQuantity() < quantity) {
-            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
-        }
-
-        int updatedRows = itemRepository.decreaseQuantity(itemId, quantity);
-
-        if (updatedRows == 0) {
-            throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
-        }
-
     }
 
     @Override

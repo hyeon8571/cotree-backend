@@ -68,4 +68,12 @@ public class OrderController {
         String orderNumber = orderFacadeService.registerOrderV2(orderRequest, userPrincipal.getId());
         return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
     }
+
+    @PostMapping("/v3")
+    public ResponseEntity<?> createOrder3(@Valid @RequestBody OrderRequest orderRequest,
+                                          @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        String orderNumber = orderFacadeService.registerOrderV3(orderRequest, userPrincipal.getId());
+        return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
+    }
 }

@@ -57,7 +57,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrder(OrderRequest orderRequest, Long memberId) {
 
-        itemService.bulkDecreaseStock(orderRequest.getOrderItems());
+        itemService.bulkDecreaseStockWithLock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
@@ -201,6 +201,26 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrderV2(OrderRequest orderRequest, Long memberId) {
         itemService.decreaseStock(orderRequest.getOrderItems());
+
+        OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
+        orderRegisterRequest.setMemberId(memberId);
+
+        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
+
+        orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
+
+        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+
+        if (orderRequest.isCart()) {
+            eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
+        }
+
+        return response.getOrderNumber();
+    }
+
+    @Override
+    public String registerOrderV3(OrderRequest orderRequest, Long memberId) {
+        itemService.bulkDecrease(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
