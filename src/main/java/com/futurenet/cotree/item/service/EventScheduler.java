@@ -4,6 +4,7 @@ import com.futurenet.cotree.item.domain.EventItem;
 import com.futurenet.cotree.item.domain.Item;
 import com.futurenet.cotree.item.repository.EventItemRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,7 +24,8 @@ public class EventScheduler {
     private final ItemRepository itemRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "0 59 10 * * *")
+    //@Scheduled(cron = "0 59 10 * * *")
+    @PostConstruct
     @Transactional
     public void registerEventItems() {
 
