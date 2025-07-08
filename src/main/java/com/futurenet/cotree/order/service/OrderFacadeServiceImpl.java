@@ -184,17 +184,18 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
 
-        RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
+        //RegisterOrderResponse response = orderService.registerOrderRequest(orderRegisterRequest);
 
         //orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
 
-        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+        //eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
 
         if (orderRequest.isCart()) {
             eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
         }
 
-        return response.getOrderNumber();
+        //return response.getOrderNumber();
+        return null;
     }
 
 }
