@@ -4,6 +4,7 @@ import com.futurenet.cotree.item.service.exception.ItemErrorCode;
 import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RedisStockService {
@@ -41,9 +43,18 @@ public class RedisStockService {
         redisScript.setScriptText(DECREASE_STOCK_LUA);
         redisScript.setResultType(Long.class);
 
+        log.info("재고 감소 요청: keys = {}, quantities = {}", keys, quantities);
+        log.info("Lua Script 실행 전 stock 상태 확인");
+        keys.forEach(k -> log.info("{} = {}", k, redisTemplate.opsForValue().get(k)));
+
+
         String[] args = quantities.toArray(new String[0]);
 
         Long result = redisTemplate.execute(redisScript, keys, args);
+
+        log.info("Lua Script 실행 결과: {}", result);
+        log.info("Lua Script 실행 후 stock 상태 확인");
+        keys.forEach(k -> log.info("{} = {}", k, redisTemplate.opsForValue().get(k)));
 
         if (result == null) {
             throw new ItemException(ItemErrorCode.ITEM_NOT_FOUND);
