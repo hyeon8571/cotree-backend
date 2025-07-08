@@ -190,7 +190,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
 
         //orderItemService.registerOrderItems(response.getOrderId(), orderRequest.getOrderItems());
 
-        eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
+        //eventPublisher.publishEvent(PaymentRequestEvent.of(response.getOrderId(), memberId, orderRequest));
 
         if (orderRequest.isCart()) {
             eventPublisher.publishEvent(new ShoppingBasketDeleteRequestEvent(memberId, orderRequest.getOrderItems()));
