@@ -26,13 +26,16 @@ jobs:
             cd ~/cotree-backend || exit 1
             git pull origin main || exit 1
 
-            # 🔑 application-secret.yml 복원
             echo "${{ secrets.APPLICATION_SECRET_YML }}" | base64 --decode > src/main/resources/application-secret.yml
 
-            # 🔑 Redis 비밀번호 export
             export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
 
-            # 🔑 Compose down -> build -> up
+            # ✅ 기존에 수동으로 띄운 컨테이너 정리
+            sudo docker stop cotree-app redis-server prometheus grafana || true
+            sudo docker rm cotree-app redis-server prometheus grafana || true
+            sudo docker network prune -f || true
+
+            # ✅ 새로 컴포즈로 올리기
             sudo docker compose down || true
             sudo docker compose build || exit 1
             sudo docker compose up -d || exit 1
