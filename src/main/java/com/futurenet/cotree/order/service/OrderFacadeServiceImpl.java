@@ -179,7 +179,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerEventOrder(OrderRequest orderRequest, Long memberId) {
 
-        //redisStockService.decreaseStock(orderRequest.getOrderItems());
+        redisStockService.decreaseStock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
