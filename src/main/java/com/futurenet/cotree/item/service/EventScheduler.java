@@ -21,9 +21,9 @@ public class EventScheduler {
 
     private final EventItemRepository eventItemRepository;
     private final ItemRepository itemRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    @Scheduled(cron = "0 26 10 * * *")
+    @Scheduled(cron = "0 32 10 * * *")
     @Transactional
     public void registerEventItems() {
 
