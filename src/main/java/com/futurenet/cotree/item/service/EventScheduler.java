@@ -23,7 +23,7 @@ public class EventScheduler {
     private final ItemRepository itemRepository;
     private final RedisTemplate<String, Object> redisTemplate;
 
-    @Scheduled(cron = "0 55 9 * * *")
+    @Scheduled(cron = "0 6 10 * * *")
     @Transactional
     public void registerEventItems() {
 
@@ -51,7 +51,7 @@ public class EventScheduler {
             items.forEach(item -> {
                 String key = "stock:" + item.getId();
                 int quantity = item.getQuantity();
-                redisTemplate.opsForValue().set(key, String.valueOf(quantity));
+                redisTemplate.opsForValue().set("stock:" + item.getId(), String.valueOf(quantity));
             });
         }
     }
