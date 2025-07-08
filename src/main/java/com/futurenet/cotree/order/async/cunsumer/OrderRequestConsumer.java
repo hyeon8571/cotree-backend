@@ -32,7 +32,7 @@ public class OrderRequestConsumer implements Runnable {
 
     @PostConstruct
     public void startConsumerThread() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             Thread thread = new Thread(this, "OrderRequestConsumer-" + i);
             thread.start();
         }

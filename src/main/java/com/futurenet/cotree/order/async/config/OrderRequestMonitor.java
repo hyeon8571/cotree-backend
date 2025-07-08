@@ -18,6 +18,5 @@ public class OrderRequestMonitor {
         int total = consumer.getTotalRequestCount();
         int done = consumer.getCompletedCount();
         int waiting = consumer.getQueueSize();
-        log.info("🕒 주문 처리 현황: 완료 {}/{}건, 대기 중: {}", done, total, waiting);
     }
 }
