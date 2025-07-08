@@ -43,18 +43,9 @@ public class RedisStockService {
         redisScript.setScriptText(DECREASE_STOCK_LUA);
         redisScript.setResultType(Long.class);
 
-        log.info("재고 감소 요청: keys = {}, quantities = {}", keys, quantities);
-        log.info("Lua Script 실행 전 stock 상태 확인");
-        keys.forEach(k -> log.info("{} = {}", k, redisTemplate.opsForValue().get(k)));
-
-
         String[] args = quantities.toArray(new String[0]);
 
         Long result = redisTemplate.execute(redisScript, keys, args);
-
-        log.info("Lua Script 실행 결과: {}", result);
-        log.info("Lua Script 실행 후 stock 상태 확인");
-        keys.forEach(k -> log.info("{} = {}", k, redisTemplate.opsForValue().get(k)));
 
         if (result == null) {
             throw new ItemException(ItemErrorCode.ITEM_NOT_FOUND);
