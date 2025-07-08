@@ -2,6 +2,8 @@ package com.futurenet.cotree.order.controller;
 
 import com.futurenet.cotree.auth.security.dto.UserPrincipal;
 import com.futurenet.cotree.global.dto.response.ApiResponse;
+import com.futurenet.cotree.order.async.cunsumer.OrderRequestConsumer;
+import com.futurenet.cotree.order.async.dto.request.OrderRequestWithMember;
 import com.futurenet.cotree.order.dto.request.OrderRequest;
 import com.futurenet.cotree.order.dto.response.OrderDetailResponse;
 import com.futurenet.cotree.order.dto.response.OrderResponse;
@@ -13,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 @RestController
 @RequestMapping("/orders")
@@ -20,6 +23,7 @@ import java.util.List;
 public class OrderController {
 
     private final OrderFacadeService orderFacadeService;
+    private final OrderRequestConsumer orderRequestConsumer;
 
     @PostMapping
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequest orderRequest,
@@ -46,8 +50,8 @@ public class OrderController {
     @PostMapping("/async")
     public ResponseEntity<?> createOrders(@Valid @RequestBody OrderRequest orderRequest,
                                          @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        String orderNumber = orderFacadeService.registerOrders(orderRequest, userPrincipal.getId());
-        return ResponseEntity.ok(new ApiResponse<>("OR100", orderNumber));
+        orderRequestConsumer.addRequest(new OrderRequestWithMember(orderRequest, userPrincipal.getId()));
+        return ResponseEntity.ok(new ApiResponse<>("OR101", "주문 접수"));
     }
 
     @PostMapping("/event")

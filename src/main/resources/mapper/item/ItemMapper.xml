@@ -142,18 +142,23 @@
     </select>
 
 
-    <select id="getItem" resultType="com.futurenet.cotree.item.domain.Item">
-        SELECT id,quantity
+    <select id="lockItemsByIds" resultType="com.futurenet.cotree.item.domain.Item" parameterType="list">
+        SELECT id, quantity
         FROM item
-        WHERE id=#{id}
-            FOR UPDATE
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        FOR UPDATE
     </select>
 
 
-    <update id="decreaseQuantity">
-        UPDATE item
-        SET quantity = quantity - #{quantity}
-        WHERE id = #{id}
-          AND quantity >= #{quantity}
+    <update id="batchDecreaseQuantity" parameterType="list">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE item
+            SET quantity = quantity - #{item.quantity}
+            WHERE id = #{item.itemId}
+            AND quantity >= #{item.quantity}
+        </foreach>
     </update>
 </mapper>

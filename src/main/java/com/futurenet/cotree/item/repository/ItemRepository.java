@@ -27,6 +27,8 @@ public interface ItemRepository {
     Item getItem(@Param("id") Long id);
     int decreaseQuantity(@Param("id") Long id, @Param("quantity") int quantity);
 
+    void lockItemsByIds(@Param("list") List<Long> itemIds);
+    int batchDecreaseQuantities(@Param("list") List<OrderItemRegisterRequest> items);
 
 
 }
