@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RedisStockService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     private static final String DECREASE_STOCK_LUA =
             "for i = 1, #KEYS do " +
@@ -41,7 +41,9 @@ public class RedisStockService {
         redisScript.setScriptText(DECREASE_STOCK_LUA);
         redisScript.setResultType(Long.class);
 
-        Long result = redisTemplate.execute(redisScript, keys, quantities.toArray());
+        String[] args = quantities.toArray(new String[0]);
+
+        Long result = redisTemplate.execute(redisScript, keys, args);
 
         if (result == null) {
             throw new ItemException(ItemErrorCode.ITEM_NOT_FOUND);
