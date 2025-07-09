@@ -56,9 +56,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Transactional
     public String registerOrder(OrderRequest orderRequest, Long memberId) {
 
-        if (!itemService.bulkDecreaseStockWithLock(orderRequest.getOrderItems())) {
-            return null;
-        }
+        itemService.bulkDecreaseStockWithLock(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);
@@ -222,9 +220,7 @@ public class OrderFacadeServiceImpl implements OrderFacadeService {
     @Override
     @Transactional
     public String registerOrderV3(OrderRequest orderRequest, Long memberId) {
-        if (!itemService.bulkDecrease(orderRequest.getOrderItems())) {
-            return null;
-        }
+        itemService.bulkDecrease(orderRequest.getOrderItems());
 
         OrderRegisterRequest orderRegisterRequest = OrderRegisterRequest.from(orderRequest);
         orderRegisterRequest.setMemberId(memberId);

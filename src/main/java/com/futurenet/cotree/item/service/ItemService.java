@@ -13,9 +13,9 @@ public interface ItemService {
     List<ItemResponse> getEcoItems(int page);
     List<ItemResponse> searchItems(UserPrincipal userPrincipal, String keyword, Long categoryId, int page, String isGreen);
     List<ItemResponse> getTodayItems();
-    boolean bulkDecreaseStockWithLock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
+    void bulkDecreaseStockWithLock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
     void decreaseStock(List<OrderItemRegisterRequest> orderItemRegisterRequests);
-    boolean bulkDecrease(List<OrderItemRegisterRequest> orderItemRegisterRequests);
+    void bulkDecrease(List<OrderItemRegisterRequest> orderItemRegisterRequests);
     void decreaseItemQuantitiesWithLock(List<OrderItemRegisterRequest> request);
 
 }
