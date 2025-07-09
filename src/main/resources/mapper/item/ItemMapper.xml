@@ -167,4 +167,11 @@
             #{item.itemId}
         </foreach>
     </update>
+
+    <update id="decreaseEventItemStock">
+        UPDATE item
+        SET quantity = quantity - #{quantity}
+        WHERE id = #{itemId}
+          AND quantity >= #{quantity}
+    </update>
 </mapper>

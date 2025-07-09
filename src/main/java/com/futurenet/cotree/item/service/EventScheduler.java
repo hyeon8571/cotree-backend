@@ -56,7 +56,7 @@ public class EventScheduler {
 //            });
             for (int i = 1; i <= 60; i++) {
                 String key = "stock:" + i;
-                redisTemplate.opsForValue().set(key, String.valueOf(9000));
+                redisTemplate.opsForValue().set(key, String.valueOf(90000));
             }
         }
     }
