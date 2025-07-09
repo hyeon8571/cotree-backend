@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,7 @@ public class StockBatchProcessor {
     private static final String QUEUE_KEY = "stock:queue";
     private static final String FAIL_QUEUE_KEY = "stock:fail";
 
-    @Scheduled(cron = "0 */3 * * * *")
-    @Transactional
+    @Scheduled(cron = "0 */10 20 * * *")
     public void syncStockBatch() {
         int batchSize = 100;
         List<String> logs = redisTemplate.opsForList().range(QUEUE_KEY, -batchSize, -1);

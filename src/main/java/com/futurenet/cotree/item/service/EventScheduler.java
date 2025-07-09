@@ -4,7 +4,6 @@ import com.futurenet.cotree.item.domain.EventItem;
 import com.futurenet.cotree.item.domain.Item;
 import com.futurenet.cotree.item.repository.EventItemRepository;
 import com.futurenet.cotree.item.repository.ItemRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,8 +23,7 @@ public class EventScheduler {
     private final ItemRepository itemRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
-    //@Scheduled(cron = "0 59 10 * * *")
-    @PostConstruct
+    @Scheduled(cron = "0 0 19 * * *")
     @Transactional
     public void registerEventItems() {
 
@@ -50,14 +48,11 @@ public class EventScheduler {
         if (result == 0) {
             log.info("행사 상품 등록 실패");
         } else {
-//            items.forEach(item -> {
-//                String key = "stock:" + item.getId();
-//                redisTemplate.opsForValue().set(key, String.valueOf(600));
-//            });
-            for (int i = 1; i <= 60; i++) {
-                String key = "stock:" + i;
-                redisTemplate.opsForValue().set(key, String.valueOf(90000));
-            }
+            items.forEach(item -> {
+                String key = "stock:" + item.getId();
+                redisTemplate.opsForValue().set(key, String.valueOf(300));
+            });
+
         }
     }
 }
