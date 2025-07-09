@@ -50,10 +50,14 @@ public class EventScheduler {
         if (result == 0) {
             log.info("행사 상품 등록 실패");
         } else {
-            items.forEach(item -> {
-                String key = "stock:" + item.getId();
+//            items.forEach(item -> {
+//                String key = "stock:" + item.getId();
+//                redisTemplate.opsForValue().set(key, String.valueOf(600));
+//            });
+            for (int i = 1; i <= 60; i++) {
+                String key = "stock:" + i;
                 redisTemplate.opsForValue().set(key, String.valueOf(600));
-            });
+            }
         }
     }
 }
