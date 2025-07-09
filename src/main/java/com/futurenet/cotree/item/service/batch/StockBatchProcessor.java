@@ -25,7 +25,7 @@ public class StockBatchProcessor {
     private static final String QUEUE_KEY = "stock:queue";
     private static final String FAIL_QUEUE_KEY = "stock:fail";
 
-    @Scheduled(cron = "0 1 * * * *")
+    @Scheduled(cron = "0 */3 * * * *")
     @Transactional
     public void syncStockBatch() {
         int batchSize = 100;

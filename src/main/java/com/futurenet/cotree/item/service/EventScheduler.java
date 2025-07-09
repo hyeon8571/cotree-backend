@@ -52,7 +52,7 @@ public class EventScheduler {
         } else {
             items.forEach(item -> {
                 String key = "stock:" + item.getId();
-                redisTemplate.opsForValue().set(key, String.valueOf(300));
+                redisTemplate.opsForValue().set(key, String.valueOf(600));
             });
         }
     }
