@@ -1,5 +1,6 @@
 package com.futurenet.cotree.item.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.futurenet.cotree.item.service.exception.ItemErrorCode;
 import com.futurenet.cotree.item.service.exception.ItemException;
 import com.futurenet.cotree.order.dto.request.OrderItemRegisterRequest;
@@ -9,7 +10,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class RedisStockService {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     private static final String DECREASE_STOCK_LUA =
             "for i = 1, #KEYS do " +
@@ -30,7 +35,7 @@ public class RedisStockService {
                     "end " +
                     "return 1";
 
-    public void decreaseStock(List<OrderItemRegisterRequest> items) {
+    public void decreaseStock(List<OrderItemRegisterRequest> items, Long memberId) {
         List<String> keys = items.stream()
                 .map(item -> "stock:" + item.getItemId())
                 .collect(Collectors.toList());
@@ -57,6 +62,21 @@ public class RedisStockService {
 
         if (result == -2L) {
             throw new ItemException(ItemErrorCode.ITEM_QUANTITY_LACK);
+        }
+
+        for (OrderItemRegisterRequest item : items) {
+            try {
+                Map<String, Object> logEntry = new HashMap<>();
+                logEntry.put("itemId", item.getItemId());
+                logEntry.put("memberId", memberId);
+                logEntry.put("quantity", item.getQuantity());
+                logEntry.put("timestamp", LocalDateTime.now().toString());
+
+                String json = objectMapper.writeValueAsString(logEntry);
+                redisTemplate.opsForList().leftPush("stock:queue", json);
+            } catch (Exception e) {
+                log.error("Redis 큐 적재 실패", e);
+            }
         }
     }
 }

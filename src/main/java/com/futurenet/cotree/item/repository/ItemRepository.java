@@ -24,8 +24,7 @@ public interface ItemRepository {
     List<ItemPriceAndIsEcoResponse> getItemPriceAndIsEcoByIds(@Param("ids") List<Long> ids);
     List<Item> getEventItems();
 
-    Item getItem(@Param("id") Long id);
-    int decreaseQuantity(@Param("id") Long id, @Param("quantity") int quantity);
+    int decreaseEventItemStock(Long itemId, int quantity);
 
     List<Item> lockItemsByIds(@Param("list") List<Long> itemIds);
     int batchDecreaseQuantities(@Param("list") List<OrderItemRegisterRequest> items);
