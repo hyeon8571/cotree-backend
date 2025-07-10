@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class EventScheduler {
         } else {
             items.forEach(item -> {
                 String key = "stock:" + item.getId();
-                redisTemplate.opsForValue().set(key, String.valueOf(300));
+                redisTemplate.opsForValue().set(key, String.valueOf(300), Duration.ofHours(3));
             });
 
         }
