@@ -41,5 +41,5 @@
 
 ## <img align="center" width="50" src="https://github.com/user-attachments/assets/2e9357e9-30a3-4de4-9db6-b753a952ec55"> 시스템 아키텍처
 <p align="center">
-  <img width="80%" src="https://github.com/user-attachments/assets/a06fc28d-152f-459f-916a-ecfcf044c61a"> 
+  <img width="80%" src="https://github.com/user-attachments/assets/95288d44-2500-4b8a-8ee7-ce4ff2cbfad9"> 
 </p>
